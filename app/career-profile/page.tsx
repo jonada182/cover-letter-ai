@@ -1,9 +1,9 @@
 import PageTemplate from '@/components/PageTemplate'
 
-export default function Home() {
+export default function CareerProfile() {
   return (
     <PageTemplate>
-      <h1>Home</h1>
+      <h1>Career Profile</h1>
     </PageTemplate>
   )
 }
