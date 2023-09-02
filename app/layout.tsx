@@ -1,3 +1,4 @@
+import Main from '@/components/Main'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto_Mono } from 'next/font/google'
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+          <Main>
+            {children}
+          </Main>
+      </body>
     </html>
   )
 }
