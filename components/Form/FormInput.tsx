@@ -1,12 +1,14 @@
 import React, { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react'
 
 type Props = {
-    type: HTMLInputTypeAttribute,
-    name: string,
-    labelName?: string | undefined,
-    placeholder?: string | undefined,
-    min?: number | undefined,
+    type: HTMLInputTypeAttribute
+    name: string
+    labelName?: string | undefined
+    placeholder?: string | undefined
+    min?: number | undefined
     max?: number | undefined
+    value: string | number | readonly string[] | undefined
+    handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const FormInput = (props: Props) => {
@@ -21,6 +23,8 @@ const FormInput = (props: Props) => {
         placeholder={props?.placeholder}
         min={props?.min}
         max={props?.max}
+        onChange={(e) => props.handleOnChange(e)}
+        value={props.value}
       />
     </div>
   )

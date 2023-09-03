@@ -1,13 +1,17 @@
 import { getCareerProfile } from "@/api/career-profile"
+import { CareerProfile } from "@/types"
+import { isValidEmail } from "@/utils"
 import { useQuery } from "react-query"
 
 type Props = {
     email: string
+    isEnabled?: boolean
 }
 
-export const useGetCareerProfile = ({ email }: Props) => {
-    const { data, isLoading, error } = useQuery('careerProfile', () => getCareerProfile({ email: email}))
-    return {
-        data, isLoading, error
-    }
+export const useGetCareerProfile = (props: Props) => {
+    return useQuery<CareerProfile, Error>({
+        queryKey: [],
+        queryFn: () => getCareerProfile({ email: props.email}),
+        enabled: isValidEmail(props.email) && !!!props.isEnabled,
+    })
 }

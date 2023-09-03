@@ -10,7 +10,15 @@ type Props = {
   children: React.ReactNode
 }
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  }
+})
 const Context = createContext({})
 
 const Main = ({ children }: Props) => {

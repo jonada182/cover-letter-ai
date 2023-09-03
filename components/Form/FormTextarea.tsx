@@ -1,9 +1,11 @@
 import React, { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react'
 
 type Props = {
-    name: string,
-    labelName?: string | undefined,
-    placeholder?: string | undefined,
+    name: string
+    labelName?: string | undefined
+    placeholder?: string | undefined
+    value: string | number | readonly string[] | undefined
+    handleOnChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const FormTextarea = (props: Props) => {
@@ -15,6 +17,8 @@ const FormTextarea = (props: Props) => {
         name={props.name}
         id={props.name}
         placeholder={props?.placeholder}
+        onChange={(e) => props.handleOnChange(e)}
+        value={props.value}
       />
     </div>
   )
