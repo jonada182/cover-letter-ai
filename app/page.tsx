@@ -1,7 +1,7 @@
 'use client'
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { CoverLetterRequest } from "@/types";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Page() {
   const initialCoverLetterRequest: CoverLetterRequest = {
@@ -24,7 +24,7 @@ export default function Page() {
           ...prev,
           job_posting: {
             ...prev.job_posting,
-            [jobPostingProperty]: value,
+            [jobPostingProperty]: jobPostingProperty === 'skills' ? value.split(',') : value,
           },
         }
       }
@@ -34,9 +34,15 @@ export default function Page() {
       }
     })
   }
+
+  const submitCoverLetterForm = (event: FormEvent) => {
+    event.preventDefault();
+    console.log("Cover Letter Request", coverLetterRequest);
+  }
+
   return (
     <div>
-      <Form>
+      <Form handleOnSubmit={submitCoverLetterForm}>
         <FormInput 
           type="email" 
           labelName="Email" 

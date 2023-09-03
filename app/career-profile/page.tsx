@@ -2,7 +2,7 @@
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 // import { useGetCareerProfile } from "@/hooks"
 import { CareerProfile } from "@/types"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 
 export default function Page() {
   const initialProfile: CareerProfile = {
@@ -36,9 +36,14 @@ export default function Page() {
       }
       return {
         ...prev,
-        [name]: value,
+        [name]: name === 'skills' ? value.split(',') : value,
       }
     })
+  }
+
+  const submitCareerProfileForm = (event: FormEvent) => {
+    event.preventDefault();
+    console.log("Career Profile", careerProfile);
   }
   // const { data, isLoading, error, refetch } = useGetCareerProfile({ email: careerProfile.contactInfo.email, isEnabled: false })
   // if (isLoading) {
@@ -50,7 +55,7 @@ export default function Page() {
   // }
   return (
     <div>
-      <Form>
+      <Form handleOnSubmit={submitCareerProfileForm}>
         <FormInput
           type="email"
           labelName="Email"

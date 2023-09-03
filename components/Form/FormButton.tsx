@@ -7,7 +7,7 @@ type Props = {
 
 const FormButton = (props: Props) => {
   return (
-    <button className="px-6 py-3 text-white bg-pink-700 font-semibold uppercase rounded" id={props?.id}>{props.text}</button>
+    <button type="submit" className="px-6 py-3 text-white bg-pink-700 font-semibold uppercase rounded" id={props?.id}>{props.text}</button>
   )
 }
 

@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { FormEvent } from 'react'
 
 type Props = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    handleOnSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
-const Form = ({ children }: Props) => {
+const Form = ({ children, handleOnSubmit }: Props) => {
   return (
-    <form>
+    <form onSubmit={(e) => handleOnSubmit(e)}>
       {children}
     </form>
   )
