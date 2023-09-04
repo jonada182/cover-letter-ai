@@ -13,7 +13,7 @@ type Props = {
 
 const FormInput = (props: Props) => {
   return (
-    <div className="flex flex-col max-w-sm justify-stretch mb-4">
+    <div className="flex flex-col max-w-lg justify-stretch mb-4">
       {props.labelName && <label className="font-semibold" htmlFor={props.name}>{props.labelName}</label>}
       <input
         className="flex-grow p-3 shadow-sm my-3 rounded"

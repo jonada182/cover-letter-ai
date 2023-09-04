@@ -26,7 +26,7 @@ export type JobPosting = {
   company_name: string
   job_role: string
   job_details: string
-  skills: string[]
+  skills: string
 }
 
 export type CoverLetterRequest = {

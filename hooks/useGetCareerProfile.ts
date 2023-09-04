@@ -8,10 +8,12 @@ type Props = {
     isEnabled?: boolean
 }
 
-export const useGetCareerProfile = (props: Props) => {
+const useGetCareerProfile = (props: Props) => {
     return useQuery<CareerProfile, Error>({
-        queryKey: [],
+        queryKey: ['career_profile', props.email],
         queryFn: () => getCareerProfile({ email: props.email}),
         enabled: isValidEmail(props.email) && !!!props.isEnabled,
     })
 }
+
+export default useGetCareerProfile
