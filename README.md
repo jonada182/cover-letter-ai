@@ -18,6 +18,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+* **Cover Letter** (`/`): Genereate a cover letter by providing the job details, and after you've created a career profile.
+* **Career Profile** (`/career-profile`): Create/Update your career profile to generate more accurate cover letters
