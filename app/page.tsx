@@ -17,18 +17,31 @@ const initialCoverLetterRequest: CoverLetterRequest = {
 
 export default function Page() {
   const [coverLetterRequest, setCoverLetterRequest] = useState<CoverLetterRequest>(initialCoverLetterRequest);
+  const [coverLetterText, setCoverLetterText] = useState<string>("")
   const { setError, setLoading } = usePageContext();
 
   const { 
     data: careerProfileData, 
-    isSuccess: careerProfileSuccess
+    isSuccess: careerProfileSuccess,
+    isLoading: careerProfileLoading,
+    error: careerProfileError,
   } = useGetCareerProfile({ email: coverLetterRequest.email, isEnabled: false });
   const { 
-    coverLetter, 
+    data: coverLetter, 
     error: coverLetterError, 
     isLoading: coverLetterLoading, 
-    submit: submitCoverLetter,
+    mutate: submitCoverLetter,
+    reset: resetCoverLetter,
   } = usePostCoverLetter();
+
+  useEffect(() => {
+    if (coverLetter) {
+      setCoverLetterText(coverLetter)
+    }
+    
+    setLoading(coverLetterLoading)
+    setError(coverLetterError)
+  }, [coverLetter, coverLetterError, coverLetterLoading]);
 
   useEffect(() => {
     if (careerProfileData?.contact_info?.email) {
@@ -37,9 +50,9 @@ export default function Page() {
       
     }
     
-    setLoading(coverLetterLoading)
-    setError(coverLetterError)
-  }, [careerProfileData, coverLetterError, coverLetterLoading]);
+    setLoading(careerProfileLoading)
+    setError(careerProfileError)
+  }, [careerProfileData, careerProfileError, careerProfileLoading]);
 
   const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
@@ -71,8 +84,17 @@ export default function Page() {
     return null
   }
 
-  if (coverLetter) {
-    return <p className="whitespace-pre-line p-12 bg-white text-black border border-gray-200">{coverLetter}</p>
+  if (coverLetterText) {
+    return (
+     <div>
+      <textarea 
+        className="whitespace-pre-line p-12 bg-white text-black border border-gray-200 h-80 max-h-screen"
+        onChange={(e) => setCoverLetterText(e.target.value)} 
+        value={coverLetterText}
+      />
+      <FormButton text="New Cover Letter" onClick={() => resetCoverLetter()}/>
+     </div>
+    )
   }
 
   return (
@@ -120,7 +142,7 @@ export default function Page() {
             handleOnChange={(e) => setFormValue(e)}
           />
         </div>
-        <FormButton text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
+        <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
       </Form>
     </div>
   )

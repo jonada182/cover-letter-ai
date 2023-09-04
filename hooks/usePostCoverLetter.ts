@@ -3,18 +3,7 @@ import { CoverLetterRequest } from "@/types"
 import { useMutation } from "react-query"
 
 const usePostCoverLetter = () => {
-    const { 
-        data,
-        error,
-        isLoading,
-        mutate: submit
-    } = useMutation<string, Error, CoverLetterRequest>(postCoverLetter);
-    return {
-        coverLetter: data,
-        error,
-        isLoading,
-        submit,
-    }
+    return useMutation<string, Error, CoverLetterRequest>(postCoverLetter);
 }
 
 export default usePostCoverLetter
