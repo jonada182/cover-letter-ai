@@ -67,8 +67,12 @@ export default function Page() {
     submitCoverLetter(coverLetterRequest);
   }
 
+  if (coverLetterLoading) {
+    return null
+  }
+
   if (coverLetter) {
-    return <pre>{coverLetter}</pre>
+    return <p className="whitespace-pre-line p-12 bg-white text-black border border-gray-200">{coverLetter}</p>
   }
 
   return (
