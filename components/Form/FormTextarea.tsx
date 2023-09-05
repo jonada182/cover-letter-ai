@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react'
+import React from 'react'
 
 type Props = {
     name: string

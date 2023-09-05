@@ -4,10 +4,10 @@ import { useGetCareerProfile, usePostCoverLetter } from "@/hooks";
 import { CoverLetterRequest } from "@/types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { usePageContext } from "./contexts/PageContext";
-import jsPDF from "jspdf";
+import CoverLetter from "@/components/CoverLetter";
 
 const initialCoverLetterRequest: CoverLetterRequest = {
-  email: 'test@ceo.com',
+  email: '',
   job_posting: {
     company_name: '',
     job_details: '',
@@ -16,11 +16,8 @@ const initialCoverLetterRequest: CoverLetterRequest = {
   }
 };
 
-const initialCoverLetter = "";
-
 export default function Page() {
   const [coverLetterRequest, setCoverLetterRequest] = useState<CoverLetterRequest>(initialCoverLetterRequest);
-  const [coverLetterText, setCoverLetterText] = useState<string>(initialCoverLetter)
   const { setError, setLoading } = usePageContext();
 
   const { 
@@ -37,27 +34,13 @@ export default function Page() {
     reset: resetCoverLetter,
   } = usePostCoverLetter();
 
-  useEffect(() => {
-    if (coverLetter) {
-      setCoverLetterText(coverLetter)
-    } else {
-      setCoverLetterText(initialCoverLetter)
-    }
-    
-    setLoading(coverLetterLoading)
-    setError(coverLetterError)
-  }, [coverLetter, coverLetterError, coverLetterLoading]);
+  const isPageError = coverLetterError || careerProfileError
+  const isPageLoading = coverLetterLoading || careerProfileLoading
 
   useEffect(() => {
-    if (careerProfileData?.contact_info?.email) {
-      
-    } else {
-      
-    }
-    
-    setLoading(careerProfileLoading)
-    setError(careerProfileError)
-  }, [careerProfileData, careerProfileError, careerProfileLoading]);
+    setLoading(isPageLoading)
+    setError(isPageError)
+  }, [isPageError, isPageLoading]);
 
   const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
@@ -85,37 +68,16 @@ export default function Page() {
     submitCoverLetter(coverLetterRequest);
   }
 
-  const downloadCoverLetterPDF = () => {
-    const pdf = new jsPDF()
-    pdf.setFontSize(10)
-    // Set margins and content width
-    const marginTop = 20;
-    const marginLeft = 20;
-    const contentWidth = pdf.internal.pageSize.getWidth() - marginLeft * 2;
-    // Split the content into lines that fit within the content width
-    const lines = pdf.splitTextToSize(coverLetterText, contentWidth);
-    pdf.text(lines, marginLeft, marginTop)
-    pdf.save(`coverletter-${coverLetterRequest.job_posting.company_name?.toLowerCase()}.pdf`)
-  }
-
   if (coverLetterLoading) {
     return null
   }
 
-  if (coverLetterText) {
-    return (
-     <div className="flex flex-col gap-6">
-      <textarea 
-        className="whitespace-pre-line shadow-md p-12 bg-white text-black border border-gray-200 h-80 max-h-screen font-sans"
-        onChange={(e) => setCoverLetterText(e.target.value)} 
-        value={coverLetterText}
-      />
-      <div className="flex flex-grow align-middle justify-end gap-6">
-        <FormButton text="New Cover Letter" onClick={() => resetCoverLetter()}/>
-        <FormButton text="Download PDF" onClick={() => downloadCoverLetterPDF()}/>
-      </div>
-     </div>
-    )
+  if (coverLetter) {
+    return <CoverLetter 
+      content={coverLetter} 
+      filename={coverLetterRequest?.job_posting?.company_name} 
+      handleReset={resetCoverLetter}
+    />
   }
 
   return (
@@ -128,7 +90,14 @@ export default function Page() {
           placeholder="your@email.com" 
           value={coverLetterRequest.email}
           handleOnChange={(e) => setFormValue(e)}
+          required={true}
         />
+        { careerProfileData &&
+          <div  className="mb-6">
+            <h3 className="text-xl mb-4">Hi, {careerProfileData?.first_name}</h3>
+            <p>Please enter the details of the job you are applying to generate a cover letter</p>
+          </div>
+        }
         <div className={!careerProfileSuccess ? 'hidden' : ''}>
           <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Job Posting</h4>
           <FormInput 
@@ -138,6 +107,7 @@ export default function Page() {
             placeholder="Acme Inc" 
             value={coverLetterRequest.job_posting.company_name} 
             handleOnChange={(e) => setFormValue(e)}
+            required={true}
           />
           <FormInput 
             type="text" 
@@ -146,6 +116,7 @@ export default function Page() {
             placeholder="CEO" 
             value={coverLetterRequest.job_posting.job_role} 
             handleOnChange={(e) => setFormValue(e)}
+            required={true}
           />
           <FormTextarea 
             labelName="Job Details" 
@@ -162,8 +133,8 @@ export default function Page() {
             value={coverLetterRequest.job_posting.skills} 
             handleOnChange={(e) => setFormValue(e)}
           />
+          <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
         </div>
-        <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
       </Form>
     </div>
   )

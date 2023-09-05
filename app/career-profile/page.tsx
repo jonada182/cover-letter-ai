@@ -39,13 +39,10 @@ export default function Page() {
   } = usePostCareerProfile();
   const careerProfileError = getCareerProfileError || postCareerProfileError
   const careerProfileLoading = getCareerProfileLoading || postCareerProfileLoading
+  const isUpdate = newCareerProfile || existingCareerProfile
 
   useEffect(() => {
-    if (typeof existingCareerProfile !== 'undefined' && !careerProfileError) {
-      setCareerProfile(existingCareerProfile)
-    } else if (typeof newCareerProfile !== 'undefined' && !careerProfileError) {
-      setCareerProfile(newCareerProfile)
-    } else {
+    if (careerProfileError || careerProfileLoading) {
       setCareerProfile((prev) => ({
         ...initialProfile,
         contact_info: {
@@ -53,6 +50,12 @@ export default function Page() {
           email: prev.contact_info.email,
         },
       }))
+    } else if (typeof existingCareerProfile !== 'undefined' && !careerProfileError) {
+      console.log('here');
+      setCareerProfile(existingCareerProfile)
+    } else if (typeof newCareerProfile !== 'undefined' && !careerProfileError) {
+      console.log('or here');
+      setCareerProfile(newCareerProfile)
     }
     setLoading(careerProfileLoading)
     setError(careerProfileError)
@@ -98,6 +101,7 @@ export default function Page() {
               placeholder="your@email.com"
               value={careerProfile.contact_info.email}
               handleOnChange={(e) => setFormValue(e)}
+              required={true}
             />
             <div className={hideForm ? 'hidden' : ''}>
               <FormInput
@@ -123,6 +127,7 @@ export default function Page() {
                 placeholder="CEO" 
                 value={careerProfile.headline} 
                 handleOnChange={(e) => setFormValue(e)}
+                required={true}
               />
               <FormInput
                 type="number" 
@@ -132,6 +137,7 @@ export default function Page() {
                 min={1} 
                 value={careerProfile.experience_years} 
                 handleOnChange={(e) => setFormValue(e)}
+                required={true}
               />
               <FormInput
                 type="text" 
@@ -181,7 +187,7 @@ export default function Page() {
           </div>
         </div>
         <div className={hideForm ? 'hidden' : ''}>
-          <FormButton type="submit" text="Create Career profile" id="submit_career_profile"/>
+          <FormButton type="submit" text={`${ isUpdate ? 'Update' : 'Create'} Career profile`} id="submit_career_profile"/>
         </div>
       </Form>
     </div>
