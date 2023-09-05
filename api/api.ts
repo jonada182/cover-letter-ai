@@ -10,7 +10,7 @@ export const handleAxiosError = (error: any) => {
   if (axios.isAxiosError(error)) {
     const apiError: APIError = {
         status: error.response?.status,
-        message: error.response?.data?.error,
+        message: error.response?.data?.error || error.message,
         code: error.code,
         name: error.name,
         error: new Error(error.message),

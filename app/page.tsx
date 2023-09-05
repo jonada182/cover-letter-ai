@@ -4,9 +4,10 @@ import { useGetCareerProfile, usePostCoverLetter } from "@/hooks";
 import { CoverLetterRequest } from "@/types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { usePageContext } from "./contexts/PageContext";
+import jsPDF from "jspdf";
 
 const initialCoverLetterRequest: CoverLetterRequest = {
-  email: '',
+  email: 'test@ceo.com',
   job_posting: {
     company_name: '',
     job_details: '',
@@ -15,9 +16,11 @@ const initialCoverLetterRequest: CoverLetterRequest = {
   }
 };
 
+const initialCoverLetter = "[Your Name]\n[Your Address]\n[City, State, ZIP]\n[Email Address]\n[Phone Number]\n[Date]\n\n[Employer's Name]\n[Company Name]\n[Company Address]\n[City, State, ZIP]\n\nDear [Employer's Name],\n\nI am writing to express my keen interest in the CEO position at Acme Inc. As a highly experienced executive leader with over 10 years in various management roles, I strongly believe that my skills in sales, accounting, and management align perfectly with the requirements of this position.\n\nWith a proven track record of successfully driving growth and profitability in my previous roles, I have consistently demonstrated my ability to lead companies towards achieving their strategic goals. Throughout my career, I have held senior executive positions where I have been responsible for developing and implementing comprehensive sales strategies that resulted in substantial revenue growth. Furthermore, my expertise in accounting allowed me to effectively manage financial resources, optimize budgets, and make data-driven decisions that positively impacted the organization's bottom line.\n\nIn addition to my sales and accounting skills, I possess exceptional leadership and management capabilities. I have a strong ability to motivate and inspire teams, fostering a culture of productivity, innovation, and collaboration. By leveraging my strategic mindset and strong business acumen, I have been able to successfully navigate through challenges, identify opportunities for improvement, and implement effective solutions. I am confident that these qualities, coupled with my extensive experience, make me an ideal candidate for the CEO role at Acme Inc.\n\nI am attracted to Acme Inc. for its strong reputation in the industry and its commitment to excellence. I am excited about the opportunity to lead the company through its next phase of growth and contribute to its continued success. I believe that my expertise, combined with Acme Inc.'s exceptional team, products, and market position, can lead to significant achievements in the near future.\n\nI would welcome the opportunity to discuss how my skills and experience align with the needs of Acme Inc. Thank you for considering my application. I have attached my resume for your review, and I look forward to the possibility of discussing my candidacy further.\n\nSincerely,\n\n[Your Name]";
+
 export default function Page() {
   const [coverLetterRequest, setCoverLetterRequest] = useState<CoverLetterRequest>(initialCoverLetterRequest);
-  const [coverLetterText, setCoverLetterText] = useState<string>("")
+  const [coverLetterText, setCoverLetterText] = useState<string>(initialCoverLetter)
   const { setError, setLoading } = usePageContext();
 
   const { 
@@ -37,6 +40,8 @@ export default function Page() {
   useEffect(() => {
     if (coverLetter) {
       setCoverLetterText(coverLetter)
+    } else {
+      setCoverLetterText(initialCoverLetter)
     }
     
     setLoading(coverLetterLoading)
@@ -80,19 +85,35 @@ export default function Page() {
     submitCoverLetter(coverLetterRequest);
   }
 
+  const downloadCoverLetterPDF = () => {
+    const pdf = new jsPDF()
+    pdf.setFontSize(10)
+    // Set margins and content width
+    const marginTop = 20;
+    const marginLeft = 20;
+    const contentWidth = pdf.internal.pageSize.getWidth() - marginLeft * 2;
+    // Split the content into lines that fit within the content width
+    const lines = pdf.splitTextToSize(coverLetterText, contentWidth);
+    pdf.text(lines, marginLeft, marginTop)
+    pdf.save(`coverletter-${coverLetterRequest.job_posting.company_name?.toLowerCase()}.pdf`)
+  }
+
   if (coverLetterLoading) {
     return null
   }
 
   if (coverLetterText) {
     return (
-     <div>
+     <div className="flex flex-col gap-6">
       <textarea 
-        className="whitespace-pre-line p-12 bg-white text-black border border-gray-200 h-80 max-h-screen"
+        className="whitespace-pre-line shadow-md p-12 bg-white text-black border border-gray-200 h-80 max-h-screen font-sans"
         onChange={(e) => setCoverLetterText(e.target.value)} 
         value={coverLetterText}
       />
-      <FormButton text="New Cover Letter" onClick={() => resetCoverLetter()}/>
+      <div className="flex flex-grow align-middle justify-end gap-6">
+        <FormButton text="New Cover Letter" onClick={() => resetCoverLetter()}/>
+        <FormButton text="Download PDF" onClick={() => downloadCoverLetterPDF()}/>
+      </div>
      </div>
     )
   }

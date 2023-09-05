@@ -3,8 +3,9 @@ import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useGetCareerProfile } from "@/hooks"
 import { CareerProfile } from "@/types"
 import { isValidEmail } from "@/utils"
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react"
 import { usePageContext } from "../contexts/PageContext"
+import usePostCareerProfile from "@/hooks/usePostCareerProfile"
 
 const initialProfile: CareerProfile = {
   first_name: '',
@@ -26,14 +27,24 @@ export default function Page() {
   const { setError, setLoading } = usePageContext();
 
   const { 
-    data: careerProfileData, 
-    isLoading: careerProfileLoading, 
-    error: careerProfileError, 
+    data: existingCareerProfile,
+    isLoading: getCareerProfileLoading,
+    error: getCareerProfileError
   } = useGetCareerProfile({ email: careerProfile.contact_info.email, isEnabled: false });
+  const { 
+    data: newCareerProfile, 
+    isLoading: postCareerProfileLoading, 
+    error: postCareerProfileError, 
+    mutate: postCareerProfile,
+  } = usePostCareerProfile();
+  const careerProfileError = getCareerProfileError || postCareerProfileError
+  const careerProfileLoading = getCareerProfileLoading || postCareerProfileLoading
 
   useEffect(() => {
-    if (careerProfileData?.contact_info?.email) {
-      setCareerProfile(careerProfileData)
+    if (typeof existingCareerProfile !== 'undefined' && !careerProfileError) {
+      setCareerProfile(existingCareerProfile)
+    } else if (typeof newCareerProfile !== 'undefined' && !careerProfileError) {
+      setCareerProfile(newCareerProfile)
     } else {
       setCareerProfile((prev) => ({
         ...initialProfile,
@@ -43,10 +54,9 @@ export default function Page() {
         },
       }))
     }
-    
     setLoading(careerProfileLoading)
     setError(careerProfileError)
-  }, [careerProfileData, careerProfileError, careerProfileLoading]);
+  }, [existingCareerProfile, newCareerProfile, careerProfileError, careerProfileLoading]);
 
   const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
@@ -71,7 +81,7 @@ export default function Page() {
 
   const submitCareerProfileForm = (event: FormEvent) => {
     event.preventDefault();
-    console.log("Career Profile", careerProfile);
+    postCareerProfile(careerProfile);
   }
 
   const hideForm = !isValidEmail(careerProfile.contact_info.email);
@@ -171,7 +181,7 @@ export default function Page() {
           </div>
         </div>
         <div className={hideForm ? 'hidden' : ''}>
-          <FormButton text="Create Career profile" id="submit_career_profile"/>
+          <FormButton type="submit" text="Create Career profile" id="submit_career_profile"/>
         </div>
       </Form>
     </div>
