@@ -1,4 +1,4 @@
-import { api } from "../api"
+import { api, handleAxiosError } from "../api"
 import { CareerProfile } from "@/types";
 
 type RequestProps = {
@@ -14,7 +14,7 @@ const getCareerProfile = async ({ email }: RequestProps): Promise<CareerProfile>
     const response = await api.get<APIResponse>(`/career-profile/${email}`);
     return response?.data?.data;
   } catch (error: any) {
-    throw error
+    return handleAxiosError(error)
   }
 }
 

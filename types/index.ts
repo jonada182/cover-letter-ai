@@ -1,7 +1,17 @@
+import { HttpStatusCode } from "axios"
+
 export type NavigationLink = {
   path: string
   name: string
   description: string | ""
+}
+
+export interface APIError {
+  code?: string
+  status?: HttpStatusCode
+  message?: string
+  name?: string
+  error: Error
 }
 
 export type ContactInfo = {

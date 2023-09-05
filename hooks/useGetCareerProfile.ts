@@ -1,5 +1,5 @@
 import { getCareerProfile } from "@/api/career-profile"
-import { CareerProfile } from "@/types"
+import { APIError, CareerProfile } from "@/types"
 import { isValidEmail } from "@/utils"
 import { useQuery } from "react-query"
 
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const useGetCareerProfile = (props: Props) => {
-    return useQuery<CareerProfile, Error>({
+    return useQuery<CareerProfile, APIError>({
         queryKey: ['career_profile', props.email],
         queryFn: () => getCareerProfile({ email: props.email}),
         enabled: isValidEmail(props.email) && !!!props.isEnabled,

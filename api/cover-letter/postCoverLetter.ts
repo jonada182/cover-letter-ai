@@ -1,5 +1,5 @@
 import { CoverLetterRequest } from "@/types";
-import { api } from "../api";
+import { api, handleAxiosError } from "../api";
 
 interface APIResponse {
     data: string
@@ -17,7 +17,7 @@ const postCoverLetter = async (coverLetterRequest: CoverLetterRequest): Promise<
         const response = await api.post<APIResponse>(`/cover-letter`, coverLetterRequest);
         return response?.data?.data;
     } catch (error:any) {
-        throw error
+        return handleAxiosError(error)
     }
 }
 
