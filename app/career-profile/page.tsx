@@ -26,15 +26,15 @@ export default function Page() {
   const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile);
   const { setError, setLoading } = usePageContext();
 
-  const { 
+  const {
     data: existingCareerProfile,
     isLoading: getCareerProfileLoading,
     error: getCareerProfileError
   } = useGetCareerProfile({ email: careerProfile.contact_info.email, isEnabled: false });
-  const { 
-    data: newCareerProfile, 
-    isLoading: postCareerProfileLoading, 
-    error: postCareerProfileError, 
+  const {
+    data: newCareerProfile,
+    isLoading: postCareerProfileLoading,
+    error: postCareerProfileError,
     mutate: postCareerProfile,
   } = usePostCareerProfile();
   const careerProfileError = getCareerProfileError || postCareerProfileError
@@ -105,82 +105,82 @@ export default function Page() {
             />
             <div className={hideForm ? "hidden" : ""}>
               <FormInput
-                type="text" 
+                type="text"
                 labelName="First Name"
-                name="first_name" 
-                placeholder="John" 
-                value={careerProfile.first_name} 
+                name="first_name"
+                placeholder="John"
+                value={careerProfile.first_name}
                 handleOnChange={(e) => setFormValue(e)}
               />
               <FormInput
-                type="text" 
+                type="text"
                 labelName="Last Name"
-                name="last_name" 
-                placeholder="Doe" 
-                value={careerProfile.last_name} 
+                name="last_name"
+                placeholder="Doe"
+                value={careerProfile.last_name}
                 handleOnChange={(e) => setFormValue(e)}
               />
               <FormInput
-                type="text" 
+                type="text"
                 labelName="Headline"
-                name="headline" 
-                placeholder="CEO" 
-                value={careerProfile.headline} 
+                name="headline"
+                placeholder="CEO"
+                value={careerProfile.headline}
                 handleOnChange={(e) => setFormValue(e)}
                 required={true}
               />
               <FormInput
-                type="number" 
+                type="number"
                 labelName="Experience Years"
-                name="experience_years" 
-                placeholder="10" 
-                min={1} 
-                value={careerProfile.experience_years} 
+                name="experience_years"
+                placeholder="10"
+                min={1}
+                value={careerProfile.experience_years}
                 handleOnChange={(e) => setFormValue(e)}
                 required={true}
               />
               <FormInput
-                type="text" 
+                type="text"
                 labelName="Skills"
-                name="skills" 
+                name="skills"
                 placeholder="sales, accounting, etc."
-                value={careerProfile.skills} 
+                value={careerProfile.skills}
                 handleOnChange={(e) => setFormValue(e)}
               />
             </div>
           </div>
           <div className="flex-grow">
             <div className={hideForm ? "hidden" : ""}>
-              <FormTextarea 
-                labelName="Summary" 
-                name="summary" 
-                placeholder="I am a professional ..." 
-                value={careerProfile.summary} 
+              <FormTextarea
+                labelName="Summary"
+                name="summary"
+                placeholder="I am a professional ..."
+                value={careerProfile.summary}
                 handleOnChange={(e) => setFormValue(e)}
               />
               <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
-              <FormInput 
-                type="text" 
-                labelName="Address" 
-                name="contact_info.address" 
-                placeholder="123 Street" 
-                value={careerProfile.contact_info.address} 
+              <FormInput
+                type="text"
+                labelName="Address"
+                name="contact_info.address"
+                placeholder="123 Street"
+                value={careerProfile.contact_info.address}
                 handleOnChange={(e) => setFormValue(e)}
               />
-              <FormInput 
-                type="text" 
-                labelName="Phone Number" 
-                name="contact_info.phone" 
-                placeholder="555-555-5555" 
-                value={careerProfile.contact_info.phone} 
+              <FormInput
+                type="text"
+                labelName="Phone Number"
+                name="contact_info.phone"
+                placeholder="555-555-5555"
+                value={careerProfile.contact_info.phone}
                 handleOnChange={(e) => setFormValue(e)}
               />
-              <FormInput 
-                type="url" 
-                labelName="Website" 
-                name="contact_info.website" 
-                placeholder="mywebsite.com" 
-                value={careerProfile.contact_info.website} 
+              <FormInput
+                type="url"
+                labelName="Website"
+                name="contact_info.website"
+                placeholder="mywebsite.com"
+                value={careerProfile.contact_info.website}
                 handleOnChange={(e) => setFormValue(e)}
               />
             </div>

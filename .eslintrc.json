@@ -6,6 +6,32 @@
     "quotes": [
       "error",
       "double"
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "ObjectExpression": "first",
+        "ArrayExpression": "first",
+        "SwitchCase": 1,
+        "VariableDeclarator": "first",
+        "outerIIFEBody": 1,
+        "MemberExpression": "off",
+        "FunctionDeclaration": {
+          "parameters": "first",
+          "body": 1
+        },
+        "FunctionExpression": {
+          "parameters": "first",
+          "body": 1
+        },
+        "CallExpression": {
+          "arguments": "first"
+        },
+        "ImportDeclaration": "first",
+        "flatTernaryExpressions": false,
+        "ignoreComments": false
+      }
     ]
   }
 }
