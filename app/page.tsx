@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useGetCareerProfile, usePostCoverLetter } from "@/hooks";
 import { CoverLetterRequest } from "@/types";
@@ -7,12 +7,12 @@ import { usePageContext } from "./contexts/PageContext";
 import CoverLetter from "@/components/CoverLetter";
 
 const initialCoverLetterRequest: CoverLetterRequest = {
-  email: '',
+  email: "",
   job_posting: {
-    company_name: '',
-    job_details: '',
-    job_role: '',
-    skills: '',
+    company_name: "",
+    job_details: "",
+    job_role: "",
+    skills: "",
   }
 };
 
@@ -46,8 +46,8 @@ export default function Page() {
     const value = event.target.value
     const name = event.target.name
     setCoverLetterRequest((prev) => {
-      if (name.startsWith('job_posting.')) {
-        const jobPostingProperty = name.split('.')[1];
+      if (name.startsWith("job_posting.")) {
+        const jobPostingProperty = name.split(".")[1];
         return {
           ...prev,
           job_posting: {
@@ -98,7 +98,7 @@ export default function Page() {
             <p>Please enter the details of the job you are applying to generate a cover letter</p>
           </div>
         }
-        <div className={!careerProfileSuccess ? 'hidden' : ''}>
+        <div className={!careerProfileSuccess ? "hidden" : ""}>
           <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Job Posting</h4>
           <FormInput 
             type="text" 

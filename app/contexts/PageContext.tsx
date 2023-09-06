@@ -1,5 +1,5 @@
 import { APIError } from "@/types";
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from "react"
 
 type Props = {
   children: React.ReactNode
@@ -27,7 +27,7 @@ export const PageProvider = ({children}: Props) => {
 export const usePageContext = () => {
   const context = useContext(PageContext);
   if (context === undefined) {
-    throw new Error('usePageContext must be used within a PageProvider');
+    throw new Error("usePageContext must be used within a PageProvider");
   }
   return context;
 };

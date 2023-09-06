@@ -1,11 +1,11 @@
-'use client'
-import { navigationLinks } from '@/constants'
-import { usePathname } from 'next/navigation'
-import React from 'react'
-import { PageLogo, PageTemplate } from './Page'
-import Nav from './Nav'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { PageProvider } from '@/app/contexts/PageContext'
+"use client"
+import { navigationLinks } from "@/constants"
+import { usePathname } from "next/navigation"
+import React from "react"
+import { PageLogo, PageTemplate } from "./Page"
+import Nav from "./Nav"
+import { QueryClient, QueryClientProvider } from "react-query"
+import { PageProvider } from "@/app/contexts/PageContext"
 
 type Props = {
   children: React.ReactNode

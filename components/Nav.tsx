@@ -1,7 +1,7 @@
-import { navigationLinks } from '@/constants'
-import { NavigationLink } from '@/types'
-import Link from 'next/link'
-import React from 'react'
+import { navigationLinks } from "@/constants"
+import { NavigationLink } from "@/types"
+import Link from "next/link"
+import React from "react"
 
 type Props = {
   currentNavigationLink: NavigationLink | undefined
@@ -16,7 +16,7 @@ const Nav = ({ currentNavigationLink }: Props) => {
           <Link
             key={link.name}
             href={link.path}
-            className={`p-6 text-sm ${isActive ? 'text-white' : 'text-pink-300'}`}
+            className={`p-6 text-sm ${isActive ? "text-white" : "text-pink-300"}`}
           >
             {link.name}
           </Link>

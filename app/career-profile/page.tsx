@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useGetCareerProfile } from "@/hooks"
 import { CareerProfile } from "@/types"
@@ -8,17 +8,17 @@ import { usePageContext } from "../contexts/PageContext"
 import usePostCareerProfile from "@/hooks/usePostCareerProfile"
 
 const initialProfile: CareerProfile = {
-  first_name: '',
-  last_name: '',
-  headline: '',
+  first_name: "",
+  last_name: "",
+  headline: "",
   experience_years: 0,
-  summary: '',
+  summary: "",
   skills: [],
   contact_info: {
-    email: '',
-    address: '',
-    phone: '',
-    website: '',
+    email: "",
+    address: "",
+    phone: "",
+    website: "",
   },
 };
 
@@ -50,11 +50,11 @@ export default function Page() {
           email: prev.contact_info.email,
         },
       }))
-    } else if (typeof existingCareerProfile !== 'undefined' && !careerProfileError) {
-      console.log('here');
+    } else if (typeof existingCareerProfile !== "undefined" && !careerProfileError) {
+      console.log("here");
       setCareerProfile(existingCareerProfile)
-    } else if (typeof newCareerProfile !== 'undefined' && !careerProfileError) {
-      console.log('or here');
+    } else if (typeof newCareerProfile !== "undefined" && !careerProfileError) {
+      console.log("or here");
       setCareerProfile(newCareerProfile)
     }
     setLoading(careerProfileLoading)
@@ -65,8 +65,8 @@ export default function Page() {
     const value = event.target.value
     const name = event.target.name
     setCareerProfile((prev) => {
-      if (name.startsWith('contact_info.')) {
-        const contactInfoProperty = name.split('.')[1];
+      if (name.startsWith("contact_info.")) {
+        const contactInfoProperty = name.split(".")[1];
         return {
           ...prev,
           contact_info: {
@@ -77,7 +77,7 @@ export default function Page() {
       }
       return {
         ...prev,
-        [name]: name === 'skills' ? value.split(',') : value,
+        [name]: name === "skills" ? value.split(",") : value,
       }
     })
   }
@@ -103,7 +103,7 @@ export default function Page() {
               handleOnChange={(e) => setFormValue(e)}
               required={true}
             />
-            <div className={hideForm ? 'hidden' : ''}>
+            <div className={hideForm ? "hidden" : ""}>
               <FormInput
                 type="text" 
                 labelName="First Name"
@@ -150,7 +150,7 @@ export default function Page() {
             </div>
           </div>
           <div className="flex-grow">
-            <div className={hideForm ? 'hidden' : ''}>
+            <div className={hideForm ? "hidden" : ""}>
               <FormTextarea 
                 labelName="Summary" 
                 name="summary" 
@@ -186,8 +186,8 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <div className={hideForm ? 'hidden' : ''}>
-          <FormButton type="submit" text={`${ isUpdate ? 'Update' : 'Create'} Career profile`} id="submit_career_profile"/>
+        <div className={hideForm ? "hidden" : ""}>
+          <FormButton type="submit" text={`${ isUpdate ? "Update" : "Create"} Career profile`} id="submit_career_profile"/>
         </div>
       </Form>
     </div>

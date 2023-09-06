@@ -1,5 +1,5 @@
-import { NavigationLink } from '@/types'
-import React from 'react'
+import { NavigationLink } from "@/types"
+import React from "react"
 
 type Props = {
     currentNavigationLink: NavigationLink | undefined

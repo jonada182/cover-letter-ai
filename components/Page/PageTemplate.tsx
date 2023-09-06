@@ -1,7 +1,7 @@
-import React from 'react'
-import { PageError, PageHeading, PageLoading } from '.'
-import { NavigationLink } from '@/types'
-import { usePageContext } from '@/app/contexts/PageContext'
+import React from "react"
+import { PageError, PageHeading, PageLoading } from "."
+import { NavigationLink } from "@/types"
+import { usePageContext } from "@/app/contexts/PageContext"
 
 type Props = {
     children: React.ReactNode
