@@ -20,16 +20,16 @@ export default function Page() {
   const [coverLetterRequest, setCoverLetterRequest] = useState<CoverLetterRequest>(initialCoverLetterRequest);
   const { setError, setLoading } = usePageContext();
 
-  const { 
-    data: careerProfileData, 
+  const {
+    data: careerProfileData,
     isSuccess: careerProfileSuccess,
     isLoading: careerProfileLoading,
     error: careerProfileError,
   } = useGetCareerProfile({ email: coverLetterRequest.email, isEnabled: false });
-  const { 
-    data: coverLetter, 
-    error: coverLetterError, 
-    isLoading: coverLetterLoading, 
+  const {
+    data: coverLetter,
+    error: coverLetterError,
+    isLoading: coverLetterLoading,
     mutate: submitCoverLetter,
     reset: resetCoverLetter,
   } = usePostCoverLetter();
@@ -62,7 +62,7 @@ export default function Page() {
       }
     })
   }
-  
+
   const submitCoverLetterForm = (event: FormEvent) => {
     event.preventDefault();
     submitCoverLetter(coverLetterRequest);
@@ -73,9 +73,9 @@ export default function Page() {
   }
 
   if (coverLetter) {
-    return <CoverLetter 
-      content={coverLetter} 
-      filename={coverLetterRequest?.job_posting?.company_name} 
+    return <CoverLetter
+      content={coverLetter}
+      filename={coverLetterRequest?.job_posting?.company_name}
       handleReset={resetCoverLetter}
     />
   }
@@ -83,11 +83,11 @@ export default function Page() {
   return (
     <div>
       <Form handleOnSubmit={submitCoverLetterForm}>
-        <FormInput 
-          type="email" 
-          labelName="Email" 
-          name="email" 
-          placeholder="your@email.com" 
+        <FormInput
+          type="email"
+          labelName="Email"
+          name="email"
+          placeholder="your@email.com"
           value={coverLetterRequest.email}
           handleOnChange={(e) => setFormValue(e)}
           required={true}
@@ -95,42 +95,42 @@ export default function Page() {
         { careerProfileData &&
           <div  className="mb-6">
             <h3 className="text-xl mb-4">Hi, {careerProfileData?.first_name}</h3>
-            <p>Please enter the details of the job you are applying to generate a cover letter</p>
+            <p>Please enter the details of the job you are applying for</p>
           </div>
         }
         <div className={!careerProfileSuccess ? "hidden" : ""}>
           <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Job Posting</h4>
-          <FormInput 
-            type="text" 
-            labelName="Company Name" 
-            name="job_posting.company_name" 
-            placeholder="Acme Inc" 
-            value={coverLetterRequest.job_posting.company_name} 
+          <FormInput
+            type="text"
+            labelName="Company Name"
+            name="job_posting.company_name"
+            placeholder="Acme Inc"
+            value={coverLetterRequest.job_posting.company_name}
             handleOnChange={(e) => setFormValue(e)}
             required={true}
           />
-          <FormInput 
-            type="text" 
-            labelName="Job Role" 
-            name="job_posting.job_role" 
-            placeholder="CEO" 
-            value={coverLetterRequest.job_posting.job_role} 
+          <FormInput
+            type="text"
+            labelName="Job Role"
+            name="job_posting.job_role"
+            placeholder="CEO"
+            value={coverLetterRequest.job_posting.job_role}
             handleOnChange={(e) => setFormValue(e)}
             required={true}
           />
-          <FormTextarea 
-            labelName="Job Details" 
-            name="job_posting.job_details" 
-            placeholder="Looking for a ..." 
-            value={coverLetterRequest.job_posting.job_details} 
+          <FormTextarea
+            labelName="Job Details"
+            name="job_posting.job_details"
+            placeholder="Copy and paste the details of the job listing you are applying for"
+            value={coverLetterRequest.job_posting.job_details}
             handleOnChange={(e) => setFormValue(e)}
           />
-          <FormInput 
-            type="text" 
-            labelName="Skills" 
-            name="job_posting.skills" 
-            placeholder="sales, accounting, etc." 
-            value={coverLetterRequest.job_posting.skills} 
+          <FormInput
+            type="text"
+            labelName="Skills"
+            name="job_posting.skills"
+            placeholder="sales, accounting, etc."
+            value={coverLetterRequest.job_posting.skills}
             handleOnChange={(e) => setFormValue(e)}
           />
           <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
