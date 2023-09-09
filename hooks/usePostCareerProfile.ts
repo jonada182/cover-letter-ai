@@ -3,7 +3,7 @@ import { APIError, CareerProfile } from "@/types"
 import { useMutation } from "react-query"
 
 const usePostCareerProfile = () => {
-    return useMutation<CareerProfile, APIError, CareerProfile>(postCareerProfile);
+  return useMutation<CareerProfile, APIError, CareerProfile>(postCareerProfile);
 }
 
 export default usePostCareerProfile

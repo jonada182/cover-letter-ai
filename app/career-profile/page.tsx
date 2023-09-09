@@ -100,7 +100,7 @@ export default function Page() {
               name="contact_info.email"
               placeholder="your@email.com"
               value={careerProfile.contact_info.email}
-              handleOnChange={(e) => setFormValue(e)}
+              handleOnChange={setFormValue}
               required={true}
             />
             <div className={hideForm ? "hidden" : ""}>
@@ -110,7 +110,7 @@ export default function Page() {
                 name="first_name"
                 placeholder="John"
                 value={careerProfile.first_name}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
               <FormInput
                 type="text"
@@ -118,7 +118,7 @@ export default function Page() {
                 name="last_name"
                 placeholder="Doe"
                 value={careerProfile.last_name}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
               <FormInput
                 type="text"
@@ -126,7 +126,7 @@ export default function Page() {
                 name="headline"
                 placeholder="CEO"
                 value={careerProfile.headline}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
                 required={true}
               />
               <FormInput
@@ -136,7 +136,7 @@ export default function Page() {
                 placeholder="10"
                 min={1}
                 value={careerProfile.experience_years}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
                 required={true}
               />
               <FormInput
@@ -145,7 +145,7 @@ export default function Page() {
                 name="skills"
                 placeholder="sales, accounting, etc."
                 value={careerProfile.skills}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function Page() {
                 name="summary"
                 placeholder="I am a professional ..."
                 value={careerProfile.summary}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
               <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
               <FormInput
@@ -165,7 +165,7 @@ export default function Page() {
                 name="contact_info.address"
                 placeholder="123 Street"
                 value={careerProfile.contact_info.address}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
               <FormInput
                 type="text"
@@ -173,7 +173,7 @@ export default function Page() {
                 name="contact_info.phone"
                 placeholder="555-555-5555"
                 value={careerProfile.contact_info.phone}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
               <FormInput
                 type="url"
@@ -181,13 +181,13 @@ export default function Page() {
                 name="contact_info.website"
                 placeholder="mywebsite.com"
                 value={careerProfile.contact_info.website}
-                handleOnChange={(e) => setFormValue(e)}
+                handleOnChange={setFormValue}
               />
             </div>
           </div>
         </div>
         <div className={hideForm ? "hidden" : ""}>
-          <FormButton type="submit" text={`${ isUpdate ? "Update" : "Create"} Career profile`} id="submit_career_profile"/>
+          <FormButton type="submit" text={`${isUpdate ? "Update" : "Create"} Career profile`} id="submit_career_profile" />
         </div>
       </Form>
     </div>

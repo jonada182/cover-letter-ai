@@ -32,8 +32,8 @@ const Main = ({ children }: Props) => {
       <QueryClientProvider client={queryClient}>
         <main className="flex min-h-screen flex-col items-center justify-stretch">
           <header className="flex min-w-full flex-row items-center justify-between bg-pink-700">
-            <PageLogo/>
-            <Nav currentNavigationLink={currentNavigationLink}/>
+            <PageLogo />
+            <Nav currentNavigationLink={currentNavigationLink} />
           </header>
           <PageTemplate currentNavigationLink={currentNavigationLink}>
             {children}

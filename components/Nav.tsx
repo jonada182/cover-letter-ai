@@ -16,7 +16,7 @@ const Nav = ({ currentNavigationLink }: Props) => {
           <Link
             key={link.name}
             href={link.path}
-            className={`p-6 text-sm ${isActive ? "text-white" : "text-pink-300"}`}
+            className={`px-4 py-6 text-sm ${isActive ? "text-white" : "text-pink-300"}`}
           >
             {link.name}
           </Link>

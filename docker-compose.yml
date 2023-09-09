@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: cover-letter-ai
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    volumes:
+      - ./node_modules:/app/node_modules
+    ports:
+      - "3000:3000"

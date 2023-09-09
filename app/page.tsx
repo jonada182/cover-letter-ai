@@ -89,11 +89,11 @@ export default function Page() {
           name="email"
           placeholder="your@email.com"
           value={coverLetterRequest.email}
-          handleOnChange={(e) => setFormValue(e)}
+          handleOnChange={setFormValue}
           required={true}
         />
-        { careerProfileData &&
-          <div  className="mb-6">
+        {careerProfileData &&
+          <div className="mb-6">
             <h3 className="text-xl mb-4">Hi, {careerProfileData?.first_name}</h3>
             <p>Please enter the details of the job you are applying for</p>
           </div>
@@ -106,7 +106,7 @@ export default function Page() {
             name="job_posting.company_name"
             placeholder="Acme Inc"
             value={coverLetterRequest.job_posting.company_name}
-            handleOnChange={(e) => setFormValue(e)}
+            handleOnChange={setFormValue}
             required={true}
           />
           <FormInput
@@ -115,7 +115,7 @@ export default function Page() {
             name="job_posting.job_role"
             placeholder="CEO"
             value={coverLetterRequest.job_posting.job_role}
-            handleOnChange={(e) => setFormValue(e)}
+            handleOnChange={setFormValue}
             required={true}
           />
           <FormTextarea
@@ -123,7 +123,7 @@ export default function Page() {
             name="job_posting.job_details"
             placeholder="Copy and paste the details of the job listing you are applying for"
             value={coverLetterRequest.job_posting.job_details}
-            handleOnChange={(e) => setFormValue(e)}
+            handleOnChange={setFormValue}
           />
           <FormInput
             type="text"
@@ -131,9 +131,9 @@ export default function Page() {
             name="job_posting.skills"
             placeholder="sales, accounting, etc."
             value={coverLetterRequest.job_posting.skills}
-            handleOnChange={(e) => setFormValue(e)}
+            handleOnChange={setFormValue}
           />
-          <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess}/>
+          <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess} />
         </div>
       </Form>
     </div>
