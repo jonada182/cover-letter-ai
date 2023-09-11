@@ -23,3 +23,28 @@ export const testCoverLetterRequest = {
     skills: "sales"
   }
 };
+export const testJobApplicationRequest = {
+  email: testEmail,
+  job_application: {
+    company_name: "Acme",
+    job_role: "CEO"
+  }
+};
+export const testJobApplication = {
+  id: "1",
+  company_name: "Acme",
+  job_role: "CEO"
+};
+export const testJobApplications = [
+  {
+    id: "1",
+    company_name: "Acme",
+    job_role: "CEO"
+  }
+];
+export const testJobApplicationEvent = {
+  job_application_id: "1",
+  description: "lorem ipsum",
+  date: "1999-01-01",
+  type: 0
+}

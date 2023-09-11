@@ -44,24 +44,30 @@ export type CoverLetterRequest = {
   job_posting: JobPosting
 }
 
-export type Application = {
+export type JobApplicationRequest = {
+  email: string
+  job_application: JobApplication
+}
+
+export type JobApplication = {
   id?: string
   company_name: string
   job_role: string
   url?: string
-  events?: ApplicationEvent[]
+  events?: JobApplicationEvent[]
   createdAt?: string
   updatedAt?: string
 }
 
-export type ApplicationEvent = {
-  type: ApplicationEventType
+export type JobApplicationEvent = {
+  job_application_id?: string
+  type: JobApplicationEventType
   description: string
   date: string
   additional_notes?: string
 }
 
-enum ApplicationEventType {
+enum JobApplicationEventType {
   "Submission" = 0,
   "Interview" = 1,
   "Assessment" = 2,
