@@ -6,15 +6,15 @@ type Props = {
 }
 
 interface PageContextType {
-  loading: boolean;
-  error: Error | APIError | null;
-  setLoading: (loading: boolean) => void;
-  setError: (error: Error | APIError | null) => void;
+  loading: boolean
+  error: Error | APIError | null
+  setLoading: (loading: boolean) => void
+  setError: (error: Error | APIError | null) => void
 }
 
 export const PageContext = createContext<PageContextType | undefined>(undefined);
 
-export const PageProvider = ({children}: Props) => {
+export const PageProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | APIError | null>(null);
   return (

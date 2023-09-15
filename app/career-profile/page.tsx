@@ -6,6 +6,7 @@ import { isValidEmail } from "@/utils"
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react"
 import { usePageContext } from "../contexts/PageContext"
 import usePostCareerProfile from "@/hooks/usePostCareerProfile"
+import { useUserContext } from "../contexts/UserContext"
 
 const initialProfile: CareerProfile = {
   first_name: "",
@@ -25,12 +26,13 @@ const initialProfile: CareerProfile = {
 export default function Page() {
   const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile);
   const { setError, setLoading } = usePageContext();
+  const { profileId, linkedInAccessToken } = useUserContext()
 
   const {
     data: existingCareerProfile,
     isLoading: getCareerProfileLoading,
     error: getCareerProfileError
-  } = useGetCareerProfile({ email: careerProfile.contact_info.email, isEnabled: false });
+  } = useGetCareerProfile({ profile_id: profileId, isEnabled: false });
   const {
     data: newCareerProfile,
     isLoading: postCareerProfileLoading,
@@ -84,7 +86,7 @@ export default function Page() {
 
   const submitCareerProfileForm = (event: FormEvent) => {
     event.preventDefault();
-    postCareerProfile(careerProfile);
+    postCareerProfile({ careerProfile: careerProfile, access_token: linkedInAccessToken });
   }
 
   const hideForm = !isValidEmail(careerProfile.contact_info.email);
@@ -94,15 +96,6 @@ export default function Page() {
       <Form handleOnSubmit={submitCareerProfileForm}>
         <div className="flex gap-8 justify-stretch flex-col md:flex-row">
           <div className="flex-grow">
-            <FormInput
-              type="email"
-              labelName="Email"
-              name="contact_info.email"
-              placeholder="your@email.com"
-              value={careerProfile.contact_info.email}
-              handleOnChange={setFormValue}
-              required={true}
-            />
             <div className={hideForm ? "hidden" : ""}>
               <FormInput
                 type="text"
@@ -159,6 +152,15 @@ export default function Page() {
                 handleOnChange={setFormValue}
               />
               <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
+              <FormInput
+                type="email"
+                labelName="Email"
+                name="contact_info.email"
+                placeholder="your@email.com"
+                value={careerProfile.contact_info.email}
+                handleOnChange={setFormValue}
+                required={true}
+              />
               <FormInput
                 type="text"
                 labelName="Address"

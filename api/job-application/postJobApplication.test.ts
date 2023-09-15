@@ -1,6 +1,6 @@
 import axios from "axios";
 import { postJobApplication } from "."
-import { testJobApplication, testEmail, testJobApplicationRequest } from "@/app/test-data";
+import { testJobApplication, testJobApplicationRequest, testProfileID } from "@/app/test-data";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -14,13 +14,13 @@ describe("postJobApplication", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
     const data = await postJobApplication(testJobApplicationRequest)
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith(`/job-application/${testEmail}`, testJobApplicationRequest.job_application)
+    expect(mockedAxios.post).toHaveBeenCalledWith(`/job-application/${testProfileID}`, testJobApplicationRequest.job_application)
     expect(data).toBe(testJobApplication)
   })
   it("fails to post job application when missing fields", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: "nothing in return"})
     expect(postJobApplication({
-      email: testEmail,
+      profile_id: testProfileID,
       job_application: {
         company_name: "",
         job_role: ""
@@ -32,6 +32,6 @@ describe("postJobApplication", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
     expect(postJobApplication(testJobApplicationRequest)).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith(`/job-application/${testEmail}`, testJobApplicationRequest.job_application)
+    expect(mockedAxios.post).toHaveBeenCalledWith(`/job-application/${testProfileID}`, testJobApplicationRequest.job_application)
   })
 })

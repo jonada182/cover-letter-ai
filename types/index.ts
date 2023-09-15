@@ -1,9 +1,11 @@
 import { HttpStatusCode } from "axios"
+import { UUID } from "crypto"
 
 export type NavigationLink = {
   path: string
   name: string
-  description: string | ""
+  description?: string | ""
+  isHidden?: boolean
 }
 
 export interface APIError {
@@ -14,6 +16,10 @@ export interface APIError {
   error: Error
 }
 
+export type User = {
+  profile_id: UUID
+}
+
 export type ContactInfo = {
   email: string
   address: string
@@ -22,7 +28,7 @@ export type ContactInfo = {
 }
 
 export type CareerProfile = {
-  id?: string
+  id?: UUID
   first_name: string
   last_name: string
   headline: string
@@ -30,6 +36,11 @@ export type CareerProfile = {
   summary: string
   skills: string[]
   contact_info: ContactInfo
+}
+
+export type CareerProfileRequest = {
+  careerProfile: CareerProfile
+  access_token: string | null
 }
 
 export type JobPosting = {
@@ -40,12 +51,12 @@ export type JobPosting = {
 }
 
 export type CoverLetterRequest = {
-  email: string
+  profile_id: UUID | null
   job_posting: JobPosting
 }
 
 export type JobApplicationRequest = {
-  email: string
+  profile_id: UUID
   job_application: JobApplication
 }
 
@@ -55,8 +66,8 @@ export type JobApplication = {
   job_role: string
   url?: string
   events?: JobApplicationEvent[]
-  createdAt?: string
-  updatedAt?: string
+  created_at?: string
+  updated_at?: string
 }
 
 export type JobApplicationEvent = {

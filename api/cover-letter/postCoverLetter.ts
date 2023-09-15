@@ -8,7 +8,7 @@ interface APIResponse {
 
 const postCoverLetter = async (coverLetterRequest: CoverLetterRequest): Promise<string> => {
   if (
-    coverLetterRequest.email === "" ||
+    coverLetterRequest.profile_id.toString() === "" ||
         coverLetterRequest.job_posting.company_name === "" ||
         coverLetterRequest.job_posting.job_role === ""
   ) {

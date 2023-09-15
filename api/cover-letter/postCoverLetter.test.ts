@@ -1,6 +1,6 @@
 import axios from "axios";
 import { postCoverLetter } from "."
-import { testCoverLetter, testCoverLetterRequest } from "@/app/test-data";
+import { testCoverLetter, testCoverLetterRequest, testProfileID } from "@/app/test-data";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -20,7 +20,7 @@ describe("postCoverLetter", () => {
   it("fails to create cover letter when missing fields", async () => {
     mockedAxios.post.mockResolvedValueOnce({ data: "nothing in return"})
     expect(postCoverLetter({
-      email: "",
+      profile_id: testProfileID,
       job_posting: {
         ...testCoverLetterRequest.job_posting,
         company_name: "",

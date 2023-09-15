@@ -11,6 +11,10 @@ const Nav = ({ currentNavigationLink }: Props) => {
   return (
     <nav className="flex-grow flex flex-row items-center justify-end">
       {navigationLinks.map((link: NavigationLink) => {
+        if (link.isHidden) {
+          return null
+        }
+
         const isActive = currentNavigationLink?.path === link.path
         return (
           <Link

@@ -1,5 +1,13 @@
+import { randomUUID } from "crypto";
+
+export const testAccessToken = "some token";
 export const testEmail = "test@test.com";
+export const testProfileID = randomUUID();
+export const testUser = {
+  profile_id: testProfileID
+}
 export const testCareerProfile = {
+  id: testProfileID,
   first_name: "John",
   last_name: "Doe",
   headline: "CEO",
@@ -15,7 +23,7 @@ export const testCareerProfile = {
 };
 export const testCoverLetter = "nice cover letter";
 export const testCoverLetterRequest = {
-  email: testEmail,
+  profile_id: testProfileID,
   job_posting: {
     company_name: "Acme",
     job_role: "CEO",
@@ -24,7 +32,7 @@ export const testCoverLetterRequest = {
   }
 };
 export const testJobApplicationRequest = {
-  email: testEmail,
+  profile_id: testProfileID,
   job_application: {
     company_name: "Acme",
     job_role: "CEO"

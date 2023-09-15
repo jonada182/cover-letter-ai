@@ -1,18 +1,20 @@
 import { getCareerProfile } from "@/api/career-profile"
+import { useUserContext } from "@/app/contexts/UserContext"
 import { APIError, CareerProfile } from "@/types"
-import { isValidEmail } from "@/utils"
+import { UUID } from "crypto"
 import { useQuery } from "react-query"
 
 type Props = {
-    email: string
+    profile_id: UUID | null
     isEnabled?: boolean
 }
 
 const useGetCareerProfile = (props: Props) => {
+  const { linkedInAccessToken } = useUserContext()
   return useQuery<CareerProfile, APIError>({
-    queryKey: ["career_profile", props.email],
-    queryFn: () => getCareerProfile({ email: props.email}),
-    enabled: isValidEmail(props.email) && !!!props.isEnabled,
+    queryKey: ["career_profile", props.profile_id],
+    queryFn: () => getCareerProfile({ profile_id: props.profile_id, access_token: linkedInAccessToken}),
+    enabled: !!props.profile_id && !!!props.isEnabled,
   })
 }
 
