@@ -96,96 +96,92 @@ export default function Page() {
       <Form handleOnSubmit={submitCareerProfileForm}>
         <div className="flex gap-8 justify-stretch flex-col md:flex-row">
           <div className="flex-grow">
-            <div className={hideForm ? "hidden" : ""}>
-              <FormInput
-                type="text"
-                labelName="First Name"
-                name="first_name"
-                placeholder="John"
-                value={careerProfile.first_name}
-                handleOnChange={setFormValue}
-              />
-              <FormInput
-                type="text"
-                labelName="Last Name"
-                name="last_name"
-                placeholder="Doe"
-                value={careerProfile.last_name}
-                handleOnChange={setFormValue}
-              />
-              <FormInput
-                type="text"
-                labelName="Headline"
-                name="headline"
-                placeholder="CEO"
-                value={careerProfile.headline}
-                handleOnChange={setFormValue}
-                required={true}
-              />
-              <FormInput
-                type="number"
-                labelName="Experience Years"
-                name="experience_years"
-                placeholder="10"
-                min={1}
-                value={careerProfile.experience_years}
-                handleOnChange={setFormValue}
-                required={true}
-              />
-              <FormInput
-                type="text"
-                labelName="Skills"
-                name="skills"
-                placeholder="sales, accounting, etc."
-                value={careerProfile.skills}
-                handleOnChange={setFormValue}
-              />
-            </div>
+            <FormInput
+              type="text"
+              labelName="First Name"
+              name="first_name"
+              placeholder="John"
+              value={careerProfile.first_name}
+              handleOnChange={setFormValue}
+            />
+            <FormInput
+              type="text"
+              labelName="Last Name"
+              name="last_name"
+              placeholder="Doe"
+              value={careerProfile.last_name}
+              handleOnChange={setFormValue}
+            />
+            <FormInput
+              type="text"
+              labelName="Headline"
+              name="headline"
+              placeholder="CEO"
+              value={careerProfile.headline}
+              handleOnChange={setFormValue}
+              required={true}
+            />
+            <FormInput
+              type="number"
+              labelName="Experience Years"
+              name="experience_years"
+              placeholder="10"
+              min={1}
+              value={careerProfile.experience_years}
+              handleOnChange={setFormValue}
+              required={true}
+            />
+            <FormInput
+              type="text"
+              labelName="Skills"
+              name="skills"
+              placeholder="sales, accounting, etc."
+              value={careerProfile.skills}
+              handleOnChange={setFormValue}
+            />
+            <FormTextarea
+              labelName="Summary"
+              name="summary"
+              placeholder="I am a professional ..."
+              value={careerProfile.summary}
+              handleOnChange={setFormValue}
+            />
           </div>
           <div className="flex-grow">
-            <div className={hideForm ? "hidden" : ""}>
-              <FormTextarea
-                labelName="Summary"
-                name="summary"
-                placeholder="I am a professional ..."
-                value={careerProfile.summary}
-                handleOnChange={setFormValue}
-              />
-              <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
-              <FormInput
-                type="email"
-                labelName="Email"
-                name="contact_info.email"
-                placeholder="your@email.com"
-                value={careerProfile.contact_info.email}
-                handleOnChange={setFormValue}
-                required={true}
-              />
-              <FormInput
-                type="text"
-                labelName="Address"
-                name="contact_info.address"
-                placeholder="123 Street"
-                value={careerProfile.contact_info.address}
-                handleOnChange={setFormValue}
-              />
-              <FormInput
-                type="text"
-                labelName="Phone Number"
-                name="contact_info.phone"
-                placeholder="555-555-5555"
-                value={careerProfile.contact_info.phone}
-                handleOnChange={setFormValue}
-              />
-              <FormInput
-                type="url"
-                labelName="Website"
-                name="contact_info.website"
-                placeholder="mywebsite.com"
-                value={careerProfile.contact_info.website}
-                handleOnChange={setFormValue}
-              />
-            </div>
+            <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
+            <FormInput
+              type="email"
+              labelName="Email"
+              name="contact_info.email"
+              placeholder="your@email.com"
+              value={careerProfile.contact_info.email}
+              handleOnChange={setFormValue}
+              required={true}
+            />
+            <FormInput
+              type="text"
+              labelName="Address"
+              name="contact_info.address"
+              placeholder="123 Street"
+              value={careerProfile.contact_info.address}
+              handleOnChange={setFormValue}
+            />
+            <FormInput
+              type="text"
+              labelName="Phone Number"
+              name="contact_info.phone"
+              placeholder="555-555-5555"
+              value={careerProfile.contact_info.phone}
+              handleOnChange={setFormValue}
+            />
+            <FormInput
+              type="url"
+              labelName="Website"
+              name="contact_info.website"
+              placeholder="mywebsite.com"
+              value={careerProfile.contact_info.website}
+              handleOnChange={setFormValue}
+            />
           </div>
         </div>
         <div className={hideForm ? "hidden" : ""}>

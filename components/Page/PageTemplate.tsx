@@ -11,11 +11,11 @@ type Props = {
 const PageTemplate = ({ children, currentNavigationLink }: Props) => {
   const { loading: isPageLoading, error: isPageError } = usePageContext()
   return (
-    <div className="flex flex-col content-center justify-stretch z-10 max-w-5xl w-full p-6">
+    <div className="flex flex-col content-center justify-center flex-grow z-10 max-w-5xl w-full p-6">
       <PageHeading currentNavigationLink={currentNavigationLink} />
       <PageError error={isPageError} />
       <PageLoading loading={isPageLoading} />
-      <div className="flex flex-col text-sm">
+      <div className="flex flex-col text-sm justify-center h-full">
         {children}
       </div>
     </div>

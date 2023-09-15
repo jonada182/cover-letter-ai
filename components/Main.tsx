@@ -30,8 +30,8 @@ const Main = ({ children }: Props) => {
   const currentNavigationLink = navigationLinks.find((link) => link.path === pathname)
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <PageProvider>
+      <PageProvider>
+        <UserProvider>
           <main className="flex min-h-screen flex-col items-center justify-stretch">
             <header className="flex min-w-full flex-row items-center justify-between bg-pink-700">
               <PageLogo />
@@ -41,8 +41,8 @@ const Main = ({ children }: Props) => {
               {children}
             </PageTemplate>
           </main>
-        </PageProvider>
-      </UserProvider>
+        </UserProvider>
+      </PageProvider>
     </QueryClientProvider>
   )
 }

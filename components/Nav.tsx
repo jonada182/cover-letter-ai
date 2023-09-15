@@ -1,3 +1,4 @@
+import { useUserContext } from "@/app/contexts/UserContext"
 import { navigationLinks } from "@/constants"
 import { NavigationLink } from "@/types"
 import Link from "next/link"
@@ -8,6 +9,11 @@ type Props = {
 }
 
 const Nav = ({ currentNavigationLink }: Props) => {
+  const { isLoggedIn } = useUserContext()
+  if (!isLoggedIn) {
+    return null
+  }
+
   return (
     <nav className="flex-grow flex flex-row items-center justify-end">
       {navigationLinks.map((link: NavigationLink) => {

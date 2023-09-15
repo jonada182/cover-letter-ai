@@ -2,10 +2,14 @@ import { NavigationLink } from "@/types"
 import React from "react"
 
 type Props = {
-    currentNavigationLink: NavigationLink | undefined
+  currentNavigationLink: NavigationLink | undefined
 }
 
 const PageHeading = ({ currentNavigationLink }: Props) => {
+  if (currentNavigationLink?.isHidden) {
+    return null
+  }
+
   return (
     <div className="my-8">
       <h1 className="text-2xl text-blue-900">
