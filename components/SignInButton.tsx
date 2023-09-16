@@ -2,10 +2,6 @@ import React from "react"
 import Image from "next/image"
 import LinkedInBtn from "@/public/img/linkedin-btn.png"
 
-type Props = {
-
-}
-
 const handleOnClick = () => {
   const linkedInClientID = process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID
   const redirectURI = process.env.NEXT_PUBLIC_API_BASE_URL + "/linkedin/callback"
@@ -17,7 +13,7 @@ const handleOnClick = () => {
   window.location.href = oAuthURL
 }
 
-const SignInButton = (props: Props) => {
+const SignInButton = () => {
   return (
     <button onClick={handleOnClick} className="flex max-w-fit h-12 hover:opacity-80 transition-all">
       <Image className="flex-grow h-full w-fit" src={LinkedInBtn} alt="Sign in with LinkedIn" />
