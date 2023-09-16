@@ -39,8 +39,8 @@ export default function Page() {
     error: postCareerProfileError,
     mutate: postCareerProfile,
   } = usePostCareerProfile();
-  const careerProfileError = getCareerProfileError || postCareerProfileError
-  const careerProfileLoading = getCareerProfileLoading || postCareerProfileLoading
+  const careerProfileError = useMemo(() => getCareerProfileError || postCareerProfileError, [getCareerProfileError, postCareerProfileError])
+  const careerProfileLoading = useMemo(() => getCareerProfileLoading || postCareerProfileLoading, [getCareerProfileLoading, postCareerProfileLoading])
   const isUpdate = newCareerProfile || existingCareerProfile
 
   useEffect(() => {
@@ -52,16 +52,22 @@ export default function Page() {
           email: prev.contact_info.email,
         },
       }))
-    } else if (typeof existingCareerProfile !== "undefined" && !careerProfileError) {
-      console.log("here");
-      setCareerProfile(existingCareerProfile)
-    } else if (typeof newCareerProfile !== "undefined" && !careerProfileError) {
-      console.log("or here");
-      setCareerProfile(newCareerProfile)
     }
     setLoading(careerProfileLoading)
     setError(careerProfileError)
-  }, [existingCareerProfile, newCareerProfile, careerProfileError, careerProfileLoading]);
+  }, [careerProfileError, careerProfileLoading]);
+
+  useEffect(() => {
+    if (typeof existingCareerProfile !== "undefined") {
+      setCareerProfile(existingCareerProfile)
+    }
+  }, [existingCareerProfile]);
+
+  useEffect(() => {
+    if (typeof newCareerProfile !== "undefined") {
+      setCareerProfile(newCareerProfile)
+    }
+  }, [newCareerProfile]);
 
   const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value

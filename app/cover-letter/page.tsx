@@ -6,6 +6,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { usePageContext } from "../contexts/PageContext";
 import CoverLetter from "@/components/CoverLetter";
 import { useUserContext } from "../contexts/UserContext";
+import Link from "next/link";
 
 const initialJobPosting: JobPosting = {
   company_name: "",
@@ -18,13 +19,6 @@ export default function Page() {
   const [jobPostingForm, setJobPostingForm] = useState<JobPosting>(initialJobPosting);
   const { setError, setLoading } = usePageContext();
   const { profileId } = useUserContext();
-
-  const {
-    data: careerProfileData,
-    isSuccess: careerProfileSuccess,
-    isLoading: careerProfileLoading,
-    error: careerProfileError,
-  } = useGetCareerProfile({ profile_id: profileId, isEnabled: false });
   const {
     data: coverLetter,
     error: coverLetterError,
@@ -33,8 +27,8 @@ export default function Page() {
     reset: resetCoverLetter,
   } = usePostCoverLetter();
 
-  const isPageError = coverLetterError || careerProfileError
-  const isPageLoading = coverLetterLoading || careerProfileLoading
+  const isPageError = coverLetterError
+  const isPageLoading = coverLetterLoading
 
   useEffect(() => {
     setLoading(isPageLoading)
@@ -74,48 +68,50 @@ export default function Page() {
 
   return (
     <div>
+      <div className="p-4 mb-6 bg-blue-200 text-blue-900 text-sm rounded">Don`t forget to <Link className="font-bold hover:underline text-pink-700" href={"/career-profile"}>update your career profile</Link> for personalized cover letters</div>
       <Form handleOnSubmit={submitCoverLetterForm}>
-        {careerProfileData &&
-          <div className="mb-6">
-            <h3 className="text-xl mb-4">Hi, {careerProfileData?.first_name}</h3>
-            <p>Please fill in the information about the job you are applying for:</p>
+        <div className={!profileId ? "hidden" : ""}>
+          <div className="flex flex-grow w-full flex-col md:flex-row justify-items-stretch align-middle gap-6">
+            <div className="flex-grow">
+              <FormInput
+                type="text"
+                labelName="Company Name"
+                name="company_name"
+                placeholder="Eg. Acme Corporation"
+                value={jobPostingForm.company_name}
+                handleOnChange={setFormValue}
+                required={true}
+              />
+              <FormInput
+                type="text"
+                labelName="Job Role"
+                name="job_role"
+                placeholder="Eg. Manager"
+                value={jobPostingForm.job_role}
+                handleOnChange={setFormValue}
+                required={true}
+              />
+              <FormInput
+                type="text"
+                labelName="Skills"
+                name="skills"
+                placeholder="Eg. sales, accounting, etc."
+                value={jobPostingForm.skills}
+                handleOnChange={setFormValue}
+              />
+            </div>
+            <div className="flex-grow">
+              <FormTextarea
+                labelName="Job Details"
+                name="job_details"
+                placeholder="Paste the job listing details here."
+                value={jobPostingForm.job_details}
+                handleOnChange={setFormValue}
+                large={true}
+              />
+            </div>
           </div>
-        }
-        <div className={!careerProfileSuccess ? "hidden" : ""}>
-          <FormInput
-            type="text"
-            labelName="Company Name"
-            name="company_name"
-            placeholder="Eg. Acme Corporation"
-            value={jobPostingForm.company_name}
-            handleOnChange={setFormValue}
-            required={true}
-          />
-          <FormInput
-            type="text"
-            labelName="Job Role"
-            name="job_role"
-            placeholder="Eg. Manager"
-            value={jobPostingForm.job_role}
-            handleOnChange={setFormValue}
-            required={true}
-          />
-          <FormTextarea
-            labelName="Job Details"
-            name="job_details"
-            placeholder="Paste the job listing details here."
-            value={jobPostingForm.job_details}
-            handleOnChange={setFormValue}
-          />
-          <FormInput
-            type="text"
-            labelName="Skills"
-            name="skills"
-            placeholder="Eg. sales, accounting, etc."
-            value={jobPostingForm.skills}
-            handleOnChange={setFormValue}
-          />
-          <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!careerProfileSuccess} />
+          <FormButton type="submit" text="Generate Cover Letter" id="submit_cover_letter" disabled={!!!profileId} />
         </div>
       </Form>
     </div>

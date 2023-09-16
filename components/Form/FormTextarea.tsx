@@ -1,11 +1,12 @@
 import React from "react"
 
 type Props = {
-    name: string
-    labelName?: string | undefined
-    placeholder?: string | undefined
-    value: string | number | readonly string[] | undefined
-    handleOnChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  name: string
+  labelName?: string | undefined
+  placeholder?: string | undefined
+  value: string | number | readonly string[] | undefined
+  large?: boolean
+  handleOnChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const FormTextarea = (props: Props) => {
@@ -13,7 +14,7 @@ const FormTextarea = (props: Props) => {
     <div className="flex flex-col max-w-lg justify-stretch mb-4">
       {props.labelName && <label className="font-semibold" htmlFor={props.name}>{props.labelName}</label>}
       <textarea
-        className="flex-grow p-3 shadow-sm my-3 rounded h-36 max-h-36"
+        className={`flex-grow p-3 shadow-sm my-3 rounded ${props.large ? "h-64" : "h-36"} max-h-64`}
         name={props.name}
         id={props.name}
         placeholder={props?.placeholder}
