@@ -2,7 +2,7 @@
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useGetCareerProfile, usePostCoverLetter } from "@/hooks";
 import { JobPosting } from "@/types";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 import { usePageContext } from "../contexts/PageContext";
 import CoverLetter from "@/components/CoverLetter";
 import { useUserContext } from "../contexts/UserContext";
@@ -35,7 +35,7 @@ export default function Page() {
     setError(isPageError)
   }, [isPageError, isPageLoading]);
 
-  const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+  const setFormValue = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
     const name = event.target.name
     setJobPostingForm((prev) => {
@@ -44,7 +44,7 @@ export default function Page() {
         [name]: value,
       }
     })
-  }
+  }, [])
 
   const submitCoverLetterForm = (event: FormEvent) => {
     event.preventDefault();

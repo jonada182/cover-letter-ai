@@ -3,7 +3,7 @@ import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useGetCareerProfile } from "@/hooks"
 import { CareerProfile } from "@/types"
 import { isValidEmail } from "@/utils"
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react"
 import { usePageContext } from "../contexts/PageContext"
 import usePostCareerProfile from "@/hooks/usePostCareerProfile"
 import { useUserContext } from "../contexts/UserContext"
@@ -69,7 +69,7 @@ export default function Page() {
     }
   }, [newCareerProfile]);
 
-  const setFormValue = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+  const setFormValue = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
     const name = event.target.name
     setCareerProfile((prev) => {
@@ -88,7 +88,7 @@ export default function Page() {
         [name]: name === "skills" ? value.split(",") : value,
       }
     })
-  }
+  }, [])
 
   const submitCareerProfileForm = (event: FormEvent) => {
     event.preventDefault();

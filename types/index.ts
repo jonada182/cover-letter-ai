@@ -56,7 +56,7 @@ export type CoverLetterRequest = {
 }
 
 export type JobApplicationRequest = {
-  profile_id: UUID
+  profile_id: UUID | null
   job_application: JobApplication
 }
 
