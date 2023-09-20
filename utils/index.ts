@@ -3,6 +3,15 @@ export const isValidEmail = (email: string): boolean => {
   return regex.test(email)
 }
 
+export const isValidURL = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export const generateRandomString = (length: number) => {
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);

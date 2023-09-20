@@ -62,6 +62,7 @@ export type JobApplicationRequest = {
 
 export type JobApplication = {
   id?: string
+  profile_id?: UUID | null
   company_name: string
   job_role: string
   url?: string

@@ -1,9 +1,10 @@
 import { JobApplication, JobApplicationRequest } from "@/types";
 import { handleAxiosError } from "../api";
 import axios from "axios";
+import { isValidURL } from "@/utils";
 
 export type RequestProps = {
-  request: JobApplicationRequest
+  jobApplication: JobApplication
   access_token: string | null
 }
 
@@ -11,14 +12,20 @@ interface APIResponse {
     data: JobApplication
 }
 
-const postJobApplication = async ({ request, access_token }: RequestProps): Promise<JobApplication> => {
-  if (request.job_application.company_name === "" || request.job_application.job_role === "") {
-    throw new Error("required fields are missing")
-  }
+const postJobApplication = async ({ jobApplication, access_token }: RequestProps): Promise<JobApplication> => {
   try {
+    if (!jobApplication.profile_id) {
+      throw new Error("no profile ID provided")
+    }
+    if (jobApplication.company_name === "" || jobApplication.job_role === "") {
+      throw new Error("required fields are missing")
+    }
+    if (jobApplication.url && !isValidURL(jobApplication.url)) {
+      throw new Error("url is invalid")
+    }
     const response = await axios.post<APIResponse>(
-      `/job-applications/${request.profile_id}`,
-      request.job_application,
+      "/job-applications",
+      jobApplication,
       {
         headers: {
           Authorization: `Bearer ${access_token}`

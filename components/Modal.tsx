@@ -16,7 +16,7 @@ const Modal = (props: Props) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="modal-bg fixed inset-0 bg-black opacity-50"></div>
-      <div className="modal relative p-8 bg-white w-96 rounded shadow-lg gap-4 flex flex-col">
+      <div className="modal relative p-8 bg-white w-full mx-6 max-w-lg rounded shadow-lg gap-4 flex flex-col">
         <h2 className="text-xl font-semibold">{props.title}</h2>
         {props.children}
         <div className="flex items-center justify-end gap-4">

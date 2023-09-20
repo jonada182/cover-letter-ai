@@ -11,7 +11,7 @@ const PageHeading = ({ currentNavigationLink }: Props) => {
   }
 
   return (
-    <div className="my-8">
+    <div className="my-6">
       <h1 className="text-2xl text-blue-900">
         {currentNavigationLink?.name}
       </h1>

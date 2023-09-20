@@ -33,10 +33,8 @@ export const testCoverLetterRequest = {
 };
 export const testJobApplicationRequest = {
   profile_id: testProfileID,
-  job_application: {
-    company_name: "Acme",
-    job_role: "CEO"
-  }
+  company_name: "Acme",
+  job_role: "CEO"
 };
 export const testJobApplication = {
   id: "1",
