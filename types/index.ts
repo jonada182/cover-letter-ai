@@ -55,11 +55,6 @@ export type CoverLetterRequest = {
   job_posting: JobPosting
 }
 
-export type JobApplicationRequest = {
-  profile_id: UUID | null
-  job_application: JobApplication
-}
-
 export type JobApplication = {
   id?: string
   profile_id?: UUID | null

@@ -1,4 +1,4 @@
-import { JobApplication, JobApplicationRequest } from "@/types";
+import { JobApplication } from "@/types";
 import { handleAxiosError } from "../api";
 import axios from "axios";
 import { isValidURL } from "@/utils";
