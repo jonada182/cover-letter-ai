@@ -1,7 +1,7 @@
 import { useGetUser } from "@/hooks"
 import { HttpStatusCode } from "axios"
 import { UUID } from "crypto"
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react"
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 type Props = {
   children: React.ReactNode
@@ -61,6 +61,17 @@ export const UserProvider = ({ children }: Props) => {
       setProfileId(null)
     }
   }, [userError])
+
+  const contextValues = useMemo(() => ({
+    isLoggedIn,
+    profileId,
+    linkedInAccessToken,
+    isLoading: userIsLoading,
+    setIsLoggedIn,
+    setProfileId,
+    setLinkedInAccessToken,
+    signOut,
+  }), [isLoggedIn, profileId, linkedInAccessToken, userIsLoading])
 
   return (
     <UserContext.Provider value={{ isLoggedIn, profileId, linkedInAccessToken, isLoading: userIsLoading, setIsLoggedIn, setProfileId, setLinkedInAccessToken, signOut }}>

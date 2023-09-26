@@ -1,8 +1,8 @@
-import React, { FormEvent } from "react"
+import React, { FormEvent, memo } from "react"
 
 type Props = {
-    children: React.ReactNode,
-    handleOnSubmit: (event: FormEvent<HTMLFormElement>) => void
+  children: React.ReactNode,
+  handleOnSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
 const Form = ({ children, handleOnSubmit }: Props) => {
@@ -13,4 +13,4 @@ const Form = ({ children, handleOnSubmit }: Props) => {
   )
 }
 
-export default Form
+export default memo(Form)

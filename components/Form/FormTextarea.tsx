@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 
 type Props = {
   name: string
@@ -25,4 +25,4 @@ const FormTextarea = (props: Props) => {
   )
 }
 
-export default FormTextarea
+export default memo(FormTextarea)

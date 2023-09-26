@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute, InputHTMLAttributes } from "react"
+import React, { HTMLInputTypeAttribute, InputHTMLAttributes, memo } from "react"
 
 type Props = {
   type: HTMLInputTypeAttribute
@@ -35,4 +35,4 @@ const FormInput = (props: Props) => {
   )
 }
 
-export default FormInput
+export default memo(FormInput)
