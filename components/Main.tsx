@@ -1,9 +1,8 @@
 "use client"
 import { apiUrl, navigationLinks } from "@/constants"
 import { usePathname } from "next/navigation"
-import React from "react"
-import { PageHeader, PageLogo, PageTemplate } from "./Page"
-import Nav from "./Nav"
+import React, { Suspense } from "react"
+import { PageHeader, PageLoading, PageTemplate } from "./Page"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { PageProvider } from "@/app/contexts/PageContext"
 import { UserProvider } from "@/app/contexts/UserContext"
@@ -35,9 +34,11 @@ const Main = ({ children }: Props) => {
         <UserProvider>
           <main className="flex min-h-screen flex-col items-center justify-stretch">
             <PageHeader currentNavigationLink={currentNavigationLink} />
-            <PageTemplate currentNavigationLink={currentNavigationLink}>
-              {children}
-            </PageTemplate>
+            <Suspense fallback={<PageLoading loading={true} />}>
+              <PageTemplate currentNavigationLink={currentNavigationLink}>
+                {children}
+              </PageTemplate>
+            </Suspense>
           </main>
         </UserProvider>
       </PageProvider>

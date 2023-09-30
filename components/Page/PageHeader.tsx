@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { PageLogo } from "."
 import Nav from "../Nav"
 import { NavigationLink } from "@/types"
@@ -21,4 +21,4 @@ const PageHeader = (props: Props) => {
   )
 }
 
-export default PageHeader
+export default memo(PageHeader)

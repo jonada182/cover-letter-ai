@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import Button, { ButtonColour } from "./Button"
 
 type Props = {
@@ -32,4 +32,4 @@ const Modal = (props: Props) => {
   )
 }
 
-export default Modal
+export default memo(Modal)

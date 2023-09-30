@@ -1,23 +1,27 @@
 "use client"
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
+import Link from "next/link"
+import moment from "moment"
+import { UUID } from "crypto"
+import { PiLinkThin, PiTrashThin, PiPencilThin } from "react-icons/pi"
 import { useJobApplications } from "@/hooks"
 import { usePageContext } from "../contexts/PageContext"
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
 import Modal from "@/components/Modal"
 import { JobApplication } from "@/types"
 import { Form, FormButton, FormInput } from "@/components/Form"
 import { useUserContext } from "../contexts/UserContext"
-import Link from "next/link"
-import moment from "moment"
 import { PageError, PageLoading } from "@/components/Page"
-import { UUID } from "crypto"
+
+const initialJobApplication: JobApplication = {
+  company_name: "",
+  job_role: "",
+  url: ""
+}
 
 export default function Page() {
-  const initialJobApplication: JobApplication = {
-    company_name: "",
-    job_role: "",
-    url: ""
-  }
   const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false)
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false)
+  const [deleteId, setDeleteId] = useState<UUID | null>(null)
   const [jobApplicationForm, setJobApplicationForm] = useState<JobApplication>(initialJobApplication)
   const {
     data: jobApplications,
@@ -55,6 +59,8 @@ export default function Page() {
   useEffect(() => {
     if (deleteJobApplicationSuccess) {
       fetchJobApplications()
+      setDeleteModalIsOpen(false)
+      setDeleteId(null)
     }
   }, [deleteJobApplicationSuccess])
 
@@ -79,19 +85,26 @@ export default function Page() {
     })
   }
 
-  const handleDelete = (jobApplicationId: UUID | null | undefined) => {
-    if (jobApplicationId) {
+  const handleDelete = () => {
+    if (deleteId) {
       deleteJobApplication({
-        jobApplicationId: jobApplicationId,
+        jobApplicationId: deleteId,
         access_token: linkedInAccessToken
       })
+    }
+  }
+
+  const handleConfirmDelete = (jobApplicationId: UUID | null | undefined) => {
+    if (jobApplicationId) {
+      setDeleteId(jobApplicationId)
+      setDeleteModalIsOpen(true)
     }
   }
 
   return (
     <div>
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between mb-4">
-        <h2 className="text-lg font-bold p-4">Job Applications</h2>
+        <h2 className="text-lg font-bold">Job Applications</h2>
         <FormButton text="Add Job Application" onClick={() => setAddModalIsOpen(true)} />
       </div>
       <div>
@@ -110,9 +123,10 @@ export default function Page() {
               </div>
               <div className="text-xs capitalize">{jobApplication.company_name}</div>
             </div>
-            <div className="w-1/4 flex flex-col justify-center items-center p-4 gap-2">
-              {jobApplication.url && <Link className="font-bold text-pink-700" target="_blank" href={jobApplication.url}>View Listing</Link>}
-              <FormButton small={true} text="Delete" onClick={() => handleDelete(jobApplication.id)} />
+            <div className="w-1/5 flex justify-center items-center p-4 gap-2">
+              {jobApplication.url && <Link className="btn-icon" target="_blank" href={jobApplication.url}><PiLinkThin /></Link>}
+              <button className="btn-icon"><PiPencilThin /></button>
+              <button className="btn-icon" onClick={() => handleConfirmDelete(jobApplication.id)}><PiTrashThin /></button>
             </div>
           </div>
         ))}
@@ -148,6 +162,11 @@ export default function Page() {
             value={jobApplicationForm.url}
           />
         </Form>
+      </Modal>
+      <Modal title="Delete Job Application" isOpen={deleteModalIsOpen} onConfirm={handleDelete} onClose={() => setDeleteModalIsOpen(false)}>
+        {deleteJobApplicationError && <PageError error={deleteJobApplicationError} />}
+        {deleteJobApplicationIsLoading && <PageLoading loading={deleteJobApplicationIsLoading} />}
+        <p>Would you like to delete this job application?</p>
       </Modal>
     </div>
   )

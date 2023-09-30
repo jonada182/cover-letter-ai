@@ -27,3 +27,19 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: 20px;
+  color: #333;
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+}
+
+.btn-icon:hover {
+  background-color: #F2F2F2;
+}
