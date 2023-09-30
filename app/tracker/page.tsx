@@ -9,6 +9,7 @@ import { useUserContext } from "../contexts/UserContext"
 import Link from "next/link"
 import moment from "moment"
 import { PageError, PageLoading } from "@/components/Page"
+import { UUID } from "crypto"
 
 export default function Page() {
   const initialJobApplication: JobApplication = {
@@ -25,8 +26,12 @@ export default function Page() {
     postError: postJobApplicationError,
     postIsLoading: postJobApplicationIsLoading,
     postIsSuccess: postJobApplicationSuccess,
+    deleteError: deleteJobApplicationError,
+    deleteIsLoading: deleteJobApplicationIsLoading,
+    deleteIsSuccess: deleteJobApplicationSuccess,
     refetch: fetchJobApplications,
     mutate: postJobApplication,
+    deleteApplication: deleteJobApplication,
     reset: resetPostJobApplication,
   } = useJobApplications()
 
@@ -47,6 +52,12 @@ export default function Page() {
     }
   }, [postJobApplicationSuccess])
 
+  useEffect(() => {
+    if (deleteJobApplicationSuccess) {
+      fetchJobApplications()
+    }
+  }, [deleteJobApplicationSuccess])
+
   const setFormValue = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value
     const name = event.target.name
@@ -66,6 +77,15 @@ export default function Page() {
         ...jobApplicationForm,
       }, access_token: linkedInAccessToken
     })
+  }
+
+  const handleDelete = (jobApplicationId: UUID | null | undefined) => {
+    if (jobApplicationId) {
+      deleteJobApplication({
+        jobApplicationId: jobApplicationId,
+        access_token: linkedInAccessToken
+      })
+    }
   }
 
   return (
@@ -90,8 +110,9 @@ export default function Page() {
               </div>
               <div className="text-xs capitalize">{jobApplication.company_name}</div>
             </div>
-            <div className="w-1/4 flex justify-center align-center p-4">
+            <div className="w-1/4 flex flex-col justify-center items-center p-4 gap-2">
               {jobApplication.url && <Link className="font-bold text-pink-700" target="_blank" href={jobApplication.url}>View Listing</Link>}
+              <FormButton small={true} text="Delete" onClick={() => handleDelete(jobApplication.id)} />
             </div>
           </div>
         ))}

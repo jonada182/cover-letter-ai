@@ -4,7 +4,7 @@ import axios from "axios";
 import { UUID } from "crypto";
 
 export type RequestProps = {
-  jobApplicationId: UUID
+  jobApplicationId: UUID | null
   access_token: string | null
 }
 
