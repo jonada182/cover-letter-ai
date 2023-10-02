@@ -89,7 +89,8 @@ export default function Page() {
     if (deleteId) {
       deleteJobApplication({
         jobApplicationId: deleteId,
-        access_token: linkedInAccessToken
+        access_token: linkedInAccessToken,
+        profile_id: profileId,
       })
     }
   }

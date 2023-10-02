@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 export const testAccessToken = "some token";
 export const testEmail = "test@test.com";
 export const testProfileID = randomUUID();
+export const testJobApplicationID = randomUUID();
 export const testUser = {
   profile_id: testProfileID
 }

@@ -16,7 +16,8 @@ const getJobApplications = async ({ profile_id, access_token }: RequestProps): P
   try {
     const response = await axios.get<APIResponse>(`/job-applications/${profile_id}`, {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${access_token}`,
+        UserID: profile_id,
       }
     });
     return response?.data?.data;

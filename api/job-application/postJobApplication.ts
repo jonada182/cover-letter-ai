@@ -28,7 +28,8 @@ const postJobApplication = async ({ jobApplication, access_token }: RequestProps
       jobApplication,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${access_token}`,
+          UserID: jobApplication.profile_id,
         }
       }
     );

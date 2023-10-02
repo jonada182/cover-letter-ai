@@ -4,6 +4,10 @@ import { testAccessToken, testJobApplication, testJobApplicationRequest, testPro
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const headers = {
+  Authorization: `Bearer ${testAccessToken}`,
+  UserID: testProfileID,
+}
 
 describe("postJobApplication", () => {
   beforeEach(() => {
@@ -14,7 +18,7 @@ describe("postJobApplication", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
     const data = await postJobApplication({jobApplication: testJobApplicationRequest, access_token: testAccessToken})
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: { Authorization: `Bearer ${testAccessToken}`} })
+    expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: headers })
     expect(data).toBe(testJobApplication)
   })
   it("fails to post job application when missing fields", async () => {
@@ -33,6 +37,6 @@ describe("postJobApplication", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
     expect(postJobApplication({jobApplication: testJobApplicationRequest, access_token: testAccessToken})).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: { Authorization: `Bearer ${testAccessToken}`} })
+    expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: headers })
   })
 })

@@ -1,9 +1,13 @@
 import axios from "axios";
 import { postCareerProfile } from "."
-import { testAccessToken, testCareerProfile, testEmail } from "@/app/test-data";
+import { testAccessToken, testCareerProfile, testProfileID } from "@/app/test-data";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const headers = {
+  Authorization: `Bearer ${testAccessToken}`,
+  UserID: testProfileID,
+}
 
 describe("postCareerProfile", () => {
   beforeEach(() => {
@@ -14,7 +18,7 @@ describe("postCareerProfile", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
     const data = await postCareerProfile({careerProfile: testCareerProfile, access_token: testAccessToken})
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/career-profile", testCareerProfile, { headers: { Authorization: `Bearer ${testAccessToken}`}})
+    expect(mockedAxios.post).toHaveBeenCalledWith("/career-profile", testCareerProfile, { headers: headers})
     expect(data).toBe(testCareerProfile)
   })
   it("fails to create career profile when missing fields", async () => {
@@ -37,6 +41,6 @@ describe("postCareerProfile", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
     expect(postCareerProfile({careerProfile: testCareerProfile, access_token: testAccessToken})).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/career-profile", testCareerProfile, { headers: { Authorization: `Bearer ${testAccessToken}`}})
+    expect(mockedAxios.post).toHaveBeenCalledWith("/career-profile", testCareerProfile, { headers: headers})
   })
 })

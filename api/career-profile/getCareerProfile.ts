@@ -16,7 +16,8 @@ const getCareerProfile = async ({ profile_id, access_token }: RequestProps): Pro
   try {
     const response = await axios.get<APIResponse>(`/career-profile/${profile_id}`, {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${access_token}`,
+        UserID: profile_id,
       }
     });
     return response?.data?.data;

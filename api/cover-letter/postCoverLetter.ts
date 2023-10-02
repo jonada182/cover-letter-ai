@@ -22,7 +22,8 @@ const postCoverLetter = async ({ coverLetterRequest, access_token }: RequestProp
   try {
     const response = await axios.post<APIResponse>("/cover-letter", coverLetterRequest, {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${access_token}`,
+        UserID: coverLetterRequest.profile_id,
       }
     });
     return response?.data?.data;

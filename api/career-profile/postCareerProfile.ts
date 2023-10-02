@@ -25,7 +25,8 @@ const postCareerProfile = async ({careerProfile, access_token}: RequestProps): P
     }
     const response = await axios.post<APIResponse>("/career-profile", careerProfile, {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${access_token}`,
+        UserID: careerProfile.id,
       }
     });
     return response?.data?.data;

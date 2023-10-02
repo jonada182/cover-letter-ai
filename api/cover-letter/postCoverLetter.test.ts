@@ -4,6 +4,10 @@ import { testAccessToken, testCoverLetter, testCoverLetterRequest, testProfileID
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const headers = {
+  Authorization: `Bearer ${testAccessToken}`,
+  UserID: testProfileID,
+}
 
 describe("postCoverLetter", () => {
   beforeEach(() => {
@@ -14,7 +18,7 @@ describe("postCoverLetter", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
     const data = await postCoverLetter({coverLetterRequest: testCoverLetterRequest, access_token: testAccessToken})
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: { Authorization: `Bearer ${testAccessToken}`}})
+    expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: headers})
     expect(data).toBe(testCoverLetter)
   })
   it("fails to create cover letter when missing fields", async () => {
@@ -36,6 +40,6 @@ describe("postCoverLetter", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
     expect(postCoverLetter({coverLetterRequest: testCoverLetterRequest, access_token: testAccessToken})).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
-    expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: { Authorization: `Bearer ${testAccessToken}`}})
+    expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: headers})
   })
 })
