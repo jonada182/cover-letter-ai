@@ -1,9 +1,9 @@
-import { postCoverLetter } from "@/api/cover-letter"
-import { APIError, CoverLetterRequest } from "@/types"
+import postCoverLetter, { RequestProps } from "@/api/cover-letter/postCoverLetter";
+import { APIError } from "@/types"
 import { useMutation } from "react-query"
 
 const usePostCoverLetter = () => {
-  return useMutation<string, APIError, CoverLetterRequest>(postCoverLetter);
+  return useMutation<string, APIError, RequestProps>(postCoverLetter);
 }
 
 export default usePostCoverLetter

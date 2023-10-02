@@ -2,11 +2,16 @@ import { CoverLetterRequest } from "@/types";
 import { handleAxiosError } from "../api";
 import axios from "axios";
 
+export type RequestProps = {
+  coverLetterRequest: CoverLetterRequest
+  access_token: string | null
+}
+
 interface APIResponse {
     data: string
 }
 
-const postCoverLetter = async (coverLetterRequest: CoverLetterRequest): Promise<string> => {
+const postCoverLetter = async ({ coverLetterRequest, access_token }: RequestProps): Promise<string> => {
   if (
     coverLetterRequest.profile_id?.toString() === "" ||
         coverLetterRequest.job_posting.company_name === "" ||
@@ -15,7 +20,11 @@ const postCoverLetter = async (coverLetterRequest: CoverLetterRequest): Promise<
     throw new Error("required fields are missing")
   }
   try {
-    const response = await axios.post<APIResponse>("/cover-letter", coverLetterRequest);
+    const response = await axios.post<APIResponse>("/cover-letter", coverLetterRequest, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
     return response?.data?.data;
   } catch (error:any) {
     return handleAxiosError(error)

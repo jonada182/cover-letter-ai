@@ -18,7 +18,7 @@ const initialJobPosting: JobPosting = {
 export default function Page() {
   const [jobPostingForm, setJobPostingForm] = useState<JobPosting>(initialJobPosting);
   const { setError, setLoading } = usePageContext();
-  const { profileId } = useUserContext();
+  const { profileId, linkedInAccessToken } = useUserContext()
   const {
     data: coverLetter,
     error: coverLetterError,
@@ -49,8 +49,11 @@ export default function Page() {
   const submitCoverLetterForm = (event: FormEvent) => {
     event.preventDefault();
     submitCoverLetter({
-      profile_id: profileId,
-      job_posting: jobPostingForm,
+      coverLetterRequest: {
+        profile_id: profileId,
+        job_posting: jobPostingForm,
+      },
+      access_token: linkedInAccessToken
     });
   }
 

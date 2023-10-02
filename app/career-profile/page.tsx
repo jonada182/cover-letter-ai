@@ -24,8 +24,8 @@ const initialProfile: CareerProfile = {
 };
 
 export default function Page() {
-  const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile);
-  const { setError, setLoading } = usePageContext();
+  const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile)
+  const { setError, setLoading } = usePageContext()
   const { profileId, linkedInAccessToken } = useUserContext()
 
   const {
