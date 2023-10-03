@@ -7,6 +7,11 @@ export const navigationLinks: NavigationLink[] = [
     isHidden: true,
   },
   {
+    path: "/login",
+    name: "Login",
+    isHidden: true,
+  },
+  {
     path: "/cover-letter",
     name: "Cover Letter",
     description: "Generate professional cover letters by providing all the details about your next job opportunity",

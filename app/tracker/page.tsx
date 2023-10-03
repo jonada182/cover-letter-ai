@@ -5,13 +5,13 @@ import moment from "moment"
 import { UUID } from "crypto"
 import { PiLinkThin, PiTrashThin, PiPencilThin, PiCalendarPlusThin } from "react-icons/pi"
 import useJobApplications from "@/app/tracker/hooks/useJobApplications"
-import { usePageContext } from "@/contexts/PageContext"
-import Modal from "@/components/Modal"
 import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
-import { FormButton, FormInput, FormTextarea } from "@/components/Form"
+import { usePageContext } from "@/contexts/PageContext"
 import { useUserContext } from "@/contexts/UserContext"
 import { PageError, PageLoading } from "@/components/Page"
+import { FormButton, FormInput, FormTextarea } from "@/components/Form"
 import FormSelect from "@/components/Form/FormSelect"
+import Modal from "@/components/Modal"
 
 const initialJobApplication: JobApplication = {
   company_name: "",

@@ -1,6 +1,7 @@
 import { useGetUser } from "@/hooks"
 import { HttpStatusCode } from "axios"
 import { UUID } from "crypto"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 type Props = {
@@ -21,6 +22,9 @@ interface UserContextType {
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: Props) => {
+  const queryParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const [profileId, setProfileId] = useState<UUID | null>(null);
   const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -37,9 +41,16 @@ export const UserProvider = ({ children }: Props) => {
     const storedToken = sessionStorage.getItem("access_token")
     if (storedToken && storedToken !== "") {
       setLinkedInAccessToken(storedToken)
-      setIsLoggedIn(true)
     }
   }, [])
+
+  useEffect(() => {
+    const accessToken = queryParams.get("access_token")
+    if (accessToken && accessToken !== "") {
+      setLinkedInAccessToken(accessToken)
+      router.replace(pathname)
+    }
+  }, [pathname, queryParams, router, setLinkedInAccessToken])
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem("access_token")
@@ -52,6 +63,9 @@ export const UserProvider = ({ children }: Props) => {
     if (userData && userData.profile_id) {
       setProfileId(userData.profile_id)
       setIsLoggedIn(true)
+      console.log("Got it")
+    } else {
+      console.log("Didn't get it")
     }
   }, [userData])
 
@@ -61,6 +75,14 @@ export const UserProvider = ({ children }: Props) => {
       setProfileId(null)
     }
   }, [userError])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.back()
+    } else if (!userIsLoading) {
+      router.push("/login")
+    }
+  }, [isLoggedIn, router, userIsLoading])
 
   const contextValues = useMemo(() => ({
     isLoggedIn,
@@ -74,7 +96,7 @@ export const UserProvider = ({ children }: Props) => {
   }), [isLoggedIn, profileId, linkedInAccessToken, userIsLoading])
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, profileId, linkedInAccessToken, isLoading: userIsLoading, setIsLoggedIn, setProfileId, setLinkedInAccessToken, signOut }}>
+    <UserContext.Provider value={contextValues}>
       {children}
     </UserContext.Provider>
   );
