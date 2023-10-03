@@ -3,14 +3,15 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import moment from "moment"
 import { UUID } from "crypto"
-import { PiLinkThin, PiTrashThin, PiPencilThin } from "react-icons/pi"
+import { PiLinkThin, PiTrashThin, PiPencilThin, PiCalendarPlusThin } from "react-icons/pi"
 import { useJobApplications } from "@/hooks"
 import { usePageContext } from "../contexts/PageContext"
 import Modal from "@/components/Modal"
-import { JobApplication } from "@/types"
-import { Form, FormButton, FormInput } from "@/components/Form"
+import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
+import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
 import { useUserContext } from "../contexts/UserContext"
 import { PageError, PageLoading } from "@/components/Page"
+import FormSelect from "@/components/Form/FormSelect"
 
 const initialJobApplication: JobApplication = {
   company_name: "",
@@ -18,11 +19,21 @@ const initialJobApplication: JobApplication = {
   url: ""
 }
 
+const initialJobApplicationEvent: JobApplicationEvent = {
+  type: JobApplicationEventType.Submission,
+  description: "",
+  date: moment.now().toString(),
+  additional_notes: "",
+}
+
 export default function Page() {
   const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false)
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false)
+  const [eventModalIsOpen, setEventModalIsOpen] = useState<boolean>(false)
   const [deleteId, setDeleteId] = useState<UUID | null>(null)
+  const [eventJobApplicationId, setEventJobApplicationId] = useState<UUID | null>(null)
   const [jobApplicationForm, setJobApplicationForm] = useState<JobApplication>(initialJobApplication)
+  const [jobApplicationEventForm, setJobApplicationEventForm] = useState<JobApplicationEvent>(initialJobApplicationEvent)
   const {
     data: jobApplications,
     fetchError: jobApplicationsError,
@@ -37,6 +48,8 @@ export default function Page() {
     mutate: postJobApplication,
     deleteApplication: deleteJobApplication,
     reset: resetPostJobApplication,
+    addJobApplicationEvent,
+    deleteJobApplicationEvent,
   } = useJobApplications()
 
   const { profileId, linkedInAccessToken } = useUserContext()
@@ -53,6 +66,7 @@ export default function Page() {
       resetPostJobApplication()
       setJobApplicationForm(initialJobApplication)
       setAddModalIsOpen(false)
+      setEventModalIsOpen(false)
     }
   }, [postJobApplicationSuccess])
 
@@ -75,7 +89,18 @@ export default function Page() {
     })
   }, [])
 
-  const handleSubmitForm = async (event: FormEvent) => {
+  const setEventFormValue = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value
+    const name = event.target.name
+    setJobApplicationEventForm((prev) => {
+      return {
+        ...prev,
+        [name]: name == "type" ? parseInt(value) : value,
+      }
+    })
+  }, [])
+
+  const handleSubmitForm = (event: FormEvent) => {
     event.preventDefault()
     postJobApplication({
       jobApplication: {
@@ -102,6 +127,23 @@ export default function Page() {
     }
   }
 
+  const handleAddEvent = (jobApplicationId: UUID | null | undefined) => {
+    if (jobApplicationId) {
+      setEventJobApplicationId(jobApplicationId)
+      setEventModalIsOpen(true)
+    }
+  }
+
+  const handleEventSubmitForm = (event: FormEvent) => {
+    event.preventDefault()
+    addJobApplicationEvent({
+      jobApplicationId: eventJobApplicationId,
+      event: jobApplicationEventForm,
+    })
+    setJobApplicationEventForm(initialJobApplicationEvent)
+    setEventJobApplicationId(null)
+  }
+
   return (
     <div>
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between mb-4">
@@ -124,7 +166,8 @@ export default function Page() {
               </div>
               <div className="text-xs capitalize">{jobApplication.company_name}</div>
             </div>
-            <div className="w-1/5 flex justify-center items-center p-4 gap-2">
+            <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
+              <button className="btn-icon" onClick={() => handleAddEvent(jobApplication.id)}><PiCalendarPlusThin /></button>
               {jobApplication.url && <Link className="btn-icon" target="_blank" href={jobApplication.url}><PiLinkThin /></Link>}
               <button className="btn-icon"><PiPencilThin /></button>
               <button className="btn-icon" onClick={() => handleConfirmDelete(jobApplication.id)}><PiTrashThin /></button>
@@ -133,7 +176,7 @@ export default function Page() {
         ))}
       </div>
       <Modal title="Add Job Application" onClose={() => setAddModalIsOpen(false)} onConfirm={handleSubmitForm} isOpen={addModalIsOpen}>
-        <Form handleOnSubmit={handleSubmitForm}>
+        <div>
           {postJobApplicationError && <PageError error={postJobApplicationError} />}
           {postJobApplicationIsLoading && <PageLoading loading={postJobApplicationIsLoading} />}
           <FormInput
@@ -162,12 +205,44 @@ export default function Page() {
             handleOnChange={setFormValue}
             value={jobApplicationForm.url}
           />
-        </Form>
+        </div>
       </Modal>
+
       <Modal title="Delete Job Application" isOpen={deleteModalIsOpen} onConfirm={handleDelete} onClose={() => setDeleteModalIsOpen(false)}>
         {deleteJobApplicationError && <PageError error={deleteJobApplicationError} />}
         {deleteJobApplicationIsLoading && <PageLoading loading={deleteJobApplicationIsLoading} />}
         <p>Would you like to delete this job application?</p>
+      </Modal>
+
+      <Modal title="Add Job Application Event" isOpen={eventModalIsOpen} onConfirm={handleEventSubmitForm} onClose={() => setEventModalIsOpen(false)}>
+        <div>
+          {postJobApplicationError && <PageError error={postJobApplicationError} />}
+          {postJobApplicationIsLoading && <PageLoading loading={postJobApplicationIsLoading} />}
+          <FormSelect
+            name="type"
+            value={jobApplicationEventForm.type}
+            handleOnChange={setEventFormValue}
+            labelName="Event Type"
+            required={true}
+            options={jobApplicationEventTypes.map((type) => [type, JobApplicationEventType[type as any]])}
+          />
+          <FormInput
+            type="text"
+            name="description"
+            labelName="Description"
+            placeholder="Eg. Lorem ipsum"
+            required={true}
+            handleOnChange={setEventFormValue}
+            value={jobApplicationEventForm.description}
+          />
+          <FormTextarea
+            name="additional_notes"
+            labelName="Additional Notes"
+            placeholder="Eg. Lorem ipsum"
+            handleOnChange={setEventFormValue}
+            value={jobApplicationEventForm.additional_notes}
+          />
+        </div>
       </Modal>
     </div>
   )

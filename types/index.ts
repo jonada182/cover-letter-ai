@@ -67,14 +67,13 @@ export type JobApplication = {
 }
 
 export type JobApplicationEvent = {
-  job_application_id?: string
   type: JobApplicationEventType
   description: string
   date: string
   additional_notes?: string
 }
 
-enum JobApplicationEventType {
+export enum JobApplicationEventType {
   "Submission" = 0,
   "Interview" = 1,
   "Assessment" = 2,
@@ -82,3 +81,5 @@ enum JobApplicationEventType {
   "Completion" = 4,
   "Rejection" = 5,
 }
+
+export const jobApplicationEventTypes = Object.keys(JobApplicationEventType).filter((value: any) => isNaN(value));
