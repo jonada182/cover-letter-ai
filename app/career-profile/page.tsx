@@ -1,12 +1,12 @@
 "use client"
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
-import { useGetCareerProfile } from "@/hooks"
+import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile"
 import { CareerProfile } from "@/types"
 import { isValidEmail } from "@/utils"
 import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react"
-import { usePageContext } from "../contexts/PageContext"
-import usePostCareerProfile from "@/hooks/usePostCareerProfile"
-import { useUserContext } from "../contexts/UserContext"
+import { usePageContext } from "@/contexts/PageContext"
+import usePostCareerProfile from "@/app/career-profile/hooks/usePostCareerProfile"
+import { useUserContext } from "@/contexts/UserContext"
 
 const initialProfile: CareerProfile = {
   first_name: "",

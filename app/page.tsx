@@ -1,9 +1,9 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useUserContext } from "./contexts/UserContext";
-import { useGetCareerProfile } from "@/hooks";
-import { usePageContext } from "./contexts/PageContext";
+import { useUserContext } from "../contexts/UserContext";
+import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile";
+import { usePageContext } from "../contexts/PageContext";
 import Login from "@/components/Login";
 import { PageCardButton, PageHero } from "@/components/Page";
 

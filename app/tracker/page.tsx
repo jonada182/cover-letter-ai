@@ -4,12 +4,12 @@ import Link from "next/link"
 import moment from "moment"
 import { UUID } from "crypto"
 import { PiLinkThin, PiTrashThin, PiPencilThin, PiCalendarPlusThin } from "react-icons/pi"
-import { useJobApplications } from "@/hooks"
-import { usePageContext } from "../contexts/PageContext"
+import useJobApplications from "@/app/tracker/hooks/useJobApplications"
+import { usePageContext } from "@/contexts/PageContext"
 import Modal from "@/components/Modal"
 import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
-import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
-import { useUserContext } from "../contexts/UserContext"
+import { FormButton, FormInput, FormTextarea } from "@/components/Form"
+import { useUserContext } from "@/contexts/UserContext"
 import { PageError, PageLoading } from "@/components/Page"
 import FormSelect from "@/components/Form/FormSelect"
 
@@ -175,6 +175,7 @@ export default function Page() {
           </div>
         ))}
       </div>
+
       <Modal title="Add Job Application" onClose={() => setAddModalIsOpen(false)} onConfirm={handleSubmitForm} isOpen={addModalIsOpen}>
         <div>
           {postJobApplicationError && <PageError error={postJobApplicationError} />}

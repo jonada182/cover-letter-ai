@@ -1,5 +1,5 @@
-import { getCareerProfile } from "@/api/career-profile"
-import { useUserContext } from "@/app/contexts/UserContext"
+import { getCareerProfile } from "@/app/career-profile/api"
+import { useUserContext } from "@/contexts/UserContext"
 import { APIError, CareerProfile } from "@/types"
 import { UUID } from "crypto"
 import { useQuery } from "react-query"

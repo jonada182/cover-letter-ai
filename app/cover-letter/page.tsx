@@ -1,11 +1,11 @@
 "use client"
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
-import { useGetCareerProfile, usePostCoverLetter } from "@/hooks";
+import usePostCoverLetter from "@/app/cover-letter/hooks/usePostCoverLetter";
 import { JobPosting } from "@/types";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
-import { usePageContext } from "../contexts/PageContext";
-import CoverLetter from "@/components/CoverLetter";
-import { useUserContext } from "../contexts/UserContext";
+import { usePageContext } from "@/contexts/PageContext";
+import CoverLetter from "@/app/cover-letter/components/CoverLetter";
+import { useUserContext } from "@/contexts/UserContext";
 import Link from "next/link";
 
 const initialJobPosting: JobPosting = {

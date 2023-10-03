@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUser } from "."
-import { testAccessToken, testCareerProfile, testProfileID, testUser } from "@/app/test-data";
+import { testAccessToken, testCareerProfile, testProfileID, testUser } from "@/test-data";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 

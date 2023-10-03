@@ -1,5 +1,4 @@
-import { JobApplication } from "@/types";
-import { handleAxiosError } from "../api";
+import { handleAxiosError } from "@/api";
 import axios from "axios";
 import { UUID } from "crypto";
 

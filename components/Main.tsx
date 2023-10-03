@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation"
 import React, { Suspense } from "react"
 import { PageHeader, PageLoading, PageTemplate } from "./Page"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { PageProvider } from "@/app/contexts/PageContext"
-import { UserProvider } from "@/app/contexts/UserContext"
+import { PageProvider } from "@/contexts/PageContext"
+import { UserProvider } from "@/contexts/UserContext"
 import axios from "axios"
 
 axios.defaults.baseURL = apiUrl

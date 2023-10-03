@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { FormButton } from "./Form"
+import { FormButton } from "../../../components/Form"
 import { downloadPDF } from "@/utils/pdf"
 
 type Props = {
-    content?: string | undefined
-    filename?: string | ""
-    handleReset: () => void
+  content?: string | undefined
+  filename?: string | ""
+  handleReset: () => void
 }
 
 const CoverLetter = (props: Props) => {
@@ -38,8 +38,8 @@ const CoverLetter = (props: Props) => {
         value={coverLetterText}
       />
       <div className="flex flex-grow align-middle justify-end gap-6">
-        <FormButton text="New Cover Letter" onClick={props.handleReset}/>
-        <FormButton text="Download PDF" onClick={() => downloadPDF(coverLetterText, props.filename)}/>
+        <FormButton text="New Cover Letter" onClick={props.handleReset} />
+        <FormButton text="Download PDF" onClick={() => downloadPDF(coverLetterText, props.filename)} />
       </div>
     </div>
   )

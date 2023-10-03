@@ -1,4 +1,4 @@
-import { postCareerProfile } from "@/api/career-profile";
+import { postCareerProfile } from "@/app/career-profile/api";
 import { APIError, CareerProfile, CareerProfileRequest } from "@/types"
 import { useMutation } from "react-query"
 

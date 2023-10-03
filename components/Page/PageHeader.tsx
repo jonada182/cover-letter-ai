@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import { PageLogo } from "."
 import Nav from "../Nav"
 import { NavigationLink } from "@/types"
-import { useUserContext } from "@/app/contexts/UserContext"
+import { useUserContext } from "@/contexts/UserContext"
 
 type Props = {
   currentNavigationLink: NavigationLink | undefined

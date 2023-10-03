@@ -1,5 +1,5 @@
 import { CoverLetterRequest } from "@/types";
-import { handleAxiosError } from "../api";
+import { handleAxiosError } from "@/api";
 import axios from "axios";
 
 export type RequestProps = {

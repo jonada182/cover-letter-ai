@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleAxiosError } from "../api"
+import { handleAxiosError } from "@/api"
 import { User } from "@/types";
 
 type RequestProps = {

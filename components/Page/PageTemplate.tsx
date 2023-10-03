@@ -1,7 +1,7 @@
-import React from "react"
+import React, { memo } from "react"
 import { PageError, PageHeading, PageLoading } from "."
 import { NavigationLink } from "@/types"
-import { usePageContext } from "@/app/contexts/PageContext"
+import { usePageContext } from "@/contexts/PageContext"
 
 type Props = {
   children: React.ReactNode
@@ -22,4 +22,4 @@ const PageTemplate = ({ children, currentNavigationLink }: Props) => {
   )
 }
 
-export default PageTemplate
+export default memo(PageTemplate)
