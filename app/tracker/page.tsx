@@ -30,10 +30,13 @@ export default function Page() {
   const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false)
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false)
   const [eventModalIsOpen, setEventModalIsOpen] = useState<boolean>(false)
+
   const [deleteId, setDeleteId] = useState<UUID | null>(null)
   const [eventJobApplicationId, setEventJobApplicationId] = useState<UUID | null>(null)
+
   const [jobApplicationForm, setJobApplicationForm] = useState<JobApplication>(initialJobApplication)
   const [jobApplicationEventForm, setJobApplicationEventForm] = useState<JobApplicationEvent>(initialJobApplicationEvent)
+
   const {
     data: jobApplications,
     fetchError: jobApplicationsError,
@@ -153,24 +156,38 @@ export default function Page() {
       <div>
         {!jobApplications && <div className="p-4 text-center text-gray-400">You haven`t added any job applications yet</div>}
         {jobApplications?.map((jobApplication) => (
-          <div key={jobApplication.id} className="flex items-center justify-stretch bg-white border-t border-gray-200 first:border-0">
-            <div className="flex-grow border-r border-gray-200 p-4">
-              <div className="flex justify-between items-center">
-                <div className="text-base font-bold text-blue-900 capitalize">{jobApplication.job_role}</div>
-                <div
-                  className="text-xs text-gray-400"
-                  title={moment(jobApplication.updated_at).format("MMM D, YYYY hh:mm a")}
-                >
-                  {moment(jobApplication.updated_at).fromNow()}
+          <div key={jobApplication.id} className="flex flex-col bg-white border-t border-gray-200 first:border-0">
+            <div className="flex items-center justify-stretch">
+              <div className="flex-grow border-r border-gray-200 p-4">
+                <div className="flex justify-between items-center">
+                  <div className="text-base font-bold text-blue-900 capitalize">{jobApplication.job_role}</div>
+                  <div
+                    className="text-xs text-gray-400"
+                    title={moment(jobApplication.updated_at).format("MMM D, YYYY hh:mm a")}
+                  >
+                    {moment(jobApplication.updated_at).fromNow()}
+                  </div>
                 </div>
+                <div className="text-xs capitalize">{jobApplication.company_name}</div>
               </div>
-              <div className="text-xs capitalize">{jobApplication.company_name}</div>
+              <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
+                <button className="btn-icon" onClick={() => handleAddEvent(jobApplication.id)}><PiCalendarPlusThin /></button>
+                {jobApplication.url && <Link className="btn-icon" target="_blank" href={jobApplication.url}><PiLinkThin /></Link>}
+                <button className="btn-icon"><PiPencilThin /></button>
+                <button className="btn-icon" onClick={() => handleConfirmDelete(jobApplication.id)}><PiTrashThin /></button>
+              </div>
             </div>
-            <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
-              <button className="btn-icon" onClick={() => handleAddEvent(jobApplication.id)}><PiCalendarPlusThin /></button>
-              {jobApplication.url && <Link className="btn-icon" target="_blank" href={jobApplication.url}><PiLinkThin /></Link>}
-              <button className="btn-icon"><PiPencilThin /></button>
-              <button className="btn-icon" onClick={() => handleConfirmDelete(jobApplication.id)}><PiTrashThin /></button>
+            <div>
+              {jobApplication.events?.map((event, index) => {
+                return (
+                  <div className="flex gap-2 p-4 justify-between items-center border-t" key={index}>
+                    <div className="p-2 bg-blue-200 rounded text-xs uppercase">{JobApplicationEventType[event.type]}</div>
+                    <div>{event.description}</div>
+                    <div>{moment.utc(event.date).local().format("MMM DD, YYYY, HH:mm a")}</div>
+                    <div className="hidden">{event.additional_notes}</div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         ))}

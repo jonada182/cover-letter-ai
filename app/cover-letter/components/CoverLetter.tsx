@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { FormButton } from "../../../components/Form"
+import { FormButton } from "@/components/Form"
 import { downloadPDF } from "@/utils/pdf"
 
 type Props = {

@@ -18,7 +18,7 @@ const PageTemplate = ({ children, currentNavigationLink }: Props) => {
   }
 
   return (
-    <div className="flex flex-col content-center justify-center flex-grow z-10 max-w-5xl w-full p-6">
+    <div className="flex flex-col content-center justify-stretch flex-grow z-10 max-w-5xl w-full p-6">
       <PageHeading currentNavigationLink={currentNavigationLink} />
       <PageError error={isPageError} />
       <PageLoading loading={isPageLoading} />
