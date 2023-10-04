@@ -1,19 +1,15 @@
 "use client"
-import Login from "@/components/Login";
-import { useUserContext } from "@/contexts/UserContext";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { usePageContext } from "@/contexts/PageContext";
+import Login from "@/components/Login";
 
 export default function Page() {
-  const { isLoggedIn } = useUserContext()
-  const router = useRouter()
+  const { setCenterPage, setBackgroundImage } = usePageContext()
 
   useEffect(() => {
-    if (isLoggedIn) {
-      console.log("here")
-      router.back()
-    }
-  }, [router, isLoggedIn])
+    setCenterPage(true)
+    setBackgroundImage(true)
+  }, [setBackgroundImage, setCenterPage])
 
   return <Login />
 }

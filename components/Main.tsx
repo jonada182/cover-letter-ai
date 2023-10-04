@@ -1,12 +1,12 @@
 "use client"
-import { apiUrl, navigationLinks } from "@/constants"
-import { usePathname } from "next/navigation"
 import React, { Suspense } from "react"
-import { PageHeader, PageLoading, PageTemplate } from "./Page"
+import { usePathname } from "next/navigation"
 import { QueryClient, QueryClientProvider } from "react-query"
+import axios from "axios"
+import { apiUrl, navigationLinks } from "@/constants"
+import { PageHeader, PageLoading, PageTemplate } from "./Page"
 import { PageProvider } from "@/contexts/PageContext"
 import { UserProvider } from "@/contexts/UserContext"
-import axios from "axios"
 
 axios.defaults.baseURL = apiUrl
 
@@ -20,7 +20,6 @@ const queryClient = new QueryClient({
       retry: false,
       retryOnMount: false,
       refetchOnWindowFocus: false,
-      cacheTime: 300
     }
   }
 })

@@ -1,22 +1,27 @@
-import { getJobApplications } from "@/app/tracker/api"
-import postJobApplication, { RequestProps } from "@/app/tracker/api/postJobApplication"
-import deleteJobApplication, { APIResponse as deleteAPIResponse, RequestProps as deleteRequestProps } from "@/app/tracker/api/deleteJobApplication"
-import { useUserContext } from "@/contexts/UserContext"
-import { APIError, JobApplication, JobApplicationEvent } from "@/types"
-import { useMutation, useQuery } from "react-query"
-import { UUID } from "crypto"
+import { getJobApplications } from "@/app/tracker/api";
+import postJobApplication, {
+  RequestProps,
+} from "@/app/tracker/api/postJobApplication";
+import deleteJobApplication, {
+  APIResponse as deleteAPIResponse,
+  RequestProps as deleteRequestProps,
+} from "@/app/tracker/api/deleteJobApplication";
+import { useUserContext } from "@/contexts/UserContext";
+import { APIError, JobApplication, JobApplicationEvent } from "@/types";
+import { useMutation, useQuery } from "react-query";
+import { UUID } from "crypto";
 
 type Props = {
-    isEnabled?: boolean
-}
+  isEnabled?: boolean;
+};
 
 type AddEventProps = {
-  jobApplicationId: UUID | null
-  event: JobApplicationEvent
-}
+  jobApplicationId: UUID | null;
+  event: JobApplicationEvent;
+};
 
 const useJobApplications = (props?: Props) => {
-  const { linkedInAccessToken, profileId } = useUserContext()
+  const { linkedInAccessToken, profileId } = useUserContext();
   const {
     refetch,
     data,
@@ -24,9 +29,13 @@ const useJobApplications = (props?: Props) => {
     error: fetchError,
   } = useQuery<JobApplication[], APIError>({
     queryKey: ["job_applications", profileId],
-    queryFn: () => getJobApplications({ profile_id: profileId, access_token: linkedInAccessToken}),
+    queryFn: () =>
+      getJobApplications({
+        profile_id: profileId,
+        access_token: linkedInAccessToken,
+      }),
     enabled: !!profileId && !!!props?.isEnabled,
-  })
+  });
 
   const {
     mutate,
@@ -49,9 +58,12 @@ const useJobApplications = (props?: Props) => {
     mutationKey: ["job_applications", profileId],
   });
 
-  const addJobApplicationEvent = ({jobApplicationId, event}: AddEventProps) => {
+  const addJobApplicationEvent = ({
+    jobApplicationId,
+    event,
+  }: AddEventProps) => {
     let jobApplication = data?.find((jobApplication) => {
-      return jobApplication.id === jobApplicationId
+      return jobApplication.id === jobApplicationId;
     });
 
     if (jobApplication) {
@@ -62,30 +74,33 @@ const useJobApplications = (props?: Props) => {
         access_token: linkedInAccessToken,
         jobApplication: {
           ...jobApplication,
-          events: events
-        }
+          events: events,
+        },
       });
     }
-  }
+  };
 
-  const deleteJobApplicationEvent = (jobApplicationId: UUID | null, eventIndex: number) => {
+  const deleteJobApplicationEvent = (
+    jobApplicationId: UUID | undefined | null,
+    eventIndex: number
+  ) => {
     let jobApplication = data?.find((jobApplication) => {
-      return jobApplication.id === jobApplicationId
+      return jobApplication.id === jobApplicationId;
     });
 
     if (jobApplication) {
       reset();
-      let events = jobApplication.events
-      events?.splice(eventIndex)
+      let events = jobApplication.events;
+      events?.splice(eventIndex);
       mutate({
         access_token: linkedInAccessToken,
         jobApplication: {
           ...jobApplication,
-          events: events
-        }
+          events: events,
+        },
       });
     }
-  }
+  };
 
   return {
     refetch,
@@ -103,7 +118,7 @@ const useJobApplications = (props?: Props) => {
     deleteError,
     deleteIsLoading,
     deleteIsSuccess,
-  }
-}
+  };
+};
 
-export default useJobApplications
+export default useJobApplications;

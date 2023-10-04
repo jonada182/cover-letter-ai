@@ -3,7 +3,7 @@ import Button, { ButtonColour } from "./Button"
 
 type Props = {
   onClose: () => void
-  onConfirm: (event: React.MouseEvent | React.FormEvent) => void
+  onConfirm?: (event: React.MouseEvent | React.FormEvent) => void
   isOpen: boolean
   children: React.ReactNode
   title: string
@@ -23,9 +23,11 @@ const Modal = (props: Props) => {
           <Button onClick={props.onClose} colour={ButtonColour.Red}>
             Close
           </Button>
-          <Button onClick={props.onConfirm} colour={ButtonColour.Green}>
-            Confirm
-          </Button>
+          {props.onConfirm && (
+            <Button onClick={props.onConfirm} colour={ButtonColour.Green}>
+              Confirm
+            </Button>
+          )}
         </div>
       </div>
     </div>

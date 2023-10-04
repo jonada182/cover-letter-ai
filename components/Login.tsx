@@ -7,9 +7,9 @@ const Login = () => {
   return (
     <div className="flex w-full justify-center">
       <div className="flex flex-col max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="flex w-full h-36 relative bg-blue-900">
-          <div className="flex gap-2 justify-center flex-col z-20 relative p-12 text-white">
-            <Image className="p-6 max-w-min self-center" src={Logo} alt="CoverLetterAI" />
+        <div className="flex w-full h-44 relative bg-blue-900">
+          <div className="flex gap-2 justify-center content-center flex-col z-20 relative p-12 text-white">
+            <Image className="p-6 max-w-xs self-center" src={Logo} alt="CoverLetterAI" />
             <p className="opacity-60 text-xs">CoverLetterAI crafts compelling and personalized cover letters in minutes</p>
           </div>
         </div>

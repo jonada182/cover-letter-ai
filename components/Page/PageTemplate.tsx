@@ -1,8 +1,10 @@
 import React, { memo } from "react"
+import Image from "next/image"
 import { PageError, PageHeading, PageLoading } from "."
 import { NavigationLink } from "@/types"
 import { usePageContext } from "@/contexts/PageContext"
 import { useUserContext } from "@/contexts/UserContext"
+import Background from "@/public/img/background.jpg"
 
 type Props = {
   children: React.ReactNode
@@ -10,22 +12,25 @@ type Props = {
 }
 
 const PageTemplate = ({ children, currentNavigationLink }: Props) => {
-  const { loading: isPageLoading, error: isPageError } = usePageContext()
+  const { loading: isPageLoading, error: isPageError, centerPage, backgroundImage } = usePageContext()
   const { isLoggedIn } = useUserContext()
 
-  if (!isLoggedIn && currentNavigationLink?.path !== "/login") {
-    return null
-  }
-
   return (
-    <div className="flex flex-col content-center justify-stretch flex-grow z-10 max-w-5xl w-full p-6">
-      <PageHeading currentNavigationLink={currentNavigationLink} />
-      <PageError error={isPageError} />
-      <PageLoading loading={isPageLoading} />
-      <div className="flex flex-col text-sm justify-center h-full">
-        {children}
+    <>
+      <div className={`flex flex-col content-center ${ centerPage ? "justify-center" : "justify-stretch"} flex-grow z-10 max-w-5xl w-full p-6`}>
+        <PageError error={isPageError} />
+        <PageLoading loading={isPageLoading} />
+        { isLoggedIn && currentNavigationLink?.path !== "/login" && (
+          <>
+            <PageHeading currentNavigationLink={currentNavigationLink} />
+            <div className="flex flex-col text-sm justify-center h-full">
+              {children}
+            </div>
+          </>
+        )}
       </div>
-    </div>
+      { backgroundImage && <Image src={Background} alt="" className="object-cover -z-0 object-center" fill={true} />}
+    </>
   )
 }
 

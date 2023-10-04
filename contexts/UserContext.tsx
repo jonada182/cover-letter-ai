@@ -1,21 +1,21 @@
-import { useGetUser } from "@/hooks"
-import { HttpStatusCode } from "axios"
-import { UUID } from "crypto"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { HttpStatusCode } from "axios"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { UUID } from "crypto"
+import { useGetUser } from "@/hooks"
+import { usePageContext } from "./PageContext"
 
 type Props = {
   children: React.ReactNode
 }
 
 interface UserContextType {
+  isLoggedIn: boolean
   profileId: UUID | null
   linkedInAccessToken: string | null
-  isLoggedIn: boolean
-  isLoading: boolean
+  setIsLoggedIn: (isLoggedIn: boolean) => void
   setProfileId: (profileId: UUID | null) => void
   setLinkedInAccessToken: (token: string) => void
-  setIsLoggedIn: (isLoggedIn: boolean) => void
   signOut: () => void
 }
 
@@ -25,18 +25,24 @@ export const UserProvider = ({ children }: Props) => {
   const queryParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [profileId, setProfileId] = useState<UUID | null>(null);
   const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { data: userData, error: userError, isLoading: userIsLoading } = useGetUser({ access_token: linkedInAccessToken })
+  const { setLoading: setPageLoading } = usePageContext()
 
+  /**
+   * removes access token from session storage, clears the login state and redirects to login page
+   */
   const signOut = useCallback(() => {
     sessionStorage.removeItem("access_token")
     setLinkedInAccessToken(null)
     setProfileId(null)
     setIsLoggedIn(false)
-  }, [])
+    router.replace("/login")
+  }, [router])
 
+  // Set linked access token from session storage
   useEffect(() => {
     const storedToken = sessionStorage.getItem("access_token")
     if (storedToken && storedToken !== "") {
@@ -44,56 +50,50 @@ export const UserProvider = ({ children }: Props) => {
     }
   }, [])
 
+  /**
+   *  Get access_token query param from callback redirect
+   *  Save access_token in session storage and clear the query param
+   */
   useEffect(() => {
     const accessToken = queryParams.get("access_token")
     if (accessToken && accessToken !== "") {
+      sessionStorage.setItem("access_token", accessToken)
       setLinkedInAccessToken(accessToken)
       router.replace(pathname)
     }
   }, [pathname, queryParams, router, setLinkedInAccessToken])
 
-  useEffect(() => {
-    const storedToken = sessionStorage.getItem("access_token")
-    if (linkedInAccessToken && linkedInAccessToken !== storedToken) {
-      sessionStorage.setItem("access_token", linkedInAccessToken)
-    }
-  }, [linkedInAccessToken])
-
+  /**
+   * If user data is returned from API, set login state and profileId
+   * Redirect to home page after login page
+   */
   useEffect(() => {
     if (userData && userData.profile_id) {
       setProfileId(userData.profile_id)
       setIsLoggedIn(true)
-      console.log("Got it")
-    } else {
-      console.log("Didn't get it")
+      if (pathname == "/login") {
+        router.replace("/")
+      }
     }
-  }, [userData])
+  }, [userData, router, pathname, userIsLoading])
 
+  // If user data request is unathorized, we sign out
   useEffect(() => {
     if (userError && userError?.status == HttpStatusCode.Unauthorized) {
-      setIsLoggedIn(false)
-      setProfileId(null)
+      signOut()
     }
-  }, [userError])
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      router.back()
-    } else if (!userIsLoading) {
-      router.push("/login")
-    }
-  }, [isLoggedIn, router, userIsLoading])
+    setPageLoading(userIsLoading)
+  }, [setPageLoading, userError, userIsLoading])
 
   const contextValues = useMemo(() => ({
     isLoggedIn,
     profileId,
     linkedInAccessToken,
-    isLoading: userIsLoading,
     setIsLoggedIn,
     setProfileId,
     setLinkedInAccessToken,
     signOut,
-  }), [isLoggedIn, profileId, linkedInAccessToken, userIsLoading])
+  }), [isLoggedIn, profileId, linkedInAccessToken])
 
   return (
     <UserContext.Provider value={contextValues}>

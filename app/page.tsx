@@ -11,9 +11,14 @@ export default function Page() {
     isLoading: userIsLoading,
     signOut
   } = useUserContext()
-  const { setLoading, setError } = usePageContext()
+  const { setLoading, setError, setCenterPage, setBackgroundImage } = usePageContext()
   const { data: careerProfile, isLoading: careerProfileIsLoading, error: careerProfileError } = useGetCareerProfile({ profile_id: profileId, isEnabled: false })
   const isLoading = userIsLoading || careerProfileIsLoading
+
+  useEffect(() => {
+    setCenterPage(true)
+    setBackgroundImage(false)
+  }, [setBackgroundImage, setCenterPage])
 
   useEffect(() => {
     setLoading(isLoading)
