@@ -8,12 +8,10 @@ import { PageCardButton, PageHero } from "@/components/Page";
 export default function Page() {
   const {
     profileId,
-    isLoading: userIsLoading,
     signOut
   } = useUserContext()
   const { setLoading, setError, setCenterPage, setBackgroundImage } = usePageContext()
   const { data: careerProfile, isLoading: careerProfileIsLoading, error: careerProfileError } = useGetCareerProfile({ profile_id: profileId, isEnabled: false })
-  const isLoading = userIsLoading || careerProfileIsLoading
 
   useEffect(() => {
     setCenterPage(true)
@@ -21,12 +19,12 @@ export default function Page() {
   }, [setBackgroundImage, setCenterPage])
 
   useEffect(() => {
-    setLoading(isLoading)
-  }, [isLoading])
+    setLoading(careerProfileIsLoading)
+  }, [careerProfileIsLoading, setLoading])
 
   useEffect(() => {
     setError(careerProfileError)
-  }, [careerProfileError])
+  }, [careerProfileError, setError])
 
   return (
     <div className="flex flex-col gap-6">
