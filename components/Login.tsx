@@ -5,7 +5,7 @@ import Logo from "@/public/img/logo.png";
 
 const Login = () => {
   return (
-    <div className="flex flex-col max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="flex flex-col max-w-md bg-white rounded-xl shadow-lg overflow-hidden animate__animated animate__bounce">
       <div className="flex w-full h-44 relative bg-blue-900">
         <div className="flex gap-2 justify-center content-center flex-col z-20 relative p-12 text-white">
           <Image

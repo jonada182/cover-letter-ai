@@ -1,12 +1,18 @@
-"use client"
-import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react"
-import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile"
-import usePostCareerProfile from "@/app/career-profile/hooks/usePostCareerProfile"
-import { usePageContext } from "@/contexts/PageContext"
-import { useUserContext } from "@/contexts/UserContext"
-import { CareerProfile } from "@/types"
-import { isValidEmail } from "@/utils"
-import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form"
+"use client";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile";
+import usePostCareerProfile from "@/app/career-profile/hooks/usePostCareerProfile";
+import { usePageContext } from "@/contexts/PageContext";
+import { useUserContext } from "@/contexts/UserContext";
+import { CareerProfile } from "@/types";
+import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
 
 const initialProfile: CareerProfile = {
   first_name: "",
@@ -24,14 +30,15 @@ const initialProfile: CareerProfile = {
 };
 
 export default function Page() {
-  const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile)
-  const { setError, setLoading } = usePageContext()
-  const { linkedInAccessToken } = useUserContext()
+  const [careerProfile, setCareerProfile] =
+    useState<CareerProfile>(initialProfile);
+  const { setError, setLoading } = usePageContext();
+  const { linkedInAccessToken } = useUserContext();
 
   const {
     data: existingCareerProfile,
     isLoading: getCareerProfileLoading,
-    error: getCareerProfileError
+    error: getCareerProfileError,
   } = useGetCareerProfile();
   const {
     data: newCareerProfile,
@@ -39,9 +46,15 @@ export default function Page() {
     error: postCareerProfileError,
     mutate: postCareerProfile,
   } = usePostCareerProfile();
-  const careerProfileError = useMemo(() => getCareerProfileError || postCareerProfileError, [getCareerProfileError, postCareerProfileError])
-  const careerProfileLoading = useMemo(() => getCareerProfileLoading || postCareerProfileLoading, [getCareerProfileLoading, postCareerProfileLoading])
-  const isUpdate = newCareerProfile || existingCareerProfile
+  const careerProfileError = useMemo(
+    () => getCareerProfileError || postCareerProfileError,
+    [getCareerProfileError, postCareerProfileError]
+  );
+  const careerProfileLoading = useMemo(
+    () => getCareerProfileLoading || postCareerProfileLoading,
+    [getCareerProfileLoading, postCareerProfileLoading]
+  );
+  const isUpdate = newCareerProfile || existingCareerProfile;
 
   useEffect(() => {
     if (careerProfileError || careerProfileLoading) {
@@ -51,51 +64,57 @@ export default function Page() {
           ...initialProfile.contact_info,
           email: prev.contact_info.email,
         },
-      }))
+      }));
     }
-    setLoading(careerProfileLoading)
-    setError(careerProfileError)
+    setLoading(careerProfileLoading);
+    setError(careerProfileError);
   }, [careerProfileError, careerProfileLoading]);
 
   useEffect(() => {
     if (typeof existingCareerProfile !== "undefined") {
-      setCareerProfile(existingCareerProfile)
+      setCareerProfile(existingCareerProfile);
     }
   }, [existingCareerProfile]);
 
   useEffect(() => {
     if (typeof newCareerProfile !== "undefined") {
-      setCareerProfile(newCareerProfile)
+      setCareerProfile(newCareerProfile);
     }
   }, [newCareerProfile]);
 
-  const setFormValue = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value
-    const name = event.target.name
-    setCareerProfile((prev) => {
-      if (name.startsWith("contact_info.")) {
-        const contactInfoProperty = name.split(".")[1];
+  const setFormValue = useCallback(
+    (
+      event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+    ) => {
+      const value = event.target.value;
+      const name = event.target.name;
+      setCareerProfile((prev) => {
+        if (name.startsWith("contact_info.")) {
+          const contactInfoProperty = name.split(".")[1];
+          return {
+            ...prev,
+            contact_info: {
+              ...prev.contact_info,
+              [contactInfoProperty]: value,
+            },
+          };
+        }
         return {
           ...prev,
-          contact_info: {
-            ...prev.contact_info,
-            [contactInfoProperty]: value,
-          },
-        }
-      }
-      return {
-        ...prev,
-        [name]: name === "skills" ? value.split(",") : value,
-      }
-    })
-  }, [])
+          [name]: name === "skills" ? value.split(",") : value,
+        };
+      });
+    },
+    []
+  );
 
   const submitCareerProfileForm = (event: FormEvent) => {
     event.preventDefault();
-    postCareerProfile({ careerProfile: careerProfile, access_token: linkedInAccessToken });
-  }
-
-  const hideForm = !isValidEmail(careerProfile.contact_info.email);
+    postCareerProfile({
+      careerProfile: careerProfile,
+      access_token: linkedInAccessToken,
+    });
+  };
 
   return (
     <div>
@@ -154,7 +173,9 @@ export default function Page() {
             />
           </div>
           <div className="flex-grow">
-            <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">Contact Info</h4>
+            <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">
+              Contact Info
+            </h4>
             <FormInput
               type="email"
               labelName="Email"
@@ -190,10 +211,12 @@ export default function Page() {
             />
           </div>
         </div>
-        <div className={hideForm ? "hidden" : ""}>
-          <FormButton type="submit" text={`${isUpdate ? "Update" : "Create"} Career profile`} id="submit_career_profile" />
-        </div>
+        <FormButton
+          type="submit"
+          text={`${isUpdate ? "Update" : "Create"} Career profile`}
+          id="submit_career_profile"
+        />
       </Form>
     </div>
-  )
+  );
 }

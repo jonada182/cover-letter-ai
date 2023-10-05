@@ -38,9 +38,9 @@ const PageTemplate = ({ children }: Props) => {
             "flex flex-col content-center justify-stretch flex-grow z-10 max-w-5xl w-full p-6 transition-all"
           }
         >
+          <PageHeading currentNavigationLink={currentNavigationLink} />
           <PageError error={isPageError} />
           <PageLoading loading={isPageLoading} />
-          <PageHeading currentNavigationLink={currentNavigationLink} />
           {children}
         </div>
         {currentNavigationLink?.path == "/login" && (

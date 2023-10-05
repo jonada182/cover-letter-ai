@@ -6,16 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import Link from "next/link";
-import moment from "moment";
 import { UUID } from "crypto";
-import {
-  PiLinkThin,
-  PiTrashThin,
-  PiPencilThin,
-  PiCalendarPlusThin,
-  PiNoteThin,
-} from "react-icons/pi";
 import useJobApplications from "@/app/tracker/hooks/useJobApplications";
 import {
   JobApplication,
@@ -25,12 +16,12 @@ import {
 } from "@/types";
 import { usePageContext } from "@/contexts/PageContext";
 import { useUserContext } from "@/contexts/UserContext";
-import { formatDate, getCurrentDate, isValidURL } from "@/utils";
+import { getCurrentDate } from "@/utils";
 import { PageError, PageLoading } from "@/components/Page";
 import { FormButton, FormInput, FormTextarea } from "@/components/Form";
 import FormSelect from "@/components/Form/FormSelect";
 import Modal from "@/components/Modal";
-import Tooltip from "@/components/Tooltip";
+import JobApplications from "./components/JobApplications";
 
 const initialJobApplication: JobApplication = {
   company_name: "",
@@ -207,7 +198,7 @@ export default function Page() {
   };
 
   return (
-    <div>
+    <>
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between mb-4">
         <h2 className="text-lg font-bold">
           Job Applications {jobApplicationsLoading}
@@ -217,104 +208,14 @@ export default function Page() {
           onClick={() => setAddModalIsOpen(true)}
         />
       </div>
-      <div>
-        {!jobApplications && (
-          <div className="p-4 text-center text-gray-400">
-            You haven`t added any job applications yet
-          </div>
-        )}
-        {jobApplications?.map((jobApplication) => (
-          <div
-            key={jobApplication.id}
-            className="flex flex-col bg-white border-t border-gray-200 first:border-0"
-          >
-            <div className="flex items-center justify-stretch">
-              <div className="flex-grow border-r border-gray-200 p-4">
-                <div className="flex justify-between items-center">
-                  <div className="text-sm font-bold text-blue-900 capitalize">
-                    {jobApplication.job_role}
-                  </div>
-                  <div className="text-xs text-gray-400 font-light">
-                    <Tooltip text={formatDate(jobApplication.updated_at)}>
-                      {moment.utc(jobApplication.updated_at).fromNow()}
-                    </Tooltip>
-                  </div>
-                </div>
-                <div className="text-xs capitalize">
-                  {jobApplication.company_name}
-                </div>
-              </div>
-              <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
-                <button
-                  className="btn-icon"
-                  onClick={() => handleAddEvent(jobApplication.id)}
-                >
-                  <PiCalendarPlusThin />
-                </button>
-                {jobApplication.url && isValidURL(jobApplication.url) && (
-                  <Link
-                    className="btn-icon"
-                    target="_blank"
-                    href={jobApplication.url}
-                  >
-                    <PiLinkThin />
-                  </Link>
-                )}
-                <button
-                  className="btn-icon"
-                  onClick={() => handleEditApplication(jobApplication)}
-                >
-                  <PiPencilThin />
-                </button>
-                <button
-                  className="btn-icon"
-                  onClick={() => handleConfirmDelete(jobApplication.id)}
-                >
-                  <PiTrashThin />
-                </button>
-              </div>
-            </div>
-            <div>
-              {jobApplication.events?.map((event, index) => {
-                event.showNotes = false;
-                return (
-                  <div
-                    className="flex gap-4 py-2 px-4 justify-between items-center border-t relative text-xs"
-                    key={index}
-                  >
-                    <div className="p-2 bg-blue-200 rounded-sm text-xs uppercase w-24 text-center">
-                      {JobApplicationEventType[event.type]}
-                    </div>
-                    <div className="flex-grow" title={event.additional_notes}>
-                      {event.description}
-                      {event.showNotes && <div>{event.additional_notes}</div>}
-                    </div>
-                    <div className="text-xs text-gray-400 font-light">
-                      <Tooltip text={formatDate(event.date)}>
-                        {moment.utc(event.date).fromNow()}
-                      </Tooltip>
-                    </div>
-                    <button
-                      className="btn-icon"
-                      onClick={() => toggleEventNotes(event)}
-                    >
-                      <PiNoteThin />
-                    </button>
-                    <button
-                      className="btn-icon"
-                      onClick={() =>
-                        deleteJobApplicationEvent(jobApplication.id, index)
-                      }
-                    >
-                      <PiTrashThin />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+      <JobApplications
+        jobApplications={jobApplications}
+        handleDeleteApplication={handleConfirmDelete}
+        handleEditApplication={handleEditApplication}
+        handleAddEvent={handleAddEvent}
+        handleEventDelete={deleteJobApplicationEvent}
+        handleEventNotesToggle={toggleEventNotes}
+      />
 
       <Modal
         title="Add Job Application"
@@ -428,6 +329,6 @@ export default function Page() {
           {currentModalEvent?.additional_notes}
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

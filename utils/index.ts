@@ -41,3 +41,14 @@ export const formatDate = (date: string | undefined): string => {
   }
   return moment.utc(date).local().format("MMM DD, YYYY, HH:mm a");
 };
+
+/**
+ * @param date string
+ * @returns the duration from the date given until now
+ */
+export const dateFromNow = (date: string | undefined): string => {
+  if (typeof date == undefined) {
+    return "";
+  }
+  return moment.utc(date).fromNow();
+};

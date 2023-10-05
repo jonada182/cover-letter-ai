@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react"
-import { FormButton } from "@/components/Form"
-import { downloadPDF } from "@/utils/pdf"
+import React, { memo, useEffect, useState } from "react";
+import { FormButton } from "@/components/Form";
+import { downloadPDF } from "@/utils/pdf";
 
 type Props = {
-  content?: string | undefined
-  filename?: string | ""
-  handleReset: () => void
-}
+  content?: string | undefined;
+  filename?: string | "";
+  handleReset: () => void;
+};
 
 const CoverLetter = (props: Props) => {
-  const [coverLetterText, setCoverLetterText] = useState<string>(() => (props.content ?? ""))
+  const [coverLetterText, setCoverLetterText] = useState<string>(
+    () => props.content ?? ""
+  );
   useEffect(() => {
     if (props.content) {
-      setCoverLetterText(props.content)
+      setCoverLetterText(props.content);
     }
-  }, [props.content])
+  }, [props.content]);
 
   if (coverLetterText == "") {
-    return null
+    return null;
   }
 
   return (
@@ -39,10 +41,13 @@ const CoverLetter = (props: Props) => {
       />
       <div className="flex flex-grow align-middle justify-end gap-6">
         <FormButton text="New Cover Letter" onClick={props.handleReset} />
-        <FormButton text="Download PDF" onClick={() => downloadPDF(coverLetterText, props.filename)} />
+        <FormButton
+          text="Download PDF"
+          onClick={() => downloadPDF(coverLetterText, props.filename)}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CoverLetter
+export default memo(CoverLetter);
