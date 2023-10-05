@@ -22,7 +22,7 @@
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "next": "^13.5.4",
-    "postcss": "8.4.29",
+    "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
