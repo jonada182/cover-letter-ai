@@ -54,14 +54,19 @@ export const UserProvider = ({ children }: Props) => {
     sessionStorage.removeItem("access_token");
     setLinkedInAccessToken(null);
     setProfileId(null);
-    router.replace("/login");
-  }, [router]);
+    window.location.href = "/login";
+  }, []);
 
   // Set linked access token from session storage
   useEffect(() => {
     const storedToken = sessionStorage.getItem("access_token");
     if (storedToken && storedToken !== "") {
       setLinkedInAccessToken(storedToken);
+      if (window.location.pathname == "/login") {
+        window.location.href = "/";
+      }
+    } else if (window.location.pathname !== "/login") {
+      window.location.href = "/login";
     }
   }, []);
 
