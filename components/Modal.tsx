@@ -1,17 +1,17 @@
-import React, { memo } from "react"
-import Button, { ButtonColour } from "./Button"
+import React, { memo } from "react";
+import Button, { ButtonColour } from "./Button";
 
 type Props = {
-  onClose: () => void
-  onConfirm?: (event: React.MouseEvent | React.FormEvent) => void
-  isOpen: boolean
-  children: React.ReactNode
-  title: string
-}
+  onClose: () => void;
+  onConfirm?: (event: React.MouseEvent | React.FormEvent) => void;
+  isOpen: boolean;
+  children: React.ReactNode;
+  title: string;
+};
 
 const Modal = (props: Props) => {
   if (!props.isOpen) {
-    return null
+    return null;
   }
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -20,18 +20,18 @@ const Modal = (props: Props) => {
         <h2 className="text-xl font-semibold">{props.title}</h2>
         {props.children}
         <div className="flex items-center justify-end gap-4">
-          <Button onClick={props.onClose} colour={ButtonColour.Red}>
+          <Button onClick={props.onClose} colour={ButtonColour.Pink}>
             Close
           </Button>
           {props.onConfirm && (
-            <Button onClick={props.onConfirm} colour={ButtonColour.Green}>
+            <Button onClick={props.onConfirm} colour={ButtonColour.Blue}>
               Confirm
             </Button>
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default memo(Modal)
+export default memo(Modal);

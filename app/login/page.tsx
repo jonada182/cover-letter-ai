@@ -1,15 +1,10 @@
-"use client"
-import { useEffect } from "react";
-import { usePageContext } from "@/contexts/PageContext";
+"use client";
 import Login from "@/components/Login";
 
 export default function Page() {
-  const { setCenterPage, setBackgroundImage } = usePageContext()
-
-  useEffect(() => {
-    setCenterPage(true)
-    setBackgroundImage(true)
-  }, [setBackgroundImage, setCenterPage])
-
-  return <Login />
+  return (
+    <div className="flex flex-col flex-grow h-full box-border items-center justify-center">
+      <Login />
+    </div>
+  );
 }

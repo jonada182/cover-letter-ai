@@ -1,4 +1,6 @@
-import { APIError } from "@/types";
+import { navigationLinks } from "@/constants";
+import { APIError, NavigationLink } from "@/types";
+import { usePathname } from "next/navigation";
 import React, { createContext, useContext, useState } from "react"
 
 type Props = {
@@ -8,23 +10,20 @@ type Props = {
 interface PageContextType {
   loading: boolean
   error: Error | APIError | null
-  centerPage: boolean
-  backgroundImage: boolean
+  currentNavigationLink: NavigationLink | undefined
   setLoading: (loading: boolean) => void
   setError: (error: Error | APIError | null) => void
-  setCenterPage: (centerPage: boolean) => void
-  setBackgroundImage: (backgroundImage: boolean) => void
 }
 
 export const PageContext = createContext<PageContextType | undefined>(undefined);
 
 export const PageProvider = ({ children }: Props) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | APIError | null>(null);
-  const [centerPage, setCenterPage] = useState<boolean>(false);
-  const [backgroundImage, setBackgroundImage] = useState<boolean>(false);
+  const pathname = usePathname()
+  const currentNavigationLink = navigationLinks.find((link) => link.path === pathname)
   return (
-    <PageContext.Provider value={{ loading, error, centerPage, backgroundImage, setLoading, setError, setCenterPage, setBackgroundImage }}>
+    <PageContext.Provider value={{ loading, error, currentNavigationLink, setLoading, setError }}>
       {children}
     </PageContext.Provider>
   );

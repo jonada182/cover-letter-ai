@@ -1,22 +1,19 @@
 import React, { memo } from "react"
 import { PageLogo } from "."
 import Nav from "../Nav"
-import { NavigationLink } from "@/types"
 import { useUserContext } from "@/contexts/UserContext"
+import { usePageContext } from "@/contexts/PageContext"
 
-type Props = {
-  currentNavigationLink: NavigationLink | undefined
-}
-
-const PageHeader = (props: Props) => {
+const PageHeader = () => {
+  const { currentNavigationLink } = usePageContext()
   const { isLoggedIn } = useUserContext()
   if (!isLoggedIn) {
     return null
   }
   return (
-    <header className="flex min-w-full flex-row items-center justify-between bg-pink-700">
+    <header className="flex min-w-full flex-row items-center justify-between bg-blue-900">
       <PageLogo />
-      <Nav currentNavigationLink={props.currentNavigationLink} />
+      <Nav currentNavigationLink={currentNavigationLink} />
     </header>
   )
 }

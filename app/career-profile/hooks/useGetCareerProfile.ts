@@ -1,21 +1,19 @@
-import { getCareerProfile } from "@/app/career-profile/api"
-import { useUserContext } from "@/contexts/UserContext"
-import { APIError, CareerProfile } from "@/types"
-import { UUID } from "crypto"
-import { useQuery } from "react-query"
+import { getCareerProfile } from "@/app/career-profile/api";
+import { useUserContext } from "@/contexts/UserContext";
+import { APIError, CareerProfile } from "@/types";
+import { useQuery } from "react-query";
 
-type Props = {
-    profile_id: UUID | null
-    isEnabled?: boolean
-}
-
-const useGetCareerProfile = (props: Props) => {
-  const { linkedInAccessToken } = useUserContext()
+const useGetCareerProfile = () => {
+  const { linkedInAccessToken, profileId } = useUserContext();
   return useQuery<CareerProfile, APIError>({
-    queryKey: ["career_profile", props.profile_id],
-    queryFn: () => getCareerProfile({ profile_id: props.profile_id, access_token: linkedInAccessToken}),
-    enabled: !!props.profile_id && !!!props.isEnabled,
-  })
-}
+    queryKey: ["career_profile", profileId],
+    queryFn: () =>
+      getCareerProfile({
+        profile_id: profileId,
+        access_token: linkedInAccessToken,
+      }),
+    enabled: !!profileId && !!linkedInAccessToken,
+  });
+};
 
-export default useGetCareerProfile
+export default useGetCareerProfile;

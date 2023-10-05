@@ -1,37 +1,59 @@
-import React, { memo } from "react"
-import Image from "next/image"
-import { PageError, PageHeading, PageLoading } from "."
-import { NavigationLink } from "@/types"
-import { usePageContext } from "@/contexts/PageContext"
-import { useUserContext } from "@/contexts/UserContext"
-import Background from "@/public/img/background.jpg"
+import React, { memo, useEffect } from "react";
+import Image from "next/image";
+import { PageError, PageHeader, PageHeading, PageLoading } from ".";
+import { usePageContext } from "@/contexts/PageContext";
+import { useUserContext } from "@/contexts/UserContext";
 
 type Props = {
-  children: React.ReactNode
-  currentNavigationLink: NavigationLink | undefined
-}
+  children: React.ReactNode;
+};
 
-const PageTemplate = ({ children, currentNavigationLink }: Props) => {
-  const { loading: isPageLoading, error: isPageError, centerPage, backgroundImage } = usePageContext()
-  const { isLoggedIn } = useUserContext()
+const PageTemplate = ({ children }: Props) => {
+  const {
+    loading: isPageLoading,
+    error: isPageError,
+    currentNavigationLink,
+    setLoading,
+  } = usePageContext();
+  const { isLoggedIn, isLoading: userLoading } = useUserContext();
+
+  useEffect(() => {
+    setLoading(userLoading);
+  }, [userLoading]);
+
+  if (!isLoggedIn && currentNavigationLink?.path !== "/login") {
+    return (
+      <div className="flex flex-col flex-grow items-center justify-center min-h-screen">
+        <PageLoading loading={userLoading} />
+      </div>
+    );
+  }
 
   return (
     <>
-      <div className={`flex flex-col content-center ${ centerPage ? "justify-center" : "justify-stretch"} flex-grow z-10 max-w-5xl w-full p-6`}>
-        <PageError error={isPageError} />
-        <PageLoading loading={isPageLoading} />
-        { isLoggedIn && currentNavigationLink?.path !== "/login" && (
-          <>
-            <PageHeading currentNavigationLink={currentNavigationLink} />
-            <div className="flex flex-col text-sm justify-center h-full">
-              {children}
-            </div>
-          </>
+      <main className="flex flex-col min-h-screen items-center justify-stretch relative">
+        <PageHeader />
+        <div
+          className={
+            "flex flex-col content-center justify-stretch flex-grow z-10 max-w-5xl w-full p-6 transition-all"
+          }
+        >
+          <PageError error={isPageError} />
+          <PageLoading loading={isPageLoading} />
+          <PageHeading currentNavigationLink={currentNavigationLink} />
+          {children}
+        </div>
+        {currentNavigationLink?.path == "/login" && (
+          <Image
+            src={"/img/background.jpg"}
+            alt=""
+            className="object-cover -z-0 object-center"
+            fill={true}
+          />
         )}
-      </div>
-      { backgroundImage && <Image src={Background} alt="" className="object-cover -z-0 object-center" fill={true} />}
+      </main>
     </>
-  )
-}
+  );
+};
 
-export default memo(PageTemplate)
+export default memo(PageTemplate);

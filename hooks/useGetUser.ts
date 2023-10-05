@@ -1,18 +1,18 @@
-import { getUser } from "@/api/user"
-import { APIError, User } from "@/types"
-import { useQuery } from "react-query"
+import { getUser } from "@/api/user";
+import { APIError, User } from "@/types";
+import { useQuery } from "react-query";
 
 type Props = {
-  access_token: string | null
-  isEnabled?: boolean
-}
+  access_token?: string | null | undefined;
+  isEnabled?: boolean;
+};
 
-const useGetUser = ({ access_token }: Props) => {
+const useGetUser = (props: Props) => {
   return useQuery<User, APIError>({
     queryKey: [],
-    queryFn: () => getUser({ access_token: access_token}),
-    enabled: access_token ? true : false,
-  })
-}
+    queryFn: () => getUser({ access_token: props.access_token }),
+    enabled: !!props.access_token || !!props?.isEnabled,
+  });
+};
 
-export default useGetUser
+export default useGetUser;

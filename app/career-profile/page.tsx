@@ -25,19 +25,14 @@ const initialProfile: CareerProfile = {
 
 export default function Page() {
   const [careerProfile, setCareerProfile] = useState<CareerProfile>(initialProfile)
-  const { setError, setLoading, setCenterPage, setBackgroundImage } = usePageContext()
-  const { profileId, linkedInAccessToken } = useUserContext()
-
-  useEffect(() => {
-    setCenterPage(false)
-    setBackgroundImage(false)
-  }, [setBackgroundImage, setCenterPage])
+  const { setError, setLoading } = usePageContext()
+  const { linkedInAccessToken } = useUserContext()
 
   const {
     data: existingCareerProfile,
     isLoading: getCareerProfileLoading,
     error: getCareerProfileError
-  } = useGetCareerProfile({ profile_id: profileId, isEnabled: false });
+  } = useGetCareerProfile();
   const {
     data: newCareerProfile,
     isLoading: postCareerProfileLoading,

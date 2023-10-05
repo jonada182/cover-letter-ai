@@ -17,7 +17,7 @@ const initialJobPosting: JobPosting = {
 
 export default function Page() {
   const [jobPostingForm, setJobPostingForm] = useState<JobPosting>(initialJobPosting);
-  const { setError, setLoading, setCenterPage, setBackgroundImage } = usePageContext();
+  const { setError, setLoading } = usePageContext();
   const { profileId, linkedInAccessToken } = useUserContext()
   const {
     data: coverLetter,
@@ -26,11 +26,6 @@ export default function Page() {
     mutate: submitCoverLetter,
     reset: resetCoverLetter,
   } = usePostCoverLetter();
-
-  useEffect(() => {
-    setCenterPage(false)
-    setBackgroundImage(false)
-  }, [setBackgroundImage, setCenterPage])
 
   useEffect(() => {
     setLoading(coverLetterLoading)

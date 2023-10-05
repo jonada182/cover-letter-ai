@@ -1,106 +1,119 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { HttpStatusCode } from "axios"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { UUID } from "crypto"
-import { useGetUser } from "@/hooks"
-import { usePageContext } from "./PageContext"
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { HttpStatusCode } from "axios";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { UUID } from "crypto";
+import { useGetUser } from "@/hooks";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 interface UserContextType {
-  isLoggedIn: boolean
-  profileId: UUID | null
-  linkedInAccessToken: string | null
-  setIsLoggedIn: (isLoggedIn: boolean) => void
-  setProfileId: (profileId: UUID | null) => void
-  setLinkedInAccessToken: (token: string) => void
-  signOut: () => void
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  profileId: UUID | null;
+  linkedInAccessToken: string | null;
+  setProfileId: (profileId: UUID | null) => void;
+  setLinkedInAccessToken: (token: string) => void;
+  signOut: () => void;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
 export const UserProvider = ({ children }: Props) => {
-  const queryParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const queryParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const [profileId, setProfileId] = useState<UUID | null>(null);
-  const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(null);
-  const { data: userData, error: userError, isLoading: userIsLoading } = useGetUser({ access_token: linkedInAccessToken })
-  const { setLoading: setPageLoading } = usePageContext()
+  const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(
+    null
+  );
+  const isLoggedIn = useMemo(
+    () => !!profileId && !!linkedInAccessToken,
+    [profileId, linkedInAccessToken]
+  );
+  const {
+    data: userData,
+    error: userError,
+    isLoading: userIsLoading,
+  } = useGetUser({ access_token: linkedInAccessToken });
 
   /**
    * removes access token from session storage, clears the login state and redirects to login page
    */
   const signOut = useCallback(() => {
-    sessionStorage.removeItem("access_token")
-    setLinkedInAccessToken(null)
-    setProfileId(null)
-    setIsLoggedIn(false)
-    router.replace("/login")
-  }, [router])
+    sessionStorage.removeItem("access_token");
+    setLinkedInAccessToken(null);
+    setProfileId(null);
+    router.replace("/login");
+  }, [router]);
 
   // Set linked access token from session storage
   useEffect(() => {
-    const storedToken = sessionStorage.getItem("access_token")
+    const storedToken = sessionStorage.getItem("access_token");
     if (storedToken && storedToken !== "") {
-      setLinkedInAccessToken(storedToken)
+      setLinkedInAccessToken(storedToken);
     }
-  }, [])
+  }, []);
 
   /**
    *  Get access_token query param from callback redirect
    *  Save access_token in session storage and clear the query param
    */
   useEffect(() => {
-    const accessToken = queryParams.get("access_token")
+    const accessToken = queryParams.get("access_token");
     if (accessToken && accessToken !== "") {
-      sessionStorage.setItem("access_token", accessToken)
-      setLinkedInAccessToken(accessToken)
-      router.replace(pathname)
+      sessionStorage.setItem("access_token", accessToken);
+      setLinkedInAccessToken(accessToken);
+      router.replace(pathname);
     }
-  }, [pathname, queryParams, router, setLinkedInAccessToken])
+  }, [pathname, queryParams, router, setLinkedInAccessToken]);
 
   /**
    * If user data is returned from API, set login state and profileId
    * Redirect to home page after login page
    */
   useEffect(() => {
-    if (userData && userData.profile_id) {
-      setProfileId(userData.profile_id)
-      setIsLoggedIn(true)
-      if (pathname == "/login") {
-        router.replace("/")
-      }
+    if (userData && userData?.profile_id) {
+      setProfileId(userData?.profile_id);
     }
-  }, [userData, router, pathname, userIsLoading])
+  }, [userData, pathname, router]);
 
   // If user data request is unathorized, we sign out
   useEffect(() => {
     if (userError && userError?.status == HttpStatusCode.Unauthorized) {
-      signOut()
+      signOut();
     }
-    setPageLoading(userIsLoading)
-  }, [setPageLoading, userError, userIsLoading])
+  }, [userError, userIsLoading]);
 
-  const contextValues = useMemo(() => ({
-    isLoggedIn,
-    profileId,
-    linkedInAccessToken,
-    setIsLoggedIn,
-    setProfileId,
-    setLinkedInAccessToken,
-    signOut,
-  }), [isLoggedIn, profileId, linkedInAccessToken])
+  const contextValues = useMemo(
+    () => ({
+      isLoggedIn,
+      profileId,
+      linkedInAccessToken,
+      isLoading: userIsLoading,
+      setProfileId,
+      setLinkedInAccessToken,
+      signOut,
+    }),
+    [isLoggedIn, profileId, linkedInAccessToken]
+  );
 
   return (
     <UserContext.Provider value={contextValues}>
       {children}
     </UserContext.Provider>
   );
-}
+};
 
 export const useUserContext = () => {
   const context = useContext(UserContext);
