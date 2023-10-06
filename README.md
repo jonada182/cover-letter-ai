@@ -20,5 +20,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Pages
 
-* **Cover Letter** (`/`): Genereate a cover letter by providing the job details, and after you've created a career profile.
-* **Career Profile** (`/career-profile`): Create/Update your career profile to generate more accurate cover letters
+- **Cover Letter** (`/cover-letter`): Genereate a cover letter by providing the job details, and after you've created a career profile.
+- **Career Profile** (`/career-profile`): Create/Update your career profile to generate more accurate cover letters
+- **Tracker** (`/tracker`): Keep track of your job applications
