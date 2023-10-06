@@ -6,6 +6,7 @@ type Props = {
   content?: string | undefined;
   filename?: string | "";
   handleReset: () => void;
+  handleSaveApplication: () => void;
 };
 
 const CoverLetter = (props: Props) => {
@@ -41,6 +42,10 @@ const CoverLetter = (props: Props) => {
       />
       <div className="flex flex-grow align-middle justify-end gap-6">
         <FormButton text="New Cover Letter" onClick={props.handleReset} />
+        <FormButton
+          text="Save Application"
+          onClick={props.handleSaveApplication}
+        />
         <FormButton
           text="Download PDF"
           onClick={() => downloadPDF(coverLetterText, props.filename)}

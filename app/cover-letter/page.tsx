@@ -14,6 +14,7 @@ import { useUserContext } from "@/contexts/UserContext";
 import { JobPosting } from "@/types";
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
 import { PageLoading } from "@/components/Page";
+import useJobApplications from "../tracker/hooks/useJobApplications";
 
 const initialJobPosting: JobPosting = {
   company_name: "",
@@ -25,6 +26,7 @@ const initialJobPosting: JobPosting = {
 export default function Page() {
   const [jobPostingForm, setJobPostingForm] =
     useState<JobPosting>(initialJobPosting);
+  const [successfulMsg, setSuccessfulMsg] = useState<boolean>(false);
   const { setError, setLoading } = usePageContext();
   const { profileId, linkedInAccessToken } = useUserContext();
   const {
@@ -35,10 +37,35 @@ export default function Page() {
     reset: resetCoverLetter,
   } = usePostCoverLetter();
 
+  const {
+    mutate: postJobApplication,
+    postError: postJobApplicationError,
+    postIsLoading: postJobApplicationIsLoading,
+    postIsSuccess: postJobApplicationIsSuccess,
+    reset: resetPostJobApplication,
+  } = useJobApplications({ isEnabled: false });
+
+  useEffect(() => {
+    if (successfulMsg) {
+      setTimeout(() => setSuccessfulMsg(false), 5000);
+    }
+  }, [successfulMsg]);
+
   useEffect(() => {
     setLoading(coverLetterLoading);
     setError(coverLetterError);
   }, [coverLetterError, coverLetterLoading]);
+
+  useEffect(() => {
+    setLoading(postJobApplicationIsLoading);
+    setError(postJobApplicationError);
+    if (postJobApplicationIsSuccess) {
+      resetCoverLetter();
+      resetPostJobApplication();
+      setJobPostingForm(initialJobPosting);
+      setSuccessfulMsg(true);
+    }
+  }, [postJobApplicationError, postJobApplicationIsLoading]);
 
   const setFormValue = useCallback(
     (
@@ -67,6 +94,17 @@ export default function Page() {
     });
   };
 
+  const handleSaveJobApplication = useCallback(() => {
+    postJobApplication({
+      jobApplication: {
+        company_name: jobPostingForm.company_name,
+        job_role: jobPostingForm.job_role,
+        profile_id: profileId,
+      },
+      access_token: linkedInAccessToken,
+    });
+  }, [jobPostingForm, profileId, linkedInAccessToken]);
+
   if (coverLetterLoading) {
     return null;
   }
@@ -85,13 +123,14 @@ export default function Page() {
         content={coverLetter}
         filename={jobPostingForm?.company_name}
         handleReset={resetCoverLetter}
+        handleSaveApplication={handleSaveJobApplication}
       />
     );
   }
 
   return (
     <>
-      <div className="p-4 mb-6 bg-blue-200 text-blue-900 text-sm rounded">
+      <div className="p-4 mb-4 bg-blue-200 text-blue-900 text-sm rounded">
         Don`t forget to{" "}
         <Link
           className="font-bold hover:underline text-pink-700"
@@ -101,6 +140,11 @@ export default function Page() {
         </Link>{" "}
         for personalized cover letters
       </div>
+      {successfulMsg && (
+        <div className="bg-green-300 border border-green-400 text-green-950 p-4 mb-4 text-center text-sm font-semibold rounded transition-all">
+          Job Application saved successfully
+        </div>
+      )}
       <Form handleOnSubmit={submitCoverLetterForm}>
         <div className="flex flex-grow w-full flex-col md:flex-row justify-items-stretch align-middle gap-6">
           <div className="flex-grow">
