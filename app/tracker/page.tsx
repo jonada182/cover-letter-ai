@@ -223,13 +223,13 @@ export default function Page() {
         onConfirm={handleSubmitForm}
         isOpen={addModalIsOpen}
       >
-        <div>
-          {postJobApplicationError && (
-            <PageError error={postJobApplicationError} />
-          )}
-          {postJobApplicationIsLoading && (
-            <PageLoading loading={postJobApplicationIsLoading} />
-          )}
+        {postJobApplicationError && (
+          <PageError error={postJobApplicationError} />
+        )}
+        {postJobApplicationIsLoading && (
+          <PageLoading loading={postJobApplicationIsLoading} />
+        )}
+        <div className={postJobApplicationIsLoading ? "hidden" : ""}>
           <FormInput
             type="text"
             name="company_name"
@@ -280,13 +280,13 @@ export default function Page() {
         onConfirm={handleEventSubmitForm}
         onClose={() => setEventModalIsOpen(false)}
       >
-        <div>
-          {postJobApplicationError && (
-            <PageError error={postJobApplicationError} />
-          )}
-          {postJobApplicationIsLoading && (
-            <PageLoading loading={postJobApplicationIsLoading} />
-          )}
+        {postJobApplicationError && (
+          <PageError error={postJobApplicationError} />
+        )}
+        {postJobApplicationIsLoading && (
+          <PageLoading loading={postJobApplicationIsLoading} />
+        )}
+        <div className={postJobApplicationIsLoading ? "hidden" : ""}>
           <FormSelect
             name="type"
             value={jobApplicationEventForm.type}
