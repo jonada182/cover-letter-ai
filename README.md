@@ -6,7 +6,16 @@ Introducing **CoverLetterAI**, your new best friend in the job application proce
 
 ## Getting Started
 
-First, run the development server:
+**Cover Letter AI** requires the [cover-letter-ai-api](https://github.com/jonada182/cover-letter-ai-api) to be running on your local environment.
+
+### Environment Variables
+
+Create a `.env.local` file based on `.env.local.example` with the following:
+
+- `NEXT_PUBLIC_API_BASE_URL`: the API base url for the [cover-letter-ai-api](https://github.com/jonada182/cover-letter-ai-api)
+- `NEXT_PUBLIC_LINKEDIN_CLIENT_ID`: the client ID of your LinkedIn app (used to generate tokens and authenticate)
+
+Run the development server:
 
 ```bash
 npm run dev
