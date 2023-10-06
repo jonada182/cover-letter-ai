@@ -116,6 +116,10 @@ export default function Page() {
     });
   };
 
+  if (careerProfileLoading) {
+    return null;
+  }
+
   return (
     <div>
       <Form handleOnSubmit={submitCareerProfileForm}>

@@ -1,5 +1,5 @@
 "use client";
-import Login from "@/components/Login";
+import Login from "@/app/login/components/Login";
 
 export default function Page() {
   return (
