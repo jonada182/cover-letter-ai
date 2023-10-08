@@ -20,8 +20,10 @@ const postJobApplication = async ({ jobApplication, accessToken }: RequestProps)
     if (jobApplication.company_name === "" || jobApplication.job_role === "") {
       throw new Error("required fields are missing")
     }
-    if (jobApplication.url && !isValidURL(jobApplication.url)) {
-      throw new Error("url is invalid")
+    if (jobApplication.url && jobApplication.url != "") {
+      console.log(jobApplication.url)
+      if (!isValidURL(jobApplication.url))
+        throw new Error("url is invalid")
     }
     const response = await axios.post<APIResponse>(
       "/job-applications",

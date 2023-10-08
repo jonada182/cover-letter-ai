@@ -58,13 +58,11 @@ const useJobApplication = (props: Props) => {
   const addJobApplicationEvent = (event: JobApplicationEvent) => {
     if (jobApplication) {
       reset();
-      let events = jobApplication.events || [];
-      events.push(event);
       mutate({
         accessToken: linkedInAccessToken,
         jobApplication: {
           ...jobApplication,
-          events: events,
+          events: [...jobApplication.events  || [], event],
         },
       });
     }

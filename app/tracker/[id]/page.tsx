@@ -76,6 +76,7 @@ export default function Page() {
       resetPostJobApplication();
       setJobApplicationForm(initialJobApplication);
       setAddModalIsOpen(false);
+      setEventModalIsOpen(false);
     }
   }, [postJobApplicationSuccess]);
 
@@ -171,7 +172,6 @@ export default function Page() {
     <div>
       <JobApplicationView
         jobApplication={jobApplication}
-        isLoading={jobApplicationIsLoading}
         handleAddEvent={handleAddEvent}
         handleDeleteApplication={handleConfirmDelete}
         handleEditApplication={handleEditApplication}

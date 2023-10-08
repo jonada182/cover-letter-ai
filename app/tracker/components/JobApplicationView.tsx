@@ -9,13 +9,11 @@ import {
 import { UUID } from "crypto";
 import { JobApplication } from "@/types";
 import { formatDate, isValidURL } from "@/utils";
-import { PageLoading } from "@/components/Page";
 import JobApplicationEvents from "./JobApplicationEvents";
 import { FormButton } from "@/components/Form";
 
 type Props = {
   jobApplication: JobApplication | undefined;
-  isLoading: boolean;
   handleEditApplication: (jobApplication: JobApplication) => void;
   handleDeleteApplication: (jobApplicationId: UUID | null | undefined) => void;
   handleAddEvent: (jobApplicationId: UUID | null | undefined) => void;
@@ -24,16 +22,11 @@ type Props = {
 
 const JobApplicationView = ({
   jobApplication,
-  isLoading,
   handleEditApplication,
   handleDeleteApplication,
   handleAddEvent,
   handleEventDelete,
 }: Props) => {
-
-  if (isLoading) {
-    return <PageLoading loading={true} />
-  }
 
   if (!jobApplication) {
     return (
@@ -44,8 +37,8 @@ const JobApplicationView = ({
   }
 
   return (
-    <div>
-      <div className="flex flex-col bg-white border-t border-gray-200 first:border-0">
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col bg-white border-t border-gray-200 first:border-0 shadow rounded">
         <div className="flex items-center justify-stretch">
           <div className="flex-grow flex flex-col gap-2 p-4">
             <div className="text-2xl text-blue-900 capitalize">{jobApplication.job_role}</div>
@@ -54,7 +47,7 @@ const JobApplicationView = ({
               <PiClockThin /> {formatDate(jobApplication.updated_at)}
             </div>
           </div>
-          <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
+          <div className="w-1/3 md:w-1/4 flex justify-end items-center p-4 gap-2">
             {jobApplication.url && isValidURL(jobApplication.url) && (
               <Link
                 className="btn-icon"
@@ -90,6 +83,7 @@ const JobApplicationView = ({
           handleDelete={handleEventDelete}
         />
       </div>
+      <Link className="text-blue-900 text-sm p-4 text-center hover:underline" href={"/tracker"}>Go back to job applications</Link>
     </div>
   );
 };

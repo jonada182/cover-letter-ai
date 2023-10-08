@@ -22,15 +22,15 @@ const JobApplicationEvents = ({
         event.showNotes = false;
         return (
           <div
-            className="flex gap-4 py-2 px-4 justify-between items-center border-t relative text-xs"
+            className="flex gap-4 p-4 justify-between items-center border-t relative"
             key={index}
           >
             <div className="p-2 bg-blue-200 rounded-sm text-xs uppercase w-24 text-center">
               {JobApplicationEventType[event.type]}
             </div>
-            <div className="flex-grow" title={event.additional_notes}>
-              {event.description}
-              {event.showNotes && <div>{event.additional_notes}</div>}
+            <div className="flex-grow">
+              <h4 className="font-semibold text-sm capitalize">{event.description}</h4>
+              <div className="text-xs text-gray-400 my-2">{event.additional_notes}</div>
             </div>
             <div className="text-xs text-gray-400 font-light">
               <Tooltip text={formatDate(event.date)}>
