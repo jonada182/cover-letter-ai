@@ -29,11 +29,7 @@ const JobApplicationView = ({
 }: Props) => {
 
   if (!jobApplication) {
-    return (
-      <div className="p-4 text-center text-gray-400">
-        You haven`t added any job applications yet
-      </div>
-    )
+    return null
   }
 
   return (
