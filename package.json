@@ -12,7 +12,6 @@
     "test-watch": "jest --watch"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "^4.40.2",
     "@types/node": "20.6.2",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -22,7 +21,7 @@
     "eslint-config-next": "13.4.19",
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
-    "next": "^13.5.4",
+    "next": "13.4",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -33,6 +32,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.36.1",
     "@testing-library/jest-dom": "^6.1.2",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.4",
