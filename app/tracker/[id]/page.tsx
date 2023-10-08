@@ -28,7 +28,8 @@ const initialJobApplicationEvent: JobApplicationEvent = {
 
 export default function Page() {
   const params = useParams()
-  const jobApplicationId = params?.id as UUID
+
+  const [jobApplicationId, setJobApplicationId] = useState<UUID | null>(null)
 
   const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
@@ -57,6 +58,12 @@ export default function Page() {
     addJobApplicationEvent,
     deleteJobApplicationEvent,
   } = useJobApplication({ jobApplicationId: jobApplicationId });
+
+  useEffect(() => {
+    if (params && params.id && params.id != "") {
+      setJobApplicationId(params.id as UUID)
+    }
+  }, [params])
 
   useEffect(() => {
     setError(jobApplicationError);
