@@ -9,7 +9,7 @@ import React, {
 import { HttpStatusCode } from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { UUID } from "crypto";
-import { useGetUser } from "@/hooks";
+import { useAuth } from "@/hooks";
 
 type Props = {
   children: React.ReactNode;
@@ -45,7 +45,7 @@ export const UserProvider = ({ children }: Props) => {
     data: userData,
     error: userError,
     isLoading: userIsLoading,
-  } = useGetUser({ access_token: linkedInAccessToken });
+  } = useAuth({ accessToken: linkedInAccessToken });
 
   /**
    * removes access token from session storage, clears the login state and redirects to login page

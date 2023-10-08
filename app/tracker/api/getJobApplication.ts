@@ -4,17 +4,18 @@ import { JobApplication } from "@/types";
 import { UUID } from "crypto";
 
 type RequestProps = {
+  jobApplicationId: UUID | null | undefined,
   profileId: UUID | null,
   accessToken: string | null
 }
 
 interface APIResponse {
-  data: JobApplication[]
+  data: JobApplication
 }
 
-const getJobApplications = async ({ profileId, accessToken }: RequestProps): Promise<JobApplication[]> => {
+const getJobApplications = async ({ jobApplicationId, profileId, accessToken }: RequestProps): Promise<JobApplication> => {
   try {
-    const response = await axios.get<APIResponse>("/job-applications", {
+    const response = await axios.get<APIResponse>(`/job-applications/${jobApplicationId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         UserID: profileId,

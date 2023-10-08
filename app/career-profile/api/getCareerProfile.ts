@@ -4,20 +4,20 @@ import { CareerProfile } from "@/types";
 import { UUID } from "crypto";
 
 type RequestProps = {
-    profile_id: UUID | null,
-    access_token: string | null
+    profileId: UUID | null,
+    accessToken: string | null
 }
 
 interface APIResponse {
   data: CareerProfile
 }
 
-const getCareerProfile = async ({ profile_id, access_token }: RequestProps): Promise<CareerProfile> => {
+const getCareerProfile = async ({ profileId, accessToken }: RequestProps): Promise<CareerProfile> => {
   try {
-    const response = await axios.get<APIResponse>(`/career-profile/${profile_id}`, {
+    const response = await axios.get<APIResponse>("/career-profile", {
       headers: {
-        Authorization: `Bearer ${access_token}`,
-        UserID: profile_id,
+        Authorization: `Bearer ${accessToken}`,
+        UserID: profileId,
       }
     });
     return response?.data?.data;

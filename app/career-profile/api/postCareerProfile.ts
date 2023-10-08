@@ -4,14 +4,14 @@ import axios from "axios";
 
 type RequestProps = {
   careerProfile: CareerProfile
-  access_token: string | null
+  accessToken: string | null
 }
 
 interface APIResponse {
     data: CareerProfile
 }
 
-const postCareerProfile = async ({careerProfile, access_token}: RequestProps): Promise<CareerProfile> => {
+const postCareerProfile = async ({careerProfile, accessToken}: RequestProps): Promise<CareerProfile> => {
   if (
     careerProfile.headline === "" ||
         careerProfile.experience_years <= 0 ||
@@ -25,7 +25,7 @@ const postCareerProfile = async ({careerProfile, access_token}: RequestProps): P
     }
     const response = await axios.post<APIResponse>("/career-profile", careerProfile, {
       headers: {
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${accessToken}`,
         UserID: careerProfile.id,
       }
     });

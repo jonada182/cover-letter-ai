@@ -14,7 +14,7 @@ import { useUserContext } from "@/contexts/UserContext";
 import { JobPosting } from "@/types";
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
 import { PageLoading } from "@/components/Page";
-import useJobApplications from "../tracker/hooks/useJobApplications";
+import useJobApplication from "../tracker/hooks/useJobApplication";
 
 const initialJobPosting: JobPosting = {
   company_name: "",
@@ -43,7 +43,7 @@ export default function Page() {
     postIsLoading: postJobApplicationIsLoading,
     postIsSuccess: postJobApplicationIsSuccess,
     reset: resetPostJobApplication,
-  } = useJobApplications({ isEnabled: false });
+  } = useJobApplication({ isEnabled: false });
 
   useEffect(() => {
     if (successfulMsg) {
@@ -90,7 +90,7 @@ export default function Page() {
         profile_id: profileId,
         job_posting: jobPostingForm,
       },
-      access_token: linkedInAccessToken,
+      accessToken: linkedInAccessToken,
     });
   };
 
@@ -101,7 +101,7 @@ export default function Page() {
         job_role: jobPostingForm.job_role,
         profile_id: profileId,
       },
-      access_token: linkedInAccessToken,
+      accessToken: linkedInAccessToken,
     });
   }, [jobPostingForm, profileId, linkedInAccessToken]);
 

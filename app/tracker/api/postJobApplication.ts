@@ -5,14 +5,14 @@ import { isValidURL } from "@/utils";
 
 export type RequestProps = {
   jobApplication: JobApplication
-  access_token: string | null
+  accessToken: string | null
 }
 
 interface APIResponse {
     data: JobApplication
 }
 
-const postJobApplication = async ({ jobApplication, access_token }: RequestProps): Promise<JobApplication> => {
+const postJobApplication = async ({ jobApplication, accessToken }: RequestProps): Promise<JobApplication> => {
   try {
     if (!jobApplication.profile_id) {
       throw new Error("no profile ID provided")
@@ -28,7 +28,7 @@ const postJobApplication = async ({ jobApplication, access_token }: RequestProps
       jobApplication,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${accessToken}`,
           UserID: jobApplication.profile_id,
         }
       }

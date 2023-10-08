@@ -6,7 +6,7 @@ type Props = {
 }
 
 const PageHeading = ({ currentNavigationLink }: Props) => {
-  if (currentNavigationLink?.isHidden) {
+  if (!currentNavigationLink || currentNavigationLink?.isHidden) {
     return null
   }
 

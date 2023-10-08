@@ -3,14 +3,14 @@ import { handleAxiosError } from "@/api";
 import { User } from "@/types";
 
 type RequestProps = {
-  access_token: string | null | undefined;
+  accessToken: string | null | undefined;
 };
 
-const getUser = async ({ access_token }: RequestProps): Promise<User> => {
+const authenticate = async ({ accessToken }: RequestProps): Promise<User> => {
   try {
-    const response = await axios.get<User>("/user", {
+    const response = await axios.get<User>("/auth", {
       headers: {
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return response?.data;
@@ -19,4 +19,4 @@ const getUser = async ({ access_token }: RequestProps): Promise<User> => {
   }
 };
 
-export default getUser;
+export default authenticate;

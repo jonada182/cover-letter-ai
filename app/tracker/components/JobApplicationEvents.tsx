@@ -1,26 +1,19 @@
+import React, { memo } from "react";
+import { PiTrashThin } from "react-icons/pi";
 import Tooltip from "@/components/Tooltip";
 import {
   JobApplication,
-  JobApplicationEvent,
   JobApplicationEventType,
 } from "@/types";
 import { dateFromNow, formatDate } from "@/utils";
-import { UUID } from "crypto";
-import React from "react";
-import { PiNoteThin, PiTrashThin } from "react-icons/pi";
 
 type Props = {
   jobApplication: JobApplication;
-  handleToggle: (event: JobApplicationEvent) => void;
-  handleDelete: (
-    jobApplicationId: UUID | null | undefined,
-    index: number
-  ) => void;
+  handleDelete: (index: number) => void;
 };
 
 const JobApplicationEvents = ({
   jobApplication,
-  handleToggle,
   handleDelete,
 }: Props) => {
   return (
@@ -44,12 +37,9 @@ const JobApplicationEvents = ({
                 {dateFromNow(event.date)}
               </Tooltip>
             </div>
-            <button className="btn-icon" onClick={() => handleToggle(event)}>
-              <PiNoteThin />
-            </button>
             <button
               className="btn-icon"
-              onClick={() => handleDelete(jobApplication.id, index)}
+              onClick={() => handleDelete(index)}
             >
               <PiTrashThin />
             </button>
@@ -60,4 +50,4 @@ const JobApplicationEvents = ({
   );
 };
 
-export default JobApplicationEvents;
+export default memo(JobApplicationEvents);

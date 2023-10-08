@@ -16,22 +16,22 @@ describe("getJobApplications", () => {
   it("fetches data successfully from the API", async () => {
     const expectedResponse = { data: testJobApplications }
     mockedAxios.get.mockResolvedValueOnce({ data: expectedResponse})
-    const data = await getJobApplications({ profile_id: testProfileID, access_token: testAccessToken })
+    const data = await getJobApplications({ profileId: testProfileID, accessToken: testAccessToken })
     expect(mockedAxios.get).toHaveBeenCalled()
-    expect(mockedAxios.get).toHaveBeenCalledWith(`/job-applications/${testProfileID}`, { headers: headers })
+    expect(mockedAxios.get).toHaveBeenCalledWith("/job-applications", { headers: headers })
     expect(data).toBe(testJobApplications)
   })
   it("fails to fetch data from the API", async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: "unknown data"})
-    const data = await getJobApplications({ profile_id: testProfileID, access_token: testAccessToken })
+    const data = await getJobApplications({ profileId: testProfileID, accessToken: testAccessToken })
     expect(mockedAxios.get).toHaveBeenCalled()
-    expect(mockedAxios.get).toHaveBeenCalledWith(`/job-applications/${testProfileID}`, { headers: headers })
+    expect(mockedAxios.get).toHaveBeenCalledWith("/job-applications", { headers: headers })
     expect(data).toBe(undefined)
   })
   it("API returns with an error", async () => {
     mockedAxios.get.mockRejectedValueOnce(new Error("oops!"))
-    expect(getJobApplications({ profile_id: testProfileID, access_token: testAccessToken })).rejects.toThrow("oops!")
+    expect(getJobApplications({ profileId: testProfileID, accessToken: testAccessToken })).rejects.toThrow("oops!")
     expect(mockedAxios.get).toHaveBeenCalled()
-    expect(mockedAxios.get).toHaveBeenCalledWith(`/job-applications/${testProfileID}`, { headers: headers })
+    expect(mockedAxios.get).toHaveBeenCalledWith("/job-applications", { headers: headers })
   })
 })

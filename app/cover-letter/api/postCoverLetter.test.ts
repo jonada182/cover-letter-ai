@@ -16,7 +16,7 @@ describe("postCoverLetter", () => {
   it("creates cover letter successfully", async () => {
     const expectedResponse = { data: testCoverLetter }
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
-    const data = await postCoverLetter({coverLetterRequest: testCoverLetterRequest, access_token: testAccessToken})
+    const data = await postCoverLetter({coverLetterRequest: testCoverLetterRequest, accessToken: testAccessToken})
     expect(mockedAxios.post).toHaveBeenCalled()
     expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: headers})
     expect(data).toBe(testCoverLetter)
@@ -32,13 +32,13 @@ describe("postCoverLetter", () => {
           job_role: "",
         }
       },
-      access_token: testAccessToken
+      accessToken: testAccessToken
     })).rejects.toThrow("required fields are missing")
     expect(mockedAxios.post).toBeCalledTimes(0)
   })
   it("API returns with an error", async () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
-    expect(postCoverLetter({coverLetterRequest: testCoverLetterRequest, access_token: testAccessToken})).rejects.toThrow("oops!")
+    expect(postCoverLetter({coverLetterRequest: testCoverLetterRequest, accessToken: testAccessToken})).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
     expect(mockedAxios.post).toHaveBeenCalledWith("/cover-letter", testCoverLetterRequest, { headers: headers})
   })

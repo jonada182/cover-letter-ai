@@ -40,7 +40,7 @@ export type CareerProfile = {
 
 export type CareerProfileRequest = {
   careerProfile: CareerProfile;
-  access_token: string | null;
+  accessToken: string | null;
 };
 
 export type JobPosting = {

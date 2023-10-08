@@ -9,8 +9,8 @@ const useGetCareerProfile = () => {
     queryKey: ["career_profile", profileId],
     queryFn: () =>
       getCareerProfile({
-        profile_id: profileId,
-        access_token: linkedInAccessToken,
+        profileId: profileId,
+        accessToken: linkedInAccessToken,
       }),
     enabled: !!profileId && !!linkedInAccessToken,
   });

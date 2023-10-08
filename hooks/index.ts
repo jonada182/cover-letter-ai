@@ -1,4 +1,4 @@
-import useGetUser from "./useGetUser";
+import useAuth from "./useAuth";
 export {
-  useGetUser,
+  useAuth,
 }

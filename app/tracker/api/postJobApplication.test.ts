@@ -16,7 +16,7 @@ describe("postJobApplication", () => {
   it("posts job application successfully", async () => {
     const expectedResponse = { data: testJobApplication }
     mockedAxios.post.mockResolvedValueOnce({ data: expectedResponse})
-    const data = await postJobApplication({jobApplication: testJobApplicationRequest, access_token: testAccessToken})
+    const data = await postJobApplication({jobApplication: testJobApplicationRequest, accessToken: testAccessToken})
     expect(mockedAxios.post).toHaveBeenCalled()
     expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: headers })
     expect(data).toBe(testJobApplication)
@@ -29,13 +29,13 @@ describe("postJobApplication", () => {
         company_name: "",
         job_role: ""
       },
-      access_token: testAccessToken
+      accessToken: testAccessToken
     })).rejects.toThrow("required fields are missing")
     expect(mockedAxios.post).toBeCalledTimes(0)
   })
   it("API returns with an error", async () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("oops!"))
-    expect(postJobApplication({jobApplication: testJobApplicationRequest, access_token: testAccessToken})).rejects.toThrow("oops!")
+    expect(postJobApplication({jobApplication: testJobApplicationRequest, accessToken: testAccessToken})).rejects.toThrow("oops!")
     expect(mockedAxios.post).toHaveBeenCalled()
     expect(mockedAxios.post).toHaveBeenCalledWith("/job-applications", testJobApplicationRequest, { headers: headers })
   })

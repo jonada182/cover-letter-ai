@@ -112,7 +112,7 @@ export default function Page() {
     event.preventDefault();
     postCareerProfile({
       careerProfile: careerProfile,
-      access_token: linkedInAccessToken,
+      accessToken: linkedInAccessToken,
     });
   };
 

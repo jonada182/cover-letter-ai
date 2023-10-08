@@ -1,44 +1,41 @@
-import React from "react";
+import React, { memo } from "react";
 import Link from "next/link";
 import {
-  PiCalendarPlusThin,
   PiLinkThin,
-  PiPencilThin,
   PiTrashThin,
 } from "react-icons/pi";
-import { JobApplication, JobApplicationEvent } from "@/types";
+import { JobApplication } from "@/types";
 import { dateFromNow, formatDate, isValidURL } from "@/utils";
-import JobApplicationEvents from "./JobApplicationEvents";
 import Tooltip from "@/components/Tooltip";
 import { UUID } from "crypto";
+import { PageLoading } from "@/components/Page";
 
 type Props = {
   jobApplications: JobApplication[] | undefined;
-  handleEditApplication: (jobApplication: JobApplication) => void;
+  isLoading: boolean;
   handleDeleteApplication: (jobApplicationId: UUID | null | undefined) => void;
-  handleAddEvent: (jobApplicationId: UUID | null | undefined) => void;
-  handleEventNotesToggle: (event: JobApplicationEvent) => void;
-  handleEventDelete: (
-    jobApplicationId: UUID | null | undefined,
-    index: number
-  ) => void;
 };
 
 const JobApplications = ({
   jobApplications,
-  handleEditApplication,
+  isLoading,
   handleDeleteApplication,
-  handleAddEvent,
-  handleEventNotesToggle,
-  handleEventDelete,
 }: Props) => {
+
+  if (isLoading) {
+    return <PageLoading loading={true} />
+  }
+
+  if (!jobApplications) {
+    return (
+      <div className="p-4 text-center text-gray-400">
+        You haven`t added any job applications yet
+      </div>
+    )
+  }
+
   return (
     <div>
-      {!jobApplications && (
-        <div className="p-4 text-center text-gray-400">
-          You haven`t added any job applications yet
-        </div>
-      )}
       {jobApplications?.map((jobApplication) => (
         <div
           key={jobApplication.id}
@@ -48,7 +45,7 @@ const JobApplications = ({
             <div className="flex-grow border-r border-gray-200 p-4">
               <div className="flex justify-between items-center">
                 <div className="text-sm font-bold text-blue-900 capitalize">
-                  {jobApplication.job_role}
+                  <Link href={`/tracker/${jobApplication.id}`}>{jobApplication.job_role}</Link>
                 </div>
                 <div className="text-xs text-gray-400 font-light">
                   <Tooltip text={formatDate(jobApplication.updated_at)}>
@@ -61,12 +58,6 @@ const JobApplications = ({
               </div>
             </div>
             <div className="w-1/3 md:w-1/4 flex justify-center items-center p-4 gap-2">
-              <button
-                className="btn-icon"
-                onClick={() => handleAddEvent(jobApplication.id)}
-              >
-                <PiCalendarPlusThin />
-              </button>
               {jobApplication.url && isValidURL(jobApplication.url) && (
                 <Link
                   className="btn-icon"
@@ -78,27 +69,16 @@ const JobApplications = ({
               )}
               <button
                 className="btn-icon"
-                onClick={() => handleEditApplication(jobApplication)}
-              >
-                <PiPencilThin />
-              </button>
-              <button
-                className="btn-icon"
                 onClick={() => handleDeleteApplication(jobApplication.id)}
               >
                 <PiTrashThin />
               </button>
             </div>
           </div>
-          <JobApplicationEvents
-            jobApplication={jobApplication}
-            handleDelete={handleEventDelete}
-            handleToggle={handleEventNotesToggle}
-          />
         </div>
       ))}
     </div>
   );
 };
 
-export default JobApplications;
+export default memo(JobApplications);

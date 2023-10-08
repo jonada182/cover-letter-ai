@@ -4,22 +4,22 @@ import { UUID } from "crypto";
 
 export type RequestProps = {
   jobApplicationId: UUID | null
-  access_token: string | null
-  profile_id: UUID | null
+  accessToken: string | null
+  profileId: UUID | null
 }
 
 export interface APIResponse {
     message: string
 }
 
-const deleteJobApplication = async ({ jobApplicationId, access_token, profile_id }: RequestProps): Promise<APIResponse> => {
+const deleteJobApplication = async ({ jobApplicationId, accessToken, profileId }: RequestProps): Promise<APIResponse> => {
   try {
     const response = await axios.delete<APIResponse>(
       `/job-applications/${jobApplicationId}`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`,
-          UserID: profile_id,
+          Authorization: `Bearer ${accessToken}`,
+          UserID: profileId,
         }
       }
     );
