@@ -26,11 +26,11 @@ const Modal = (props: Props) => {
         {props.isError && <PageError error={props.isError} />}
         {!props.isLoading && props.children}
         <div className="flex items-center justify-end gap-4">
-          <Button onClick={props.onClose} colour={ButtonColour.Pink}>
+          <Button onClick={props.onClose} colour={ButtonColour.Pink} disabled={!!props.isLoading}>
             Close
           </Button>
           {props.onConfirm && (
-            <Button onClick={props.onConfirm} colour={ButtonColour.Blue}>
+            <Button onClick={props.onConfirm} colour={ButtonColour.Blue} disabled={!!props.isLoading}>
               Confirm
             </Button>
           )}

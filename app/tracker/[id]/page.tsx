@@ -4,7 +4,6 @@ import { useParams } from "next/navigation"
 import { UUID } from "crypto"
 import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
 import { getCurrentDate } from "@/utils"
-import { usePageContext } from "@/contexts/PageContext"
 import { useUserContext } from "@/contexts/UserContext"
 import useJobApplication from "@/app/tracker/hooks/useJobApplication"
 import Modal from "@/components/Modal"
@@ -39,12 +38,9 @@ export default function Page() {
   const [jobApplicationEventForm, setJobApplicationEventForm] = useState<JobApplicationEvent>(initialJobApplicationEvent);
 
   const { profileId, linkedInAccessToken } = useUserContext();
-  const { setError, setLoading } = usePageContext();
 
   const {
     jobApplication,
-    fetchIsLoading: jobApplicationIsLoading,
-    fetchError: jobApplicationError,
     postError: postJobApplicationError,
     postIsLoading: postJobApplicationIsLoading,
     postIsSuccess: postJobApplicationSuccess,
@@ -64,11 +60,6 @@ export default function Page() {
       setJobApplicationId(params.id as UUID)
     }
   }, [params])
-
-  useEffect(() => {
-    setError(jobApplicationError);
-    setLoading(jobApplicationIsLoading);
-  }, [jobApplicationError, jobApplicationIsLoading]);
 
   useEffect(() => {
     if (postJobApplicationSuccess) {

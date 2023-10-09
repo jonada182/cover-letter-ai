@@ -1,26 +1,13 @@
 "use client";
-import { useEffect } from "react";
 import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile";
-import { usePageContext } from "@/contexts/PageContext";
 import { useUserContext } from "@/contexts/UserContext";
 import { PageCardButton, PageHero } from "@/components/Page";
 
 export default function Page() {
   const { signOut } = useUserContext();
-  const { setLoading, setError } = usePageContext();
   const {
     data: careerProfile,
-    isLoading: careerProfileIsLoading,
-    error: careerProfileError,
   } = useGetCareerProfile();
-
-  useEffect(() => {
-    setLoading(careerProfileIsLoading);
-  }, [careerProfileIsLoading]);
-
-  useEffect(() => {
-    setError(careerProfileError);
-  }, [careerProfileError]);
 
   return (
     <div className="flex flex-col flex-grow justify-center gap-6">

@@ -9,11 +9,9 @@ import {
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import usePostCoverLetter from "@/app/cover-letter/hooks/usePostCoverLetter";
-import { usePageContext } from "@/contexts/PageContext";
 import { useUserContext } from "@/contexts/UserContext";
 import { JobPosting } from "@/types";
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
-import { PageLoading } from "@/components/Page";
 import useJobApplication from "../tracker/hooks/useJobApplication";
 
 const initialJobPosting: JobPosting = {
@@ -27,7 +25,6 @@ export default function Page() {
   const [jobPostingForm, setJobPostingForm] =
     useState<JobPosting>(initialJobPosting);
   const [successfulMsg, setSuccessfulMsg] = useState<boolean>(false);
-  const { setError, setLoading } = usePageContext();
   const { profileId, linkedInAccessToken } = useUserContext();
   const {
     data: coverLetter,
@@ -52,13 +49,6 @@ export default function Page() {
   }, [successfulMsg]);
 
   useEffect(() => {
-    setLoading(coverLetterLoading);
-    setError(coverLetterError);
-  }, [coverLetterError, coverLetterLoading]);
-
-  useEffect(() => {
-    setLoading(postJobApplicationIsLoading);
-    setError(postJobApplicationError);
     if (postJobApplicationIsSuccess) {
       resetCoverLetter();
       resetPostJobApplication();
@@ -113,7 +103,6 @@ export default function Page() {
     () => import("@/app/cover-letter/components/CoverLetter"),
     {
       ssr: false,
-      loading: () => <PageLoading loading={true} />,
     }
   );
 

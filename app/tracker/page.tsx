@@ -9,7 +9,6 @@ import {
 import { UUID } from "crypto";
 import useJobApplications from "@/app/tracker/hooks/useJobApplications";
 import { JobApplication } from "@/types";
-import { usePageContext } from "@/contexts/PageContext";
 import { useUserContext } from "@/contexts/UserContext";
 import { FormButton } from "@/components/Form";
 import Modal from "@/components/Modal";
@@ -34,7 +33,6 @@ export default function Page() {
   );
 
   const { profileId, linkedInAccessToken } = useUserContext();
-  const { setError, setLoading } = usePageContext();
 
   const {
     data: jobApplications,
@@ -54,11 +52,6 @@ export default function Page() {
     deleteApplication: deleteJobApplication,
     reset: resetPostJobApplication,
   } = useJobApplication({ isEnabled: false });
-
-  useEffect(() => {
-    setError(jobApplicationsError);
-    setLoading(jobApplicationsLoading);
-  }, [jobApplicationsError, jobApplicationsLoading]);
 
   useEffect(() => {
     if (postJobApplicationSuccess) {

@@ -9,7 +9,6 @@ import {
 } from "react";
 import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile";
 import usePostCareerProfile from "@/app/career-profile/hooks/usePostCareerProfile";
-import { usePageContext } from "@/contexts/PageContext";
 import { useUserContext } from "@/contexts/UserContext";
 import { CareerProfile } from "@/types";
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
@@ -32,7 +31,6 @@ const initialProfile: CareerProfile = {
 export default function Page() {
   const [careerProfile, setCareerProfile] =
     useState<CareerProfile>(initialProfile);
-  const { setError, setLoading } = usePageContext();
   const { linkedInAccessToken } = useUserContext();
 
   const {
@@ -66,8 +64,6 @@ export default function Page() {
         },
       }));
     }
-    setLoading(careerProfileLoading);
-    setError(careerProfileError);
   }, [careerProfileError, careerProfileLoading]);
 
   useEffect(() => {
