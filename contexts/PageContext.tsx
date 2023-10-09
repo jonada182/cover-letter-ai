@@ -2,7 +2,7 @@ import { navigationLinks } from "@/constants";
 import { APIError, NavigationLink } from "@/types";
 import { usePathname } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { useQueryClient } from "react-query";
+import { useIsFetching, useIsMutating } from "react-query";
 
 type Props = {
   children: React.ReactNode
@@ -21,27 +21,20 @@ export const PageContext = createContext<PageContextType | undefined>(undefined)
 export const PageProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | APIError | null>(null);
-  const queryClient = useQueryClient()
+  const isFetching = useIsFetching()
+  const isMutating = useIsMutating()
   const pathname = usePathname()
   const currentNavigationLink = navigationLinks.find((link) => link.path === pathname)
 
   useEffect(() => {
-    queryClient.defaultQueryOptions({
-      onError(err: Error | APIError) {
-        setError(err)
-      },
-    })
-    queryClient.defaultMutationOptions({
-      onError(err: Error | APIError) {
-        setError(err)
-      },
-    })
-    if (queryClient.isFetching() > 0) {
-      setLoading(true)
-    } else {
-      setLoading(false)
-    }
-  }, [queryClient])
+    setError(null)
+    setLoading(false)
+  }, [pathname])
+
+  useEffect(() => {
+    setLoading(isFetching > 0)
+    setLoading(isMutating > 0)
+  }, [isFetching, isMutating])
 
   return (
     <PageContext.Provider value={{ loading, error, currentNavigationLink, setLoading, setError }}>

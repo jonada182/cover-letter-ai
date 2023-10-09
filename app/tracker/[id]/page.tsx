@@ -11,6 +11,7 @@ import FormSelect from "@/components/Form/FormSelect"
 import { FormInput, FormTextarea } from "@/components/Form"
 import JobApplicationForm from "@/app/tracker/components/JobApplicationForm"
 import JobApplicationView from "@/app/tracker/components/JobApplicationView"
+import Link from "next/link"
 
 const initialJobApplication: JobApplication = {
   company_name: "",
@@ -160,7 +161,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-grow flex-col justify-start">
       <JobApplicationView
         jobApplication={jobApplication}
         handleAddEvent={handleAddEvent}
@@ -168,6 +169,7 @@ export default function Page() {
         handleEditApplication={handleEditApplication}
         handleEventDelete={deleteJobApplicationEvent}
       />
+      <Link className="text-blue-900 text-sm p-4 text-center hover:underline place-self-center" href={"/tracker"}>Go back to job applications</Link>
 
       <Modal
         title="Track A New Event"

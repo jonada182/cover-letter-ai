@@ -33,7 +33,7 @@ const JobApplicationView = ({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <>
       <div className="flex flex-col bg-white border-t border-gray-200 first:border-0 shadow rounded">
         <div className="flex items-center justify-stretch">
           <div className="flex-grow flex flex-col gap-2 p-4">
@@ -79,8 +79,7 @@ const JobApplicationView = ({
           handleDelete={handleEventDelete}
         />
       </div>
-      <Link className="text-blue-900 text-sm p-4 text-center hover:underline" href={"/tracker"}>Go back to job applications</Link>
-    </div>
+    </>
   );
 };
 

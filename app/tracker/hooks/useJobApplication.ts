@@ -8,8 +8,9 @@ import deleteJobApplication, {
 } from "@/app/tracker/api/deleteJobApplication";
 import { useUserContext } from "@/contexts/UserContext";
 import { APIError, JobApplication, JobApplicationEvent } from "@/types";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { UUID } from "crypto";
+import { usePageContext } from "@/contexts/PageContext";
 
 type Props = {
   jobApplicationId?: UUID | null;
@@ -17,7 +18,9 @@ type Props = {
 };
 
 const useJobApplication = (props: Props) => {
+  const queryClient = useQueryClient();
   const { linkedInAccessToken, profileId } = useUserContext();
+  const { setError } = usePageContext();
   const {
     refetch,
     data: jobApplication,
@@ -31,6 +34,9 @@ const useJobApplication = (props: Props) => {
         profileId: profileId,
         accessToken: linkedInAccessToken,
       }),
+    onError(err) {
+      setError(err)
+    },
     enabled: !!profileId && !!props?.jobApplicationId && !!!props?.isEnabled,
   });
 
@@ -42,7 +48,14 @@ const useJobApplication = (props: Props) => {
     isSuccess: postIsSuccess,
   } = useMutation<JobApplication, APIError, RequestProps>({
     mutationFn: postJobApplication,
-    mutationKey: ["job_applications", profileId],
+    mutationKey: ["postJobApplication"],
+    onError(err) {
+      setError(err)
+    },
+    onSuccess(data) {
+      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId, data.id]})
+      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId]})
+    },
   });
 
   const {
@@ -52,7 +65,13 @@ const useJobApplication = (props: Props) => {
     isSuccess: deleteIsSuccess,
   } = useMutation<deleteAPIResponse, APIError, deleteRequestProps>({
     mutationFn: deleteJobApplication,
-    mutationKey: ["job_applications", profileId],
+    mutationKey: ["deleteJobApplication"],
+    onError(err) {
+      setError(err)
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId]})
+    },
   });
 
   const addJobApplicationEvent = (event: JobApplicationEvent) => {
