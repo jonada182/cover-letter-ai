@@ -7,7 +7,6 @@ import {
 import { JobApplication } from "@/types";
 import { dateFromNow, isValidURL } from "@/utils";
 import { UUID } from "crypto";
-import { PageLoading } from "@/components/Page";
 
 type Props = {
   jobApplications: JobApplication[] | undefined;

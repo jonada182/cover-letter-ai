@@ -113,7 +113,7 @@ export default function Page() {
   };
 
   if (careerProfileLoading) {
-    return null;
+    return <div className="p-4 text-center text-gray-400 animate-pulse">Loading career profile...</div>
   }
 
   return (

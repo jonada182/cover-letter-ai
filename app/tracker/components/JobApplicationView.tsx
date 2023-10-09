@@ -14,6 +14,7 @@ import { FormButton } from "@/components/Form";
 
 type Props = {
   jobApplication: JobApplication | undefined;
+  isLoading: boolean;
   handleEditApplication: (jobApplication: JobApplication) => void;
   handleDeleteApplication: (jobApplicationId: UUID | null | undefined) => void;
   handleAddEvent: (jobApplicationId: UUID | null | undefined) => void;
@@ -22,14 +23,23 @@ type Props = {
 
 const JobApplicationView = ({
   jobApplication,
+  isLoading,
   handleEditApplication,
   handleDeleteApplication,
   handleAddEvent,
   handleEventDelete,
 }: Props) => {
 
+  if (isLoading) {
+    return <div className="p-4 text-center text-gray-400 animate-pulse">Loading job application</div>
+  }
+
   if (!jobApplication) {
-    return null
+    return (
+      <div className="p-4 text-center text-gray-400">
+        This job application is not available
+      </div>
+    )
   }
 
   return (

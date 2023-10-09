@@ -1,5 +1,5 @@
 "use client"
-import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react"
 import { useParams } from "next/navigation"
 import { UUID } from "crypto"
 import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
@@ -42,6 +42,7 @@ export default function Page() {
 
   const {
     jobApplication,
+    fetchIsLoading,
     postError: postJobApplicationError,
     postIsLoading: postJobApplicationIsLoading,
     postIsSuccess: postJobApplicationSuccess,
@@ -55,6 +56,11 @@ export default function Page() {
     addJobApplicationEvent,
     deleteJobApplicationEvent,
   } = useJobApplication({ jobApplicationId: jobApplicationId });
+
+  const isLoading = useMemo(
+    () => fetchIsLoading || postJobApplicationIsLoading || deleteJobApplicationIsLoading,
+    [deleteJobApplicationIsLoading, fetchIsLoading, postJobApplicationIsLoading]
+  )
 
   useEffect(() => {
     if (params && params.id && params.id != "") {
@@ -74,8 +80,7 @@ export default function Page() {
 
   useEffect(() => {
     if (deleteJobApplicationSuccess) {
-      refetch();
-      setDeleteModalIsOpen(false);
+      window.location.href = "/tracker"
     }
   }, [deleteJobApplicationSuccess]);
 
@@ -164,6 +169,7 @@ export default function Page() {
     <div className="flex flex-grow flex-col justify-start">
       <JobApplicationView
         jobApplication={jobApplication}
+        isLoading={isLoading}
         handleAddEvent={handleAddEvent}
         handleDeleteApplication={handleConfirmDelete}
         handleEditApplication={handleEditApplication}
