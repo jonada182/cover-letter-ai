@@ -22,7 +22,7 @@ const JobApplications = ({
 }: Props) => {
 
   if (isLoading) {
-    return <PageLoading loading={true} />
+    return <div className="p-4 text-center text-gray-400 animate-pulse">Loading job applications...</div>
   }
 
   if (!jobApplications) {

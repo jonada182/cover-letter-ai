@@ -30,7 +30,7 @@ const JobApplicationEvents = ({
             </div>
             <div className="flex-grow">
               <h4 className="font-semibold text-sm capitalize">{event.description}</h4>
-              <div className="text-xs text-gray-400 my-2">{event.additional_notes}</div>
+              {!!event.additional_notes && <div className="text-xs text-gray-400 my-2">{event.additional_notes}</div>}
             </div>
             <div className="text-xs text-gray-400 font-light">
               <Tooltip text={formatDate(event.date)}>
