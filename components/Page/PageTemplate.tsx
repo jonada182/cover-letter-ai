@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { PageError, PageHeader, PageHeading, PageLoading } from ".";
 import { usePageContext } from "@/contexts/PageContext";
@@ -6,25 +6,21 @@ import { useUserContext } from "@/contexts/UserContext";
 
 type Props = {
   children: React.ReactNode;
+  loadingMessage: string
 };
 
-const PageTemplate = ({ children }: Props) => {
+const PageTemplate = ({ children, loadingMessage }: Props) => {
   const {
     loading: isPageLoading,
     error: isPageError,
     currentNavigationLink,
-    setLoading,
   } = usePageContext();
-  const { isLoggedIn, isLoading: userLoading } = useUserContext();
-
-  useEffect(() => {
-    setLoading(userLoading);
-  }, [userLoading]);
+  const { isLoggedIn } = useUserContext();
 
   if (!isLoggedIn && currentNavigationLink?.path !== "/login") {
     return (
       <div className="flex flex-col flex-grow items-center justify-center min-h-screen">
-        <PageLoading loading={userLoading} />
+        <PageLoading loading={true} message={loadingMessage} />
       </div>
     );
   }
@@ -56,4 +52,4 @@ const PageTemplate = ({ children }: Props) => {
   );
 };
 
-export default memo(PageTemplate);
+export default PageTemplate;

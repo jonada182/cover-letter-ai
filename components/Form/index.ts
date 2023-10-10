@@ -1,11 +1,4 @@
-import Form from "./Form";
-import FormInput from "./FormInput";
-import FormButton from "./FormButton";
-import FormTextarea from "./FormTextarea";
-
-export {
-  Form,
-  FormInput,
-  FormButton,
-  FormTextarea,
-};
+export {default as Form} from "./Form";
+export {default as FormInput} from "./FormInput";
+export {default as FormButton} from "./FormButton";
+export {default as FormTextarea} from "./FormTextarea";

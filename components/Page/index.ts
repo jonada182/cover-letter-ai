@@ -1,19 +1,8 @@
-import PageHeading from "./PageHeading";
-import PageLogo from "./PageLogo";
-import PageTemplate from "./PageTemplate";
-import PageError from "./PageError";
-import PageLoading from "./PageLoading";
-import PageHero from "./PageHero";
-import PageCardButton from "./PageCardButton";
-import PageHeader from "./PageHeader";
-
-export {
-  PageHeading,
-  PageLogo,
-  PageTemplate,
-  PageError,
-  PageLoading,
-  PageHero,
-  PageCardButton,
-  PageHeader,
-};
+export {default as PageHeading} from "./PageHeading";
+export {default as PageLogo} from "./PageLogo";
+export {default as PageTemplate} from "./PageTemplate";
+export {default as PageError} from "./PageError";
+export {default as PageLoading} from "./PageLoading";
+export {default as PageHero} from "./PageHero";
+export {default as PageCardButton} from "./PageCardButton";
+export {default as PageHeader} from "./PageHeader";

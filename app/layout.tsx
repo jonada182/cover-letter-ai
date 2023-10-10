@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import Main from "@/components/Main";
 import "./globals.css";
+import { getLoadingMessage } from "@/utils";
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
 
@@ -18,8 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Main>{children}</Main>
+      <body className={`${inter.className} bg-gray-100 text-gray-950`}>
+        <Main loadingMessage={getLoadingMessage()}>{children}</Main>
       </body>
     </html>
   );

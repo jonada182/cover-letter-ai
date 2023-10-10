@@ -11,9 +11,8 @@ type Props = {
 const useAuth = (props: Props) => {
   const { setError } = usePageContext()
   return useQuery<User, APIError>({
-    queryKey: [],
     queryFn: () => authenticate({ accessToken: props.accessToken }),
-    enabled: !!props.accessToken || !!props?.isEnabled,
+    enabled: !!props.accessToken && !!props?.isEnabled,
     onError(err) {
       setError(err)
     },

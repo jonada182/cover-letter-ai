@@ -16,7 +16,6 @@ type Props = {
 };
 
 interface UserContextType {
-  isLoading: boolean;
   isLoggedIn: boolean;
   profileId: UUID | null;
   linkedInAccessToken: string | null;
@@ -34,24 +33,26 @@ export const UserProvider = ({ children }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const [profileId, setProfileId] = useState<UUID | null>(null);
-  const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(
-    null
-  );
+  const [linkedInAccessToken, setLinkedInAccessToken] = useState<string | null>(null);
+
   const isLoggedIn = useMemo(
     () => !!profileId && !!linkedInAccessToken,
     [profileId, linkedInAccessToken]
   );
+
   const {
     data: userData,
     error: userError,
     isLoading: userIsLoading,
-  } = useAuth({ accessToken: linkedInAccessToken });
+    refetch: authenticate,
+  } = useAuth({ accessToken: linkedInAccessToken, isEnabled: false });
 
   /**
    * removes access token from session storage, clears the login state and redirects to login page
    */
   const signOut = useCallback(() => {
     sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("career_profile_id");
     setLinkedInAccessToken(null);
     setProfileId(null);
     window.location.href = "/login";
@@ -60,15 +61,25 @@ export const UserProvider = ({ children }: Props) => {
   // Set linked access token from session storage
   useEffect(() => {
     const storedToken = sessionStorage.getItem("access_token");
-    if (storedToken && storedToken !== "") {
-      setLinkedInAccessToken(storedToken);
-      if (window.location.pathname == "/login") {
-        window.location.href = "/";
+    const storedProfileId = sessionStorage.getItem("career_profile_id") as UUID | null;
+    if (!!storedToken) {
+      setLinkedInAccessToken(storedToken)
+      if (!!storedProfileId) {
+        setProfileId(storedProfileId)
+        if (window.location.pathname == "/login") {
+          window.location.href = "/";
+        }
       }
-    } else if (window.location.pathname !== "/login") {
+    } else if (!isLoggedIn && window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn && !!linkedInAccessToken) {
+      authenticate()
+    }
+  }, [isLoggedIn, linkedInAccessToken])
 
   /**
    *  Get access_token query param from callback redirect
@@ -78,10 +89,9 @@ export const UserProvider = ({ children }: Props) => {
     const accessToken = queryParams.get("access_token");
     if (accessToken && accessToken !== "") {
       sessionStorage.setItem("access_token", accessToken);
-      setLinkedInAccessToken(accessToken);
-      router.replace(pathname);
+      window.location.href = "/";
     }
-  }, [pathname, queryParams, router, setLinkedInAccessToken]);
+  }, [pathname, queryParams, router]);
 
   /**
    * If user data is returned from API, set login state and profileId
@@ -89,23 +99,26 @@ export const UserProvider = ({ children }: Props) => {
    */
   useEffect(() => {
     if (userData && userData?.profile_id) {
+      sessionStorage.setItem("career_profile_id", userData?.profile_id);
       setProfileId(userData?.profile_id);
+      if (window.location.pathname == "/login") {
+        window.location.href = "/";
+      }
     }
-  }, [userData, pathname, router]);
+  }, [userData]);
 
   // If user data request is unathorized, we sign out
   useEffect(() => {
     if (userError && userError?.status == HttpStatusCode.Unauthorized) {
       signOut();
     }
-  }, [userError, userIsLoading]);
+  }, [userError]);
 
   const contextValues = useMemo(
     () => ({
       isLoggedIn,
       profileId,
       linkedInAccessToken,
-      isLoading: userIsLoading,
       setProfileId,
       setLinkedInAccessToken,
       signOut,

@@ -1,7 +1,7 @@
 import { navigationLinks } from "@/constants";
 import { APIError, NavigationLink } from "@/types";
 import { usePathname } from "next/navigation";
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { useIsFetching, useIsMutating } from "react-query";
 
 type Props = {
@@ -23,12 +23,6 @@ export const PageProvider = ({ children }: Props) => {
   const [error, setError] = useState<Error | APIError | null>(null);
   const isFetching = useIsFetching()
   const isMutating = useIsMutating()
-  const queryLoading: boolean = useMemo(() => {
-    if (isFetching > 0 || isMutating > 0) {
-      return true
-    }
-    return false
-  }, [isFetching, isMutating])
   const pathname = usePathname()
   const currentNavigationLink = navigationLinks.find((link) => link.path === pathname)
 
@@ -38,8 +32,12 @@ export const PageProvider = ({ children }: Props) => {
   }, [pathname])
 
   useEffect(() => {
-    setLoading(queryLoading)
-  }, [queryLoading])
+    if (isFetching > 0 || isMutating > 0) {
+      setLoading(true)
+    } else {
+      setLoading(false)
+    }
+  }, [isFetching, isMutating])
 
   return (
     <PageContext.Provider value={{ loading, error, currentNavigationLink, setLoading, setError }}>
