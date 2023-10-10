@@ -2,12 +2,18 @@
 import useGetCareerProfile from "@/app/career-profile/hooks/useGetCareerProfile";
 import { useUserContext } from "@/contexts/UserContext";
 import { PageCardButton, PageHero } from "@/components/Page";
+import { usePageContext } from "@/contexts/PageContext";
 
 export default function Page() {
   const { signOut } = useUserContext();
+  const { loading: pageIsLoading } = usePageContext()
   const {
     data: careerProfile,
   } = useGetCareerProfile();
+
+  if (pageIsLoading) {
+    return null
+  }
 
   return (
     <div className="flex flex-col flex-grow justify-center gap-6">
