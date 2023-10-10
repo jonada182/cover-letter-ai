@@ -24,8 +24,6 @@ export const PageProvider = ({ children }: Props) => {
   const isFetching = useIsFetching()
   const isMutating = useIsMutating()
   const queryLoading: boolean = useMemo(() => {
-    console.log("fetching", isFetching)
-    console.log("mutating", isMutating)
     if (isFetching > 0 || isMutating > 0) {
       return true
     }

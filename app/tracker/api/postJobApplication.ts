@@ -21,7 +21,6 @@ const postJobApplication = async ({ jobApplication, accessToken }: RequestProps)
       throw new Error("required fields are missing")
     }
     if (jobApplication.url && jobApplication.url != "") {
-      console.log(jobApplication.url)
       if (!isValidURL(jobApplication.url))
         throw new Error("url is invalid")
     }
