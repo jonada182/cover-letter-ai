@@ -36,7 +36,7 @@ const PageTemplate = ({ children, loadingMessage }: Props) => {
         >
           <PageHeading currentNavigationLink={currentNavigationLink} />
           <PageError error={isPageError} />
-          <PageLoading loading={isPageLoading} />
+          <PageLoading loading={isPageLoading} message={loadingMessage} />
           {children}
         </div>
         {currentNavigationLink?.path == "/login" && (
