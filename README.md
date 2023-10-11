@@ -1,8 +1,8 @@
-# CoverLetterAI - API
+# CoverLetterAI
 
 ## What is CoverLetterAI
 
-Introducing **CoverLetterAI**, your new best friend in the job application process. Utilizing the advanced capabilities of ChatGPT, our web app crafts compelling and personalized cover letters in minutes. Simply answer a few questions or give us some key points, and we'll turn them into a professional cover letter that stands out. Say goodbye to staring at a blank screen wondering how to start; let **CoverLetterAI** do the heavy lifting so you can focus on landing your dream job.
+Introducing **CoverLetterAI**, your comprehensive companion in the job application journey. Not only does our platform harness the advanced capabilities of ChatGPT to craft compelling and personalized cover letters in minutes, but it also offers a robust tracking system for all your job applications. Monitor your progress with detailed event logs, from submission to interview, and even job offers. No more juggling multiple tools or staring at a blank screen wondering how to begin. With **CoverLetterAI**, you get a holistic solution that lets you focus on what matters most: landing your dream job.
 
 ## Getting Started
 
