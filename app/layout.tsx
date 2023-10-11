@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Roboto_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Main from "@/components/Main";
 import "./globals.css";
 import { getLoadingMessage } from "@/utils";
 
-const inter = Roboto_Mono({ subsets: ["latin"] });
+const inter = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "300", "500", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "CoverLetterAI",
