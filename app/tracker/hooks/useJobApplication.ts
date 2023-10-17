@@ -41,6 +41,7 @@ const useJobApplication = (props: Props) => {
   });
 
   const {
+    data: postData,
     mutate,
     reset,
     error: postError,
@@ -114,6 +115,7 @@ const useJobApplication = (props: Props) => {
     jobApplication,
     fetchError,
     fetchIsLoading,
+    postData,
     postError,
     postIsLoading,
     postIsSuccess,

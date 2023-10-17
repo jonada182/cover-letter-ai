@@ -24,7 +24,7 @@ const initialJobPosting: JobPosting = {
 export default function Page() {
   const [jobPostingForm, setJobPostingForm] =
     useState<JobPosting>(initialJobPosting);
-  const [successfulMsg, setSuccessfulMsg] = useState<boolean>(false);
+  const [successfulMsg, setSuccessfulMsg] = useState<boolean>(true);
   const { profileId, linkedInAccessToken } = useUserContext();
   const {
     data: coverLetter,
@@ -35,6 +35,7 @@ export default function Page() {
   } = usePostCoverLetter();
 
   const {
+    postData: postJobApplicationData,
     mutate: postJobApplication,
     postError: postJobApplicationError,
     postIsLoading: postJobApplicationIsLoading,
@@ -44,7 +45,7 @@ export default function Page() {
 
   useEffect(() => {
     if (successfulMsg) {
-      setTimeout(() => setSuccessfulMsg(false), 5000);
+      // setTimeout(() => setSuccessfulMsg(false), 5000);
     }
   }, [successfulMsg]);
 
@@ -95,7 +96,7 @@ export default function Page() {
     });
   }, [jobPostingForm, profileId, linkedInAccessToken]);
 
-  if (coverLetterLoading) {
+  if (coverLetterLoading || postJobApplicationIsLoading) {
     return null;
   }
 
@@ -130,8 +131,8 @@ export default function Page() {
         for personalized cover letters
       </div>
       {successfulMsg && (
-        <div className="bg-green-300 border border-green-400 text-green-950 p-4 mb-4 text-center text-sm font-semibold rounded transition-all">
-          Job Application saved successfully
+        <div className="bg-green-300 border text-green-950 p-4 mb-4 text-center text-sm rounded transition-all">
+          {postJobApplicationData && <Link className="font-bold underline" href={`/tracker/${postJobApplicationData.id}`}>Job Application</Link>} was saved successfully
         </div>
       )}
       <Form handleOnSubmit={submitCoverLetterForm}>

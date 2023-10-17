@@ -117,7 +117,7 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between mb-4">
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-bold py-4">
           Job Applications
         </h2>
         <FormButton

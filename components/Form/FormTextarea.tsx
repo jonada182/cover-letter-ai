@@ -18,9 +18,8 @@ const FormTextarea = (props: Props) => {
         </label>
       )}
       <textarea
-        className={`flex-grow p-3 text-sm transition-all shadow-sm my-3 rounded border border-gray-200 focus:border-pink-600 outline-none ${
-          props.large ? "h-64" : "h-36"
-        } max-h-64`}
+        className={`flex-grow p-3 text-sm transition-all shadow-sm my-3 rounded border border-gray-200 focus:border-pink-600 outline-none font-light
+        ${props.large ? "h-64" : "h-36"} max-h-64`}
         name={props.name}
         id={props.name}
         placeholder={props?.placeholder}

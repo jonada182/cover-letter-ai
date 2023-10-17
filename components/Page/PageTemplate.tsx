@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { PageError, PageHeader, PageHeading, PageLoading } from ".";
 import { usePageContext } from "@/contexts/PageContext";
@@ -15,7 +15,13 @@ const PageTemplate = ({ children, loadingMessage }: Props) => {
     error: isPageError,
     currentNavigationLink,
   } = usePageContext();
-  const { isLoggedIn } = useUserContext();
+  const { isLoggedIn, signOut } = useUserContext();
+
+  useEffect(() => {
+    if (isPageError && isPageError.message == "Unauthorized request" && isLoggedIn) {
+      signOut()
+    }
+  }, [isPageError])
 
   if (!isLoggedIn && currentNavigationLink?.path !== "/login") {
     return (

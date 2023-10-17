@@ -27,7 +27,7 @@ const FormInput = (props: Props) => {
         </label>
       )}
       <input
-        className="flex-grow p-3 transition-all shadow-sm my-3 rounded border border-gray-200 focus:border-pink-600 outline-none"
+        className="flex-grow p-3 transition-all shadow-sm my-3 rounded border border-gray-200 focus:border-pink-600 outline-none font-light"
         type={props.type}
         name={props.name}
         id={props.name}
