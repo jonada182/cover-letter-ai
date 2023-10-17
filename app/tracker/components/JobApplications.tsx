@@ -4,7 +4,7 @@ import {
   PiLinkThin,
   PiTrashThin,
 } from "react-icons/pi";
-import { JobApplication } from "@/types";
+import { JobApplication, JobApplicationEventType } from "@/types";
 import { dateFromNow, isValidURL } from "@/utils";
 import { UUID } from "crypto";
 import FormButton from "@/components/Form/FormButton";
@@ -80,13 +80,18 @@ const JobApplications = ({
             <div className="flex items-center justify-stretch">
               <Link className="group flex-grow flex flex-col gap-1 p-4" href={`/tracker/${jobApplication.id}`}>
                 <div
-                  className="text-base font-bold text-blue-900 capitalize group-hover:underline"
+                  className="text-base font-bold text-blue-900 capitalize group-hover:underline flex gap-2 items-center justify-stretch"
                 >
                   {jobApplication.job_role}
                 </div>
                 <div className="text-sm capitalize">
                   {jobApplication.company_name}
                 </div>
+                {jobApplication.events && jobApplication.events.length > 0 && (
+                  <div className="px-2 py-1 flex-grow-0 self-start bg-pink-200 text-pink-950 font-medium rounded-sm text-xs uppercase text-center">
+                    {JobApplicationEventType[jobApplication.events[jobApplication.events.length - 1]?.type]}
+                  </div>
+                )}
                 <div className="text-xs text-gray-400 font-light flex-grow-0">
                   {`Updated ${dateFromNow(jobApplication.updated_at)}`}
                 </div>
