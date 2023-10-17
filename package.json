@@ -12,12 +12,12 @@
     "test-watch": "jest --watch"
   },
   "dependencies": {
-    "@types/node": "20.6.3",
+    "@types/node": "20.6.4",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.15",
+    "autoprefixer": "10.4.16",
     "axios": "^1.5.0",
-    "eslint": "8.49.0",
+    "eslint": "8.50.0",
     "eslint-config-next": "13.5.2",
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
