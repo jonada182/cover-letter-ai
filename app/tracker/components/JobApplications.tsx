@@ -114,7 +114,7 @@ const JobApplications = ({
           </div>
         ))}
       </div>
-      {currentPage < totalPages && filterTerm !== "" && (
+      {currentPage < totalPages && filterTerm === "" && (
         <div className="flex justify-center p-6">
           <FormButton onClick={() => loadMoreResults()} text="Load more applications" />
         </div>
