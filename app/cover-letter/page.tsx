@@ -45,18 +45,20 @@ export default function Page() {
 
   useEffect(() => {
     if (successfulMsg) {
-      // setTimeout(() => setSuccessfulMsg(false), 5000);
+      setTimeout(() => {
+        setSuccessfulMsg(false);
+        resetPostJobApplication();
+      }, 5000);
     }
   }, [successfulMsg]);
 
   useEffect(() => {
     if (postJobApplicationIsSuccess) {
       resetCoverLetter();
-      resetPostJobApplication();
       setJobPostingForm(initialJobPosting);
       setSuccessfulMsg(true);
     }
-  }, [postJobApplicationError, postJobApplicationIsLoading]);
+  }, [postJobApplicationIsSuccess]);
 
   const setFormValue = useCallback(
     (
@@ -121,18 +123,28 @@ export default function Page() {
   return (
     <>
       <div className="p-4 mb-4 bg-blue-200 text-blue-900 text-sm rounded">
-        Don`t forget to{" "}
+        Don&rsquo;t forget to{" "}
         <Link
-          className="font-bold hover:underline text-pink-700"
+          className="font-medium hover:underline text-pink-700"
           href={"/career-profile"}
         >
           update your career profile
         </Link>{" "}
         for personalized cover letters
       </div>
-      {successfulMsg && (
+      {successfulMsg && postJobApplicationData && (
         <div className="bg-green-300 border text-green-950 p-4 mb-4 text-center text-sm rounded transition-all">
-          {postJobApplicationData && <Link className="font-bold underline" href={`/tracker/${postJobApplicationData.id}`}>Job Application</Link>} was saved successfully
+          {postJobApplicationData?.id ? (
+            <Link
+              className="font-medium underline"
+              href={`/tracker/${postJobApplicationData.id}`}
+            >
+              Job Application
+            </Link>
+          ) : (
+            "Job Application"
+          )}{" "}
+          was saved successfully
         </div>
       )}
       <Form handleOnSubmit={submitCoverLetterForm}>

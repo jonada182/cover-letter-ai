@@ -23,11 +23,11 @@ type IconProps = {
 const Icon = ({ icon }: IconProps) => {
   switch (icon) {
     case "letter":
-      return <PiFileTextThin className="text-4xl" />;
+      return <PiFileTextThin className="text-5xl" />;
     case "job":
-      return <PiSuitcaseSimpleThin className="text-4xl" />;
+      return <PiSuitcaseSimpleThin className="text-5xl" />;
     case "profile":
-      return <PiUserListThin className="text-4xl" />;
+      return <PiUserListThin className="text-5xl" />;
     default:
       return null;
   }
@@ -50,7 +50,7 @@ const PageCardButton = (props: Props) => {
   return (
     <Link
       href={props.url}
-      className={`flex flex-col hover:opacity-80 transition-all p-6 text-center gap-2 items-center justify-center w-full h-46 rounded-xl shadow-lg bg-gradient-to-t text-white ${getTheme(
+      className={`flex flex-col hover:opacity-80 transition-all p-6 text-center gap-2 items-center justify-center w-full h-46 md:h-48 rounded-xl shadow-lg bg-gradient-to-t text-white ${getTheme(
         props.theme
       )}`}
     >

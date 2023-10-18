@@ -6,13 +6,11 @@ import { usePageContext } from "@/contexts/PageContext";
 
 export default function Page() {
   const { signOut } = useUserContext();
-  const { loading: pageIsLoading } = usePageContext()
-  const {
-    data: careerProfile,
-  } = useGetCareerProfile();
+  const { loading: pageIsLoading } = usePageContext();
+  const { data: careerProfile } = useGetCareerProfile();
 
   if (pageIsLoading) {
-    return null
+    return null;
   }
 
   return (
@@ -30,16 +28,16 @@ export default function Page() {
           url="/cover-letter"
         />
         <PageCardButton
-          theme="pink"
-          icon="job"
-          text="Job Applications"
-          url="/tracker"
-        />
-        <PageCardButton
           theme="gray"
           icon="profile"
           text="My Profile"
           url="/career-profile"
+        />
+        <PageCardButton
+          theme="pink"
+          icon="job"
+          text="Job Applications"
+          url="/tracker"
         />
       </div>
     </div>

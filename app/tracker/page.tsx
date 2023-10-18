@@ -107,19 +107,20 @@ export default function Page() {
     }
   };
 
-  const handleConfirmDelete = useCallback((jobApplicationId: UUID | null | undefined) => {
-    if (jobApplicationId) {
-      setDeleteId(jobApplicationId);
-      setDeleteModalIsOpen(true);
-    }
-  }, []);
+  const handleConfirmDelete = useCallback(
+    (jobApplicationId: UUID | null | undefined) => {
+      if (jobApplicationId) {
+        setDeleteId(jobApplicationId);
+        setDeleteModalIsOpen(true);
+      }
+    },
+    []
+  );
 
   return (
     <>
       <div className="flex flex-col-reverse sm:flex-row items-center justify-between mb-4">
-        <h2 className="text-lg font-bold py-4">
-          Job Applications
-        </h2>
+        <h2 className="text-lg font-bold py-4">Job Applications</h2>
         <FormButton
           text="Add Job Application"
           onClick={() => setAddModalIsOpen(true)}

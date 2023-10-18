@@ -29,9 +29,12 @@ const JobApplicationView = ({
   handleAddEvent,
   handleEventDelete,
 }: Props) => {
-
   if (isLoading) {
-    return <div className="p-4 text-center text-gray-400 animate-pulse">Loading job application</div>
+    return (
+      <div className="p-4 text-center text-gray-400 animate-pulse">
+        Loading job application
+      </div>
+    );
   }
 
   if (!jobApplication) {
@@ -39,7 +42,7 @@ const JobApplicationView = ({
       <div className="p-4 text-center text-gray-400">
         This job application is not available
       </div>
-    )
+    );
   }
 
   return (
@@ -47,9 +50,13 @@ const JobApplicationView = ({
       <div className="flex flex-col bg-white border-t border-gray-200 first:border-0 shadow rounded">
         <div className="flex items-center justify-stretch">
           <div className="flex-grow flex flex-col gap-2 p-4">
-            <div className="text-2xl text-blue-900 capitalize">{jobApplication.job_role}</div>
-            <div className="text-lg text-pink-700 font-bold capitalize">{jobApplication.company_name}</div>
-            <div className="text-sm text-gray-400 font-light flex flex-grow items-center justify-stretch gap-2">
+            <div className="text-2xl text-blue-900 capitalize font-semibold">
+              {jobApplication.job_role}
+            </div>
+            <div className="text-lg text-pink-700 font-medium capitalize">
+              {jobApplication.company_name}
+            </div>
+            <div className="text-sm text-gray-400 font-thin flex flex-grow items-center justify-stretch gap-2">
               <PiClockThin /> {formatDate(jobApplication.updated_at)}
             </div>
           </div>
@@ -81,8 +88,11 @@ const JobApplicationView = ({
           </div>
         </div>
         <div className="flex flex-grow items-center justify-between p-4">
-          <h4 className="text-sm text-gray-400">Events History</h4>
-          <FormButton text="Track New Event" onClick={() => handleAddEvent(jobApplication.id)} />
+          <h4 className="text-sm text-gray-400 font-medium">Events History</h4>
+          <FormButton
+            text="Track New Event"
+            onClick={() => handleAddEvent(jobApplication.id)}
+          />
         </div>
         <JobApplicationEvents
           jobApplication={jobApplication}

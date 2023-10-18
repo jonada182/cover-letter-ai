@@ -1,10 +1,7 @@
 import React, { memo } from "react";
 import { PiTrashThin } from "react-icons/pi";
 import Tooltip from "@/components/Tooltip";
-import {
-  JobApplication,
-  JobApplicationEventType,
-} from "@/types";
+import { JobApplication, JobApplicationEventType } from "@/types";
 import { dateFromNow, formatDate } from "@/utils";
 
 type Props = {
@@ -12,10 +9,7 @@ type Props = {
   handleDelete: (index: number) => void;
 };
 
-const JobApplicationEvents = ({
-  jobApplication,
-  handleDelete,
-}: Props) => {
+const JobApplicationEvents = ({ jobApplication, handleDelete }: Props) => {
   return (
     <div>
       {jobApplication.events?.map((event, index) => {
@@ -29,18 +23,21 @@ const JobApplicationEvents = ({
               {JobApplicationEventType[event.type]}
             </div>
             <div className="flex-grow">
-              <h4 className="font-semibold text-sm capitalize">{event.description}</h4>
-              {!!event.additional_notes && <div className="text-xs text-gray-400 my-2">{event.additional_notes}</div>}
+              <h4 className="font-medium text-sm capitalize">
+                {event.description}
+              </h4>
+              {!!event.additional_notes && (
+                <div className="text-xs text-gray-400 my-2">
+                  {event.additional_notes}
+                </div>
+              )}
             </div>
             <div className="text-xs text-gray-400 font-light">
               <Tooltip text={formatDate(event.date)}>
                 {dateFromNow(event.date)}
               </Tooltip>
             </div>
-            <button
-              className="btn-icon"
-              onClick={() => handleDelete(index)}
-            >
+            <button className="btn-icon" onClick={() => handleDelete(index)}>
               <PiTrashThin />
             </button>
           </div>

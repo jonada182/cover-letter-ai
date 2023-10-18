@@ -12,7 +12,7 @@ type Props = {
 
 const PageHero = (props: Props) => {
   return (
-    <div className="flex w-full h-48 md:h-64 relative bg-gray-50 rounded-xl shadow-lg overflow-hidden">
+    <div className="flex w-full h-48 md:h-80 relative bg-gray-50 rounded-xl shadow-lg overflow-hidden">
       <div className="flex justify-between flex-col z-20 relative p-6 md:p-12">
         <h1 className="text-2xl font-bold">
           {props.heading !== "" ? props.heading : "Welcome"}
