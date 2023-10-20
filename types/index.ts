@@ -86,3 +86,9 @@ export enum JobApplicationEventType {
 export const jobApplicationEventTypes = Object.keys(
   JobApplicationEventType
 ).filter((value: any) => isNaN(value));
+
+export type LinkedInJobPost = {
+  role: string;
+  company: string;
+  details: string;
+};

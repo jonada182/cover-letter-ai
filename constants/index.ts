@@ -1,6 +1,3 @@
 import { navigationLinks } from "./navigationLinks";
-import { apiUrl } from "./constants";
-export { 
-    navigationLinks,
-    apiUrl,
-};
+import { apiUrl, scraperUrl } from "./constants";
+export { navigationLinks, apiUrl, scraperUrl };

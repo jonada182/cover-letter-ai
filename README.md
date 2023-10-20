@@ -13,6 +13,7 @@ Introducing **CoverLetterAI**, your comprehensive companion in the job applicati
 Create a `.env.local` file based on `.env.local.example` with the following:
 
 - `NEXT_PUBLIC_API_BASE_URL`: the API base url for the [cover-letter-ai-api](https://github.com/jonada182/cover-letter-ai-api)
+- `NEXT_PUBLIC_SCRAPER_BASE_URL`: the scraper base url for the [linkedin-scraper](https://github.com/jonada182/linkedin-scraper/)
 - `NEXT_PUBLIC_LINKEDIN_CLIENT_ID`: the client ID of your LinkedIn app (used to generate tokens and authenticate)
 
 Run the development server:

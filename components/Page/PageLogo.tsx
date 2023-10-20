@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import Logo from "@/public/img/logo.png"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,4 +17,4 @@ const PageLogo = ({ title }: Props) => {
   )
 }
 
-export default PageLogo
+export default memo(PageLogo)

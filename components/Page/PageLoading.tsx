@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 
 type Props = {
   loading?: boolean
@@ -15,4 +15,4 @@ const PageLoading = (props: Props) => {
   }
 }
 
-export default PageLoading
+export default memo(PageLoading)

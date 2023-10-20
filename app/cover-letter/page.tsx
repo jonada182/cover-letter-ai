@@ -13,6 +13,8 @@ import { useUserContext } from "@/contexts/UserContext";
 import { JobPosting } from "@/types";
 import { Form, FormButton, FormInput, FormTextarea } from "@/components/Form";
 import useJobApplication from "../tracker/hooks/useJobApplication";
+import { PiInfo } from "react-icons/pi";
+import useGetLinkedInJobPost from "./hooks/useGetLinkedInJobPost";
 
 const initialJobPosting: JobPosting = {
   company_name: "",
@@ -24,11 +26,11 @@ const initialJobPosting: JobPosting = {
 export default function Page() {
   const [jobPostingForm, setJobPostingForm] =
     useState<JobPosting>(initialJobPosting);
-  const [successfulMsg, setSuccessfulMsg] = useState<boolean>(true);
+  const [linkedInJobPostURL, setLinkedInJobPostURL] = useState("")
+  const [successfulMsg, setSuccessfulMsg] = useState(true);
   const { profileId, linkedInAccessToken } = useUserContext();
   const {
     data: coverLetter,
-    error: coverLetterError,
     isLoading: coverLetterLoading,
     mutate: submitCoverLetter,
     reset: resetCoverLetter,
@@ -37,11 +39,27 @@ export default function Page() {
   const {
     postData: postJobApplicationData,
     mutate: postJobApplication,
-    postError: postJobApplicationError,
     postIsLoading: postJobApplicationIsLoading,
     postIsSuccess: postJobApplicationIsSuccess,
     reset: resetPostJobApplication,
   } = useJobApplication({ isEnabled: false });
+
+  const { data: linkedInJobPostData, error: linkedInJobPostError, isLoading: linkedInJobPostIsLoading } = useGetLinkedInJobPost(linkedInJobPostURL)
+
+  useEffect(() => {
+    if (linkedInJobPostData && !linkedInJobPostError) {
+      setJobPostingForm((prev) => {
+        return {
+          ...prev,
+          company_name: linkedInJobPostData.company,
+          job_role: linkedInJobPostData.role,
+          job_details: linkedInJobPostData.details.replaceAll("\n\n", ""),
+        }
+      })
+    } else {
+      setJobPostingForm(initialJobPosting);
+    }
+  }, [linkedInJobPostData, linkedInJobPostError])
 
   useEffect(() => {
     if (successfulMsg) {
@@ -56,6 +74,7 @@ export default function Page() {
     if (postJobApplicationIsSuccess) {
       resetCoverLetter();
       setJobPostingForm(initialJobPosting);
+      setLinkedInJobPostURL("");
       setSuccessfulMsg(true);
     }
   }, [postJobApplicationIsSuccess]);
@@ -93,14 +112,11 @@ export default function Page() {
         company_name: jobPostingForm.company_name,
         job_role: jobPostingForm.job_role,
         profile_id: profileId,
+        url: linkedInJobPostURL,
       },
       accessToken: linkedInAccessToken,
     });
   }, [jobPostingForm, profileId, linkedInAccessToken]);
-
-  if (coverLetterLoading || postJobApplicationIsLoading) {
-    return null;
-  }
 
   const CoverLetter = dynamic(
     () => import("@/app/cover-letter/components/CoverLetter"),
@@ -108,6 +124,10 @@ export default function Page() {
       ssr: false,
     }
   );
+
+  if (coverLetterLoading || postJobApplicationIsLoading || linkedInJobPostIsLoading) {
+    return null;
+  }
 
   if (coverLetter) {
     return (
@@ -132,6 +152,7 @@ export default function Page() {
         </Link>{" "}
         for personalized cover letters
       </div>
+      <div className="text-xs font-light flex gap-2 items-center mb-4"><PiInfo className="text-2xl" /> Copy and past a LinkedIn job post URL to auto-fill this form</div>
       {successfulMsg && postJobApplicationData && (
         <div className="bg-green-300 border text-green-950 p-4 mb-4 text-center text-sm rounded transition-all">
           {postJobApplicationData?.id ? (
@@ -148,8 +169,16 @@ export default function Page() {
         </div>
       )}
       <Form handleOnSubmit={submitCoverLetterForm}>
-        <div className="flex flex-grow w-full flex-col md:flex-row justify-items-stretch align-middle gap-6">
+        <div className="flex flex-grow w-full flex-col md:flex-row justify-items-stretch align-middle gap-0 md:gap-6">
           <div className="flex-grow">
+            <FormInput
+              type="url"
+              labelName="LinkedIn Job URL"
+              name="linkedin_job_url"
+              placeholder="Eg. https://linkedin.com/jobs/view/0000000123"
+              value={linkedInJobPostURL}
+              handleOnChange={(e) => setLinkedInJobPostURL(e.target.value)}
+            />
             <FormInput
               type="text"
               labelName="Company Name"
@@ -168,14 +197,6 @@ export default function Page() {
               handleOnChange={setFormValue}
               required={true}
             />
-            <FormInput
-              type="text"
-              labelName="Skills"
-              name="skills"
-              placeholder="Eg. sales, accounting, etc."
-              value={jobPostingForm.skills}
-              handleOnChange={setFormValue}
-            />
           </div>
           <div className="flex-grow">
             <FormTextarea
@@ -184,7 +205,14 @@ export default function Page() {
               placeholder="Paste the job listing details here."
               value={jobPostingForm.job_details}
               handleOnChange={setFormValue}
-              large={true}
+            />
+            <FormInput
+              type="text"
+              labelName="Skills"
+              name="skills"
+              placeholder="Eg. sales, accounting, etc."
+              value={jobPostingForm.skills}
+              handleOnChange={setFormValue}
             />
           </div>
         </div>
