@@ -3,6 +3,7 @@ import { PiTrashThin } from "react-icons/pi";
 import Tooltip from "@/components/Tooltip";
 import { JobApplication, JobApplicationEventType } from "@/types";
 import { dateFromNow, formatDate } from "@/utils";
+import EventTypeBadge from "./EventTypeBadge";
 
 type Props = {
   jobApplication: JobApplication;
@@ -19,9 +20,7 @@ const JobApplicationEvents = ({ jobApplication, handleDelete }: Props) => {
             className="flex gap-4 p-4 justify-between items-center border-t relative"
             key={index}
           >
-            <div className="p-2 bg-blue-200 rounded-sm text-xs uppercase w-24 text-center">
-              {JobApplicationEventType[event.type]}
-            </div>
+            <EventTypeBadge eventType={event.type} />
             <div className="flex-grow">
               <h4 className="font-medium text-sm capitalize">
                 {event.description}

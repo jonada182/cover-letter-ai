@@ -113,13 +113,17 @@ export default function Page() {
   };
 
   if (careerProfileLoading) {
-    return <div className="p-4 text-center text-gray-400 animate-pulse">Loading career profile...</div>
+    return (
+      <div className="p-4 text-center text-gray-400 animate-pulse">
+        Loading career profile...
+      </div>
+    );
   }
 
   return (
     <div>
       <Form handleOnSubmit={submitCareerProfileForm}>
-        <div className="flex gap-8 justify-stretch flex-col md:flex-row">
+        <div className="flex gap-4 justify-stretch flex-col md:flex-row md:gap-8">
           <div className="flex-grow">
             <FormInput
               type="text"
@@ -165,17 +169,14 @@ export default function Page() {
               handleOnChange={setFormValue}
             />
             <FormTextarea
-              labelName="Summary"
+              labelName="Career Summary"
               name="summary"
-              placeholder="I am a professional ..."
+              placeholder="Provide a summary of your career experience"
               value={careerProfile.summary}
               handleOnChange={setFormValue}
             />
           </div>
           <div className="flex-grow">
-            <h4 className="text-gray-600 border-b-gray-300 border-b-2 py-4 mb-4">
-              Contact Info
-            </h4>
             <FormInput
               type="email"
               labelName="Email"

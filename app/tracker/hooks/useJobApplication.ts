@@ -35,7 +35,7 @@ const useJobApplication = (props: Props) => {
         accessToken: linkedInAccessToken,
       }),
     onError(err) {
-      setError(err)
+      setError(err);
     },
     enabled: !!profileId && !!props?.jobApplicationId && !!!props?.isEnabled,
   });
@@ -51,11 +51,15 @@ const useJobApplication = (props: Props) => {
     mutationFn: postJobApplication,
     mutationKey: ["postJobApplication"],
     onError(err) {
-      setError(err)
+      setError(err);
     },
     onSuccess(data) {
-      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId, data.id]})
-      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId]})
+      queryClient.invalidateQueries({
+        queryKey: ["job_applications", profileId, data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["job_applications", profileId],
+      });
     },
   });
 
@@ -68,10 +72,25 @@ const useJobApplication = (props: Props) => {
     mutationFn: deleteJobApplication,
     mutationKey: ["deleteJobApplication"],
     onError(err) {
-      setError(err)
+      setError(err);
+    },
+    onMutate: ({ jobApplicationId }) => {
+      // Get the current data from the cache
+      const previousData: JobApplication[] | undefined =
+        queryClient.getQueryData(["job_applications", profileId]);
+
+      // Optimistically update the data by removing the item to be deleted
+      if (previousData) {
+        const updatedData = previousData.filter(
+          (item) => item.id !== jobApplicationId
+        );
+        queryClient.setQueryData(["job_applications", profileId], updatedData);
+      }
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["job_applications", profileId]})
+      queryClient.invalidateQueries({
+        queryKey: ["job_applications", profileId],
+      });
     },
   });
 
@@ -82,15 +101,13 @@ const useJobApplication = (props: Props) => {
         accessToken: linkedInAccessToken,
         jobApplication: {
           ...jobApplication,
-          events: [...jobApplication.events  || [], event],
+          events: [...(jobApplication.events || []), event],
         },
       });
     }
   };
 
-  const deleteJobApplicationEvent = (
-    eventIndex: number
-  ) => {
+  const deleteJobApplicationEvent = (eventIndex: number) => {
     if (jobApplication) {
       reset();
       let events = jobApplication.events;

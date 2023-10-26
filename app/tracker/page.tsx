@@ -36,7 +36,6 @@ export default function Page() {
 
   const {
     data: jobApplications,
-    fetchError: jobApplicationsError,
     fetchIsLoading: jobApplicationsLoading,
     refetch: fetchJobApplications,
   } = useJobApplications();

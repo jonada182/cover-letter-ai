@@ -1,17 +1,29 @@
-"use client"
-import React, { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react"
-import { useParams } from "next/navigation"
-import { UUID } from "crypto"
-import { JobApplication, JobApplicationEvent, JobApplicationEventType, jobApplicationEventTypes } from "@/types"
-import { getCurrentDate } from "@/utils"
-import { useUserContext } from "@/contexts/UserContext"
-import useJobApplication from "@/app/tracker/hooks/useJobApplication"
-import Modal from "@/components/Modal"
-import FormSelect from "@/components/Form/FormSelect"
-import { FormInput, FormTextarea } from "@/components/Form"
-import JobApplicationForm from "@/app/tracker/components/JobApplicationForm"
-import JobApplicationView from "@/app/tracker/components/JobApplicationView"
-import Link from "next/link"
+"use client";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useParams } from "next/navigation";
+import { UUID } from "crypto";
+import {
+  JobApplication,
+  JobApplicationEvent,
+  JobApplicationEventType,
+  jobApplicationEventTypes,
+} from "@/types";
+import { getCurrentDate } from "@/utils";
+import { useUserContext } from "@/contexts/UserContext";
+import useJobApplication from "@/app/tracker/hooks/useJobApplication";
+import Modal from "@/components/Modal";
+import FormSelect from "@/components/Form/FormSelect";
+import { FormInput, FormTextarea } from "@/components/Form";
+import JobApplicationForm from "@/app/tracker/components/JobApplicationForm";
+import JobApplicationView from "@/app/tracker/components/JobApplicationView";
+import Link from "next/link";
 
 const initialJobApplication: JobApplication = {
   company_name: "",
@@ -27,16 +39,19 @@ const initialJobApplicationEvent: JobApplicationEvent = {
 };
 
 export default function Page() {
-  const params = useParams()
+  const params = useParams();
 
-  const [jobApplicationId, setJobApplicationId] = useState<UUID | null>(null)
+  const [jobApplicationId, setJobApplicationId] = useState<UUID | null>(null);
 
   const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
   const [eventModalIsOpen, setEventModalIsOpen] = useState<boolean>(false);
 
-  const [jobApplicationForm, setJobApplicationForm] = useState<JobApplication>(initialJobApplication);
-  const [jobApplicationEventForm, setJobApplicationEventForm] = useState<JobApplicationEvent>(initialJobApplicationEvent);
+  const [jobApplicationForm, setJobApplicationForm] = useState<JobApplication>(
+    initialJobApplication
+  );
+  const [jobApplicationEventForm, setJobApplicationEventForm] =
+    useState<JobApplicationEvent>(initialJobApplicationEvent);
 
   const { profileId, linkedInAccessToken } = useUserContext();
 
@@ -58,15 +73,18 @@ export default function Page() {
   } = useJobApplication({ jobApplicationId: jobApplicationId });
 
   const isLoading = useMemo(
-    () => fetchIsLoading || postJobApplicationIsLoading || deleteJobApplicationIsLoading,
+    () =>
+      fetchIsLoading ||
+      postJobApplicationIsLoading ||
+      deleteJobApplicationIsLoading,
     [deleteJobApplicationIsLoading, fetchIsLoading, postJobApplicationIsLoading]
-  )
+  );
 
   useEffect(() => {
     if (params && params.id && params.id != "") {
-      setJobApplicationId(params.id as UUID)
+      setJobApplicationId(params.id as UUID);
     }
-  }, [params])
+  }, [params]);
 
   useEffect(() => {
     if (postJobApplicationSuccess) {
@@ -80,10 +98,9 @@ export default function Page() {
 
   useEffect(() => {
     if (deleteJobApplicationSuccess) {
-      window.location.href = "/tracker"
+      window.location.href = "/tracker";
     }
   }, [deleteJobApplicationSuccess]);
-
 
   const setEventFormValue = useCallback(
     (
@@ -109,11 +126,14 @@ export default function Page() {
     setJobApplicationForm(application);
   }, []);
 
-  const handleAddEvent = useCallback((jobApplicationId: UUID | null | undefined) => {
-    if (jobApplicationId) {
-      setEventModalIsOpen(true);
-    }
-  }, []);
+  const handleAddEvent = useCallback(
+    (jobApplicationId: UUID | null | undefined) => {
+      if (jobApplicationId) {
+        setEventModalIsOpen(true);
+      }
+    },
+    []
+  );
 
   const handleEventSubmitForm = (event: FormEvent) => {
     event.preventDefault();
@@ -159,11 +179,42 @@ export default function Page() {
     });
   };
 
-  const handleConfirmDelete = useCallback((jobApplicationId: UUID | null | undefined) => {
-    if (jobApplicationId) {
-      setDeleteModalIsOpen(true);
+  const handleConfirmDelete = useCallback(
+    (jobApplicationId: UUID | null | undefined) => {
+      if (jobApplicationId) {
+        setDeleteModalIsOpen(true);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    let defaultDescription = "";
+    switch (jobApplicationEventForm.type) {
+      case JobApplicationEventType.Interview:
+        defaultDescription = "HR Interview";
+        break;
+      case JobApplicationEventType.Assessment:
+        defaultDescription = "Technical Assessment";
+        break;
+      case JobApplicationEventType.Completion:
+        defaultDescription = "Offer Accepted";
+        break;
+      case JobApplicationEventType.Offer:
+        defaultDescription = "Offer Received";
+        break;
+      case JobApplicationEventType.Rejection:
+        defaultDescription = "Rejection Email";
+        break;
+      case JobApplicationEventType.Submission:
+        defaultDescription = "Assessment Submitted";
+        break;
     }
-  }, []);
+    setJobApplicationEventForm((prev) => ({
+      ...prev,
+      description: defaultDescription,
+    }));
+  }, [jobApplicationEventForm.type]);
 
   return (
     <div className="flex flex-grow flex-col justify-start">
@@ -175,7 +226,12 @@ export default function Page() {
         handleEditApplication={handleEditApplication}
         handleEventDelete={deleteJobApplicationEvent}
       />
-      <Link className="text-blue-900 text-sm p-4 text-center hover:underline place-self-center" href={"/tracker"}>Go back to job applications</Link>
+      <Link
+        className="text-blue-900 text-sm p-4 text-center hover:underline place-self-center"
+        href={"/tracker"}
+      >
+        Go back to job applications
+      </Link>
 
       <Modal
         title="Track A New Event"
@@ -241,5 +297,5 @@ export default function Page() {
         <p>Would you like to delete this job application?</p>
       </Modal>
     </div>
-  )
+  );
 }

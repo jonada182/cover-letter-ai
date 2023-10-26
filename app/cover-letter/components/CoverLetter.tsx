@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
 import { FormButton } from "@/components/Form";
-import { downloadPDF } from "@/utils/pdf";
 
 type Props = {
   content?: string | undefined;
@@ -48,7 +47,11 @@ const CoverLetter = (props: Props) => {
         />
         <FormButton
           text="Download PDF"
-          onClick={() => downloadPDF(coverLetterText, props.filename)}
+          onClick={() => {
+            import("@/utils/pdf").then((pdf) => {
+              pdf.downloadPDF(coverLetterText, props.filename);
+            });
+          }}
         />
       </div>
     </div>
